@@ -1,0 +1,88 @@
+import {React,useReducer,useState} from 'react';
+import {DragComponent} from '../OffersForm/DragComponent';
+import {OfferReview} from '../OfferReview.js';
+import Wardrobe from '../../assets/wardrobe.jpeg';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
+
+export const AddOffer = () => {
+
+    const [offerDetails, setOfferDetails] = useState(new FormData());
+    const [images, setImages] = useState([]);
+    const [offerID, setOfferID] = useState('');
+    const Navigate = useNavigate();
+    const handleFormSubmit = async (data) => {
+        const newOfferDetails = new FormData();
+        newOfferDetails.append('ownerID', data.userID);
+        newOfferDetails.append('title', data.title);
+        newOfferDetails.append('price', data.price);
+        newOfferDetails.append('description', data.description);
+        newOfferDetails.append('category', data.category);
+
+        setOfferDetails(newOfferDetails);
+
+        const imagesArray = [];
+        for (let [key, value] of data.imagesData.entries()) {
+            imagesArray.push(value);
+        }
+        setImages(imagesArray);
+
+        try {
+            const response = await axios.post('http://localhost:13000/offers/', {
+                ownerID: data.userID,
+                title: data.title,
+                description: data.description,
+                price: data.price,
+                category: data.category
+            });
+            console.log('Offer added successfully', response.data.offerID);
+            const newOfferID = response.data.offerID;
+            setOfferID(newOfferID);
+
+            if (newOfferID) {
+                await uploadImages(newOfferID, imagesArray);
+            }
+
+        } catch (error) {
+            console.error('We can\'t add an offer', error);
+        }
+
+        Navigate('/market')
+    };
+
+    const uploadImages = async (offerID, images) => {
+        const imagesData = new FormData();
+
+        images.forEach((file, index) => {
+            imagesData.append("images", file);
+        });
+        imagesData.append('offerID', offerID);
+
+        try {
+            const response = await axios.post('http://localhost:13000/offerImages/', imagesData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log('Images uploaded successfully', response);
+        } catch (error) {
+            console.error('We can\'t upload files', error);
+        }
+    };
+
+
+    return (
+        <>
+            <div className='flex min-h-screen'>
+                <div className='flex justify-center w-2/3'>
+                    <DragComponent onSubmit={handleFormSubmit} />
+                </div>
+                <div className='flex justify-center bg-[#8B4513] w-1/3'>
+                    <img src={Wardrobe} alt='wardrobe' className='' />
+                </div>
+            </div>
+        </>
+    );
+};
+
