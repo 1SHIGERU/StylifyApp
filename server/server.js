@@ -27,3 +27,5 @@ connectToDatabase().then(() => {
 require('./models/User');
 require('./models/Offer');
 require('./models/OfferImage');
+require('./models/Favourite');
+require('./models/Transaction');
