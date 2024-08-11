@@ -1,0 +1,27 @@
+version: '3'
+services:
+  node:
+    build:
+      context: ./server
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "13000:5000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - postgres
+    restart: always
+
+  postgres:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: Stylify123!
+      POSTGRES_USER: leoniddas7
+      POSTGRES_DB: postgres
+
+volumes:
+  postgres_data:

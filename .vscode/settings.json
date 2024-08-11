@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "stylify.postgres.database.azure.com",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "name": "stylify.postgres.database.azure.com",
+            "database": "postgres",
+            "username": "leoniddas7"
+        }
+    ]
+}
