@@ -1,14 +1,22 @@
 // server.js
 require('dotenv').config();
 
-
 const express = require('express');
 const cors = require('cors');
 const { connectToDatabase } = require('./db');
 const routes = require('./routes');
+const morgan = require('morgan');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 const port = process.env.PORT; 
+
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: '/tmp/'
+}));
+
+app.use(morgan('dev'));
 
 app.use(express.json());
 app.use(cors());
