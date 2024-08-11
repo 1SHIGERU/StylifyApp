@@ -1,6 +1,7 @@
 // server.js
 require('dotenv').config();
 
+
 const express = require('express');
 const cors = require('cors');
 const { connectToDatabase } = require('./db');
@@ -19,6 +20,10 @@ app.get('/', (req, res) => {
 
 connectToDatabase().then(() => {
   app.listen(port, () => {
-    console.log(`Serwer działa na porcie ${port}`);
+    console.log(`Server działa na porcie ${port} \n\n\n\n`);
   });
 });
+
+require('./models/User');
+require('./models/Offer');
+require('./models/OfferImage');

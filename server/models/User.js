@@ -3,14 +3,29 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../db');
 
 const User = sequelize.define('User', {
-  name: {
+  userID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  username: {
     type: DataTypes.STRING,
-    allowNull: false,
+  },
+  password: {
+    type: DataTypes.STRING,
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
+  },
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  firstName: {
+    type: DataTypes.STRING,
+  },
+  lastName: {
+    type: DataTypes.STRING,
+  },
+  balance: {
+    type: DataTypes.FLOAT,
+    defaultValue: 0.0,
   },
 });
 
