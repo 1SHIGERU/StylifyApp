@@ -1,10 +1,15 @@
 // routes/userRoutes.js
 const express = require('express');
-const { getAllUsers, createUser } = require('../controllers/userController');
-
+const userController = require('../controllers/userController');
 const router = express.Router();
 
-router.get('/', getAllUsers);
-router.post('/', createUser);
+router.post('/add', userController.addUser);
+router.get('/all', userController.getAllUsers);
+router.get('/user/:id', userController.getUserById);
+
+//ULUBIONE
+router.post('/addFavourite', userController.addFavorite);
+router.get('/getFavourites/:id', userController.getFavourites);
+router.delete('/deleteFavourite', userController.deleteFavorite);
 
 module.exports = router;
