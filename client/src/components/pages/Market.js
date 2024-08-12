@@ -138,7 +138,7 @@ export const Market = () => {
         <div className='flex w-full min-h-screen justify-center items-center pt-16'>
             <div className='w-1/3 justify-center items-center p-32'>
                 <h1 className='text-4xl font-bold'> Welcome to the market! </h1>
-                <p className='text-xl mt-4'> Here you can find the best offers from all over the world. </p>
+                <p className='text-xl text-brown-700 mt-4'> Here you can find the best offers from all over the world. </p>
             </div>
             <div className='w-2/3 justify-center items-center'>
                 <img src={MarketJpg} alt='market' className='rounded-full ml-72' />

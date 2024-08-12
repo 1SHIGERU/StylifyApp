@@ -41,24 +41,38 @@ exports.createTransaction = async (req, res) => {
 };
 
 exports.closeTransaction = async (req, res) => {
-  try {
+    try {
       const { transactionID, isClosed } = req.body;
-
+  
       const transaction = await Transaction.findByPk(transactionID);
-
+  
       if (!transaction) {
-          return res.status(404).json({ error: 'Transaction not found.' });
+        return res.status(404).json({ error: 'Transaction not found.' });
       }
-
+  
+      if (transaction.isClosed) {
+        return res.status(400).json({ error: 'Transaction is already closed.' });
+      }
+  
+      const seller = await User.findByPk(transaction.seller);
+      console.log('Seller:', seller);
+      if (!seller) {
+        return res.status(404).json({ error: 'Seller not found.' });
+      }
+  
+      seller.balance += transaction.amount;
+      await seller.save();
+  
       transaction.isClosed = isClosed;
       await transaction.save();
-
+  
       res.status(200).json(transaction);
-  } catch (err) {
+    } catch (err) {
       console.error('Error closing transaction:', err.message);
       res.status(500).send('Server Error');
-  }
-};
+    }
+  };
+  
 
 exports.getActiveTransactions = async (req, res) => {
   try {
@@ -168,5 +182,8 @@ exports.sumTransactionsByUserID = async (req, res) => {
         res.status(500).send('Server Error');
     }
 }
+
+
+
 
   
