@@ -21,6 +21,6 @@ const Favourite = sequelize.define('Favourite', {
   },
 });
 
-Favourite.belongsTo(Offer, { foreignKey: 'offerID' });
+Favourite.belongsTo(Offer, { foreignKey: 'offerID', onDelete: 'CASCADE' });
 
 module.exports = Favourite;

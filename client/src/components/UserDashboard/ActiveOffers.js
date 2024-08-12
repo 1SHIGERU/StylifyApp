@@ -12,6 +12,16 @@ const ActiveOffers = () => {
   const [loading, setLoading] = useState(true);
   const { user } = AuthData();
 
+  const handleDeleteOffer = async () => {
+    try {
+      await axios.delete(`http://localhost:13000/offers/${selectedProduct.offerID}`);
+      fetchOffers();
+      closeModal();
+    } catch (error) {
+      console.error('Error', error.message);
+    } 
+  };
+
   const fetchOffers = async () => {
     try {
       const data = await axios.get(`http://localhost:13000/offers/userID/${user.userID}`);
@@ -156,7 +166,7 @@ const prevSlide = () => {
                         <div className="price text-3xl">${selectedProduct.price}</div>
                       </div>
                     </div>
-                    <button className="flex bg-red-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                    <button onClick={handleDeleteOffer} className="flex bg-red-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
                       DELETE
                     </button>
                     <button className="flex bg-orange-500 mt-2 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">

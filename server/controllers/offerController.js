@@ -1,3 +1,4 @@
+const Favourite = require('../models/Favourite');
 const Offer = require('../models/Offer');
 const OfferImage = require('../models/OfferImage');
 const { validationResult } = require('express-validator');
@@ -137,10 +138,11 @@ exports.deleteOffer = async (req, res) => {
 
   try {
     const offer = await Offer.findByPk(id);
+    const favourites = await Favourite.findAll({ where: { offerID: id } });
     if (!offer) {
       return res.status(404).json({ msg: 'Offer not found' });
     }
-
+    await Promise.all(favourites.map((favourite) => favourite.destroy()));
     await offer.destroy();
     res.json({ msg: 'Offer removed' });
   } catch (err) {
