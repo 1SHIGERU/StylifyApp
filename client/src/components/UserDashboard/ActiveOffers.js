@@ -12,6 +12,7 @@ const ActiveOffers = () => {
   const [loading, setLoading] = useState(true);
   const { user } = AuthData();
 
+
   const handleDeleteOffer = async () => {
     try {
       await axios.delete(`http://localhost:13000/offers/${selectedProduct.offerID}`);
@@ -77,17 +78,33 @@ const prevSlide = () => {
       <h1 className='text-4xl font-bold mb-4'>Your offers: </h1>
       <h1 className='text-2xl font-bold mb-2 text-orange-700'>{products.length} offers</h1>
       <hr />
-      <section className="w-fit mb-32 mx-auto grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 justify-items-center justify-center gap-y-16 gap-x-14 mt-10 mb-5"> 
+      
         {products.length === 0 
         ? 
         <>
-          <div className='flex justify-center items-center w-full mx-auto h-96'>
-            <h1 className='text-2xl font-bold'>You have no favourites yet!</h1>
+          <div className="flex h-64 flex-col bg-white">
+                <div className="flex flex-1 items-center justify-center">
+                    <div className="mx-auto max-w-xl px-4 py-8 text-center">
+                         <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                            You don't have any active offers.
+                         </h1>
+                         <p className="mt-4 text-gray-500">
+                            We would love to see your offers soon!
+                         </p>
+                         <a href='/market' className="mt-6 inline-block text-[#8B4513] border-b-2 border-[#8B4513] px-5 py-3 text-md font-medium focus:outline-none focus:ring">
+                            Go market
+                         </a>
+                         <a href="/addOffer" className="mt-6 ml-4 bg-[#8B4513] inline-block rounded px-5 py-3 text-md font-medium text-white focus:outline-none focus:ring">
+                             Add an offer
+                         </a>
+                    </div>
+              </div>
           </div>
           
         </>
          :    
         <>
+        <section className="w-fit mb-32 mx-auto grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 justify-items-center justify-center gap-y-16 gap-x-14 mt-10 mb-5"> 
           {products.map((product) => (
             <div
               key={product.offerID}
@@ -111,9 +128,10 @@ const prevSlide = () => {
               </div>
             </div>
           ))}
+          </section>
         </>
         }
-      </section>
+      
       {selectedProduct && (
         <>
           <div

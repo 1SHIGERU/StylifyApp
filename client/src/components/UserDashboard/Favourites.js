@@ -95,17 +95,27 @@ const Favourites = () => {
         <h1 className='text-4xl font-bold mb-4'>Favourites</h1>
         <h1 className='text-xl font-bold mb-2 text-orange-700'>{products.length} offers</h1>
         <hr />
-        <section className="w-fit mb-32 mx-auto grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 justify-items-center justify-center gap-y-16 gap-x-14 mt-10 mb-5"> 
+ 
           {products.length === 0 
           ? 
           <>
-            <div className='flex justify-center items-center w-full mx-auto h-96'>
-              <h1 className='text-2xl font-bold'>You have no favourites yet!</h1>
-            </div>
+            <div className="flex h-64 flex-col bg-white">
+                <div className="flex flex-1 items-center justify-center">
+                    <div className="mx-auto max-w-xl px-4 py-8 text-center">
+                         <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                            You don't have any favourite offers.
+                         </h1>
+                         <p className="mt-4 text-gray-500">
+                            Go to <a href='/market' className="font-bold text-[#8B4513]">market</a> to find some offers.
+                         </p>                
+                    </div>
+              </div>
+          </div>
             
           </>
            :    
           <>
+            <section className="w-fit mb-32 mx-auto grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 justify-items-center justify-center gap-y-16 gap-x-14 mt-10 mb-5"></section>
             {products.map((product) => (
               <div
                 key={product.offerID}
@@ -136,9 +146,10 @@ const Favourites = () => {
                 </div>
               </div>
             ))}
+            
           </>
           }
-        </section>
+        
         {selectedProduct && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

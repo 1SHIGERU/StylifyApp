@@ -7,9 +7,11 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
 import { AuthData } from "../../auth/AuthWrapper";
 import Loading from '../Loading';
+import { useNavigate } from 'react-router-dom';
 
 export const Market = () => {
 
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [favourites, setFavourites] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -100,12 +102,16 @@ export const Market = () => {
     const openModal = (product) => {
         setSelectedProduct(product);
         setModalIsOpen(true);
-        setCurrentIndex(0); // Reset current index when opening a new modal
+        setCurrentIndex(0);
       };
   
     const closeModal = () => {
       setSelectedProduct(null);
       setModalIsOpen(false);
+    };
+
+    const goToAccount = () => {
+      navigate('/account');
     };
 
     const prevSlide = () => {
@@ -119,7 +125,6 @@ export const Market = () => {
       };
 
       const toggleFilters = () => {
-        console.log("KLIK")
         setFiltersVisible(!filtersVisible);
       };
 
@@ -467,11 +472,20 @@ export const Market = () => {
                         <div className="price text-3xl">${selectedProduct.price}</div>
                       </div>
                     </div>
-                    <button className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
-                      <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
-                        <FaCartShopping className="pr-4 w-8 h-8" /> BUY NOW!
-                      </i>
-                    </button>
+                    {user.isAuthenticated && user.userID !== selectedProduct.ownerID && (    
+                      <button className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                        <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
+                          <FaCartShopping className="pr-4 w-8 h-8" /> BUY NOW!
+                        </i>
+                      </button>
+                    )}
+                    {user.isAuthenticated && user.userID === selectedProduct.ownerID && (
+                      <button onClick={goToAccount} className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                        <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
+                           TO MANAGE OFFER, CLICK HERE
+                        </i>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

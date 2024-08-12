@@ -6,6 +6,7 @@ const router = express.Router();
 router.post('/add', userController.addUser);
 router.get('/all', userController.getAllUsers);
 router.get('/user/:id', userController.getUserById);
+router.get('/balance/:id', userController.getBalance);
 
 //ULUBIONE
 router.post('/addFavourite', userController.addFavorite);

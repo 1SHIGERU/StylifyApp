@@ -53,7 +53,19 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-
+exports.getBalance = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    res.json(user.balance);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+}
 
 
 

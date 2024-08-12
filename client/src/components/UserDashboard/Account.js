@@ -27,8 +27,6 @@ export const Account = () => {
           }
         } 
 
-     
-
      const fetchTransactions = async () => {
           try {
               const res = await axios.get(`http://localhost:13000/transactions/countTransactions/${user.userID}`);
