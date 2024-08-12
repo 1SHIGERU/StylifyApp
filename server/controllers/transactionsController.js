@@ -141,4 +141,32 @@ exports.countTransactionsByUserID = async (req, res) => {
     }
 }
 
+exports.sumTransactionsByUserID = async (req, res) => {
+    try {
+        const userID = req.params.userID;
+
+        const soldSum = await Transaction.sum('amount', {
+            where: {
+                seller: userID,
+                isClosed: true,
+            },
+        });
+
+        const boughtSum = await Transaction.sum('amount', {
+            where: {
+                buyer: userID,
+                isClosed: true,
+            },
+        });
+
+        res.status(200).json({
+            soldSum,
+            boughtSum,
+        });
+    } catch (err) {
+        console.error('Error summing user transactions:', err.message);
+        res.status(500).send('Server Error');
+    }
+}
+
   

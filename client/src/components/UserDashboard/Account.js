@@ -14,12 +14,25 @@ export const Account = () => {
      const [activeTab, setActiveTab] = useState('account');
      const [activeOffers, setActiveOffers] = useState(0);
      const [transactionCounts, setTransactionCounts] = useState({ soldCount: 0, boughtCount: 0 });
+     const [transactionSums, setTransactionSums] = useState({ soldSum: 0, boughtSum: 0 });
+
+     const bilans = transactionSums.soldSum - transactionSums.boughtSum;
+
+     const fetchSum = async () => {
+          try {
+              const res = await axios.get(`http://localhost:13000/transactions/sumTransactions/${user.userID}`);
+              setTransactionSums(res.data);
+          } catch (err) {
+              console.error(err.message);
+          }
+        } 
+
+     
 
      const fetchTransactions = async () => {
           try {
               const res = await axios.get(`http://localhost:13000/transactions/countTransactions/${user.userID}`);
               setTransactionCounts(res.data);
-              console.log(res.data);
           } catch (err) {
               console.error(err.message);
           }
@@ -61,23 +74,24 @@ export const Account = () => {
                           </div>
                         </div>
                         <div class="p-4 bg-yellow-100 rounded-xl text-gray-800">
-                          <div class="font-bold text-2xl leading-none">20</div>
+                          <div class="font-bold text-2xl leading-none">{transactionCounts.soldCount}</div>
                           <div class="mt-2">Items sold</div>
                         </div>
                         <div class="p-4 bg-yellow-100 rounded-xl text-gray-800">
-                          <div class="font-bold text-2xl leading-none">22</div>
+                          <div class="font-bold text-2xl leading-none">{transactionCounts.boughtCount}</div>
                           <div class="mt-2">Items bought</div>
                         </div>
-                        <div class="col-span-2">
-                          
+                        <div class="col-span-2"> 
                           <div class="p-4 bg-yellow-200 rounded-xl">    
-                            <div class="font-bold text-xl text-gray-800 leading-none">Bilans finansowy</div> 
-                              <div className='flex p-6'>                    
+                            <div class="font-bold text-xl mb-4 text-gray-800 leading-none">Bilans finansowy: <span className='text-orange-500'>{bilans} zł </span></div> 
+                              <div className='flex'>                    
                                    <div className='w-1/2'>
-                                        Zarobiono: 1000zł
+                                        <h1 className='font-bold'>Earned:</h1>
+                                        <h2 className='text-green-500'>+{transactionSums.soldSum}zł</h2>
                                    </div>
                                    <div className='w-1/2'>
-                                        Wydano: 500zł
+                                        <h1 className='font-bold'>Spent:</h1>
+                                        <h2 className='text-red-500'>-{transactionSums.boughtSum}zł</h2>
                                    </div>
                               </div>  
                           </div>
@@ -109,6 +123,7 @@ export const Account = () => {
         useEffect(() => {
           fetchActiveOffers();
           fetchTransactions();
+          fetchSum();
         }
         , []);
 
@@ -145,7 +160,7 @@ export const Account = () => {
                               activeTab === 'activeOffers' ? 'border-b-2 border-orange-500' : 'bg-white hover:bg-yellow-50 text-gray-900'
                          }`}>
                               <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" className=" mr-4" viewBox="0 0 512 512"><path d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z"/></svg>
-                              Active offers                            
+                              My offers                            
                          </a>
                          </li>
 
