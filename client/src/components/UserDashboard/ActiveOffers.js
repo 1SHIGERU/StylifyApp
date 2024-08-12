@@ -156,9 +156,13 @@ const prevSlide = () => {
                         <div className="price text-3xl">${selectedProduct.price}</div>
                       </div>
                     </div>
-                    <button className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
-                      
+                    <button className="flex bg-red-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                      DELETE
                     </button>
+                    <button className="flex bg-orange-500 mt-2 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                      EDIT
+                    </button>
+
                   </div>
                 </div>
               </div>

@@ -7,6 +7,7 @@ import { ErrorPage } from "../pages/ErrorPage"
 import { Register } from "../pages/Register"
 import { AddOffer } from "../pages/AddOffer"
 import { Market } from "../pages/Market"
+import  Payment  from "../pages/Payment"
 import PaymentSucces from "../PaymentSucces"
 
 
@@ -20,5 +21,6 @@ export const nav = [
      { path:     "/*",        name: "404Error",    element: <ErrorPage />,  isMenu: false,    isPrivate: false  },
      { path:     "/addOffer", name: "AddOffer",    element: <AddOffer />,   isMenu: false,    isPrivate: true   },
      { path:     "/market",   name: "Market",      element: <Market />,     isMenu: true,     isPrivate: false  },
+     { path:     "/payment",  name: "Payment",     element: <Payment />,    isMenu: false,    isPrivate: true   },
      { path:     "/payment/success",  name: "PaymentSuccess",     element: <PaymentSucces />,    isMenu: false,    isPrivate: true   },
 ]
