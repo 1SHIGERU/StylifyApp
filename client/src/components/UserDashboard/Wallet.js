@@ -57,7 +57,7 @@ const Wallet = () => {
                     </svg>
                     <div class="ml-4">
                         <h3 class="text-xl font-semibold text-black">Your balance:</h3>
-                        <p class="mt-1.5 text-base text-gray-600"> <span className='font-bold text-xl'>{balance} </span>PLN</p>
+                        <p class="mt-1.5 text-base text-gray-600"> <span className='font-bold text-xl'>{balance} </span>USD</p>
                     </div>
                 </div>
 

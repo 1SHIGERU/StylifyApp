@@ -123,3 +123,47 @@ exports.getFavourites = async (req, res) => {
     res.status(500).json({ error: 'Failed to get favourites' });
   }
 }
+
+
+
+
+
+
+exports.addAddress = async (req, res) => {
+  const { userID, street, city, postcode, country } = req.body;
+  try {
+    const address = await Address.create({ userID, street, city, postcode, country });
+    res.status(201).json(address);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add address' });
+  }
+};
+
+exports.getAddresses = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const addresses = await Address.findAll({ where: { userID: id } });
+    res.json(addresses);
+  } catch (error) {
+    console.error('Error getting addresses:', error.message);
+    res.status(500).json({ error: 'Failed to get addresses' });
+  }
+};
+
+exports.updateAddress = async (req, res) => {
+  const { addressID, street, city, postcode, country } = req.body;
+  try {
+    const address = await Address.findByPk(addressID);
+    if (!address) {
+      return res.status(404).json({ error: 'Address not found' });
+    }
+    address.street = street;
+    address.city = city;
+    address.postcode = postcode;
+    address.country = country;
+    await address.save();
+    res.json(address);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update address' });
+  }
+};

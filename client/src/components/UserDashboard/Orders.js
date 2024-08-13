@@ -73,8 +73,8 @@ const Orders = () => {
             </button>
             <button
               onClick={() => setView('sold')}
-              className={`rounded-full py-3 px-7 font-semibold text-sm leading-7 text-white ${
-                view === 'sold' ? 'bg-indigo-600' : 'bg-gray-600'
+              className={`rounded-full py-3 px-7 font-semibold text-sm leading-7 ${
+                view === 'sold' ? 'bg-orange-600 text-white' : 'border-2 border-orange-600 text-orange-600'
               } shadow-sm transition-all duration-500 hover:shadow-[0_3px_10px_rgb(0,0,0,0.4)]`}
             >
               Sold
