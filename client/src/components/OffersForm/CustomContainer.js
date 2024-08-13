@@ -396,7 +396,7 @@ export function CustomDragDrop({
     <div className="mt-8 group inline-block">
         <h2 className="text-black text-2xl">Price</h2>      
         <input 
-          type="text" 
+          type="number" 
           placeholder="price" 
           maxLength={5} 
           className="bg-gray-200 w-full text-sm px-4 py-3.5 rounded-md outline-[#8B4513]"
@@ -404,7 +404,7 @@ export function CustomDragDrop({
           onChange={(e) => setPrice(e.target.value)}
         />
     </div>
-    <button type="submit" className="bg-[#8B4513] ml-96 text-white text-lg px-4 py-2 rounded-xl">Make a preview</button>
+    <button type="submit" className="bg-[#8B4513] ml-96 text-white text-lg px-4 py-2 rounded-xl">List an item!</button>
     </form>
   );
 }

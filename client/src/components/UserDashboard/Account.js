@@ -7,6 +7,7 @@ import Wallet from './Wallet';
 import Orders from './Orders';
 import History from './History';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const Account = () => {
 
@@ -17,6 +18,40 @@ export const Account = () => {
      const [transactionSums, setTransactionSums] = useState({ soldSum: 0, boughtSum: 0 });
 
      const bilans = transactionSums.soldSum - transactionSums.boughtSum;
+
+     const [street, setStreet] = useState('');
+     const [city, setCity] = useState('');
+     const [postcode, setPostcode] = useState('');
+     const [country, setCountry] = useState('');
+
+     const getAddress = async () => {
+          try {
+              const res = await axios.get(`http://localhost:13000/users/getAddress/${user.userID}`);
+              setStreet(res.data[0].street);
+              setCity(res.data[0].city);
+              setPostcode(res.data[0].postcode);
+              setCountry(res.data[0].country); 
+          } catch (err) {              
+              console.error(err.message);
+          }
+        };
+
+        const handleUploadAddress = async (e) => {
+          e.preventDefault();
+          try {
+            await axios.put(`http://localhost:13000/users/updateAddress`, {
+              userID: user.userID,
+              street,
+              city,
+              postcode,
+              country,
+            });
+            toast.success('Address updated successfully! 🎉', {position:"top-center"});
+          } catch (err) {
+            console.error(err.message);
+            toast.error('Failed to update address 😢', {position:"top-center"});
+          }
+        };
 
      const fetchSum = async () => {
           try {
@@ -96,14 +131,53 @@ export const Account = () => {
                         </div>
                       </div>
                     </div>
-                    <div>
-                      <h2 class="text-2xl font-bold mb-4">Your shipping details</h2>
-                      <div class="space-y-4">
-                        x
+                    
+                    <div class="overflow-hidden bg-white rounded-xl">
+                    <h3 class="text-3xl font-semibold text-center text-gray-900">Your shipping details</h3>
+                      <div class="px-6 sm:p-12">
+                          <form action="#" method="POST" class="mt-14">
+                              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
+                                  <div>
+                                      <label for="" class="text-base font-medium text-gray-900"> Street </label>
+                                      <div class="mt-2.5 relative">
+                                          <input onChange={(e) => setStreet(e.target.value)} value={street} required minLength={3} maxLength={50} type="text" name="" id="" placeholder="Enter your full street" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
+                                      </div>
+                                  </div>
+
+                                  <div>
+                                      <label for="" class="text-base font-medium text-gray-900"> City </label>
+                                      <div class="mt-2.5 relative">
+                                          <input onChange={(e) => setCity(e.target.value)} value={city} pattern="[A-Za-z\s]+" minLength={2} maxLength={50}  required type="text" name="" id="" placeholder="Enter your city" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
+                                      </div>
+                                  </div>
+
+                                  <div>
+                                      <label for="" class="text-base font-medium text-gray-900"> Postcode </label>
+                                      <div class="mt-2.5 relative">
+                                          <input onChange={(e) => setPostcode(e.target.value)} value={postcode} title="Please enter a valid postcode (e.g., 12-345)"  required pattern="[0-9]{2}-[0-9]{3}"  type="text" name="" id="" placeholder="Enter your postcode" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
+                                      </div>
+                                  </div>
+
+                                  <div>
+                                      <label for="" class="text-base font-medium text-gray-900"> Country </label>
+                                      <div class="mt-2.5 relative">
+                                          <input onChange={(e) => setCountry(e.target.value)} value={country} pattern="[A-Za-z\s]+" minlength="2" maxlength="50" required type="text" name="" id="" placeholder="Enter your country" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
+                                      </div>
+                                  </div>
+                                  <div class="sm:col-span-2">
+                                      <button onClick={handleUploadAddress} class="mt-4 bg-white w-full text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center justify-center">
+                                        <span class="mr-2">Apply</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                          <path fill="currentcolor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                                        </svg>
+                                      </button>
+                                  </div>
+                              </div>
+                          </form>
                       </div>
-                    </div>
                   </div>
                 </div>
+              </div>
               );
             case 'favourites':
               return <Favourites/>;
@@ -122,6 +196,7 @@ export const Account = () => {
           fetchActiveOffers();
           fetchTransactions();
           fetchSum();
+          getAddress();
         }
         , []);
 

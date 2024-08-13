@@ -2,6 +2,7 @@ const User = require('../models/User');
 const Favourite = require('../models/Favourite');
 const Offer = require('../models/Offer');
 const OfferImage = require('../models/OfferImage');
+const Address = require('../models/Address');
 
 exports.addUser = async (req, res) => {
   try {
@@ -129,15 +130,10 @@ exports.getFavourites = async (req, res) => {
 
 
 
-exports.addAddress = async (req, res) => {
-  const { userID, street, city, postcode, country } = req.body;
-  try {
-    const address = await Address.create({ userID, street, city, postcode, country });
-    res.status(201).json(address);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to add address' });
-  }
-};
+
+
+
+
 
 exports.getAddresses = async (req, res) => {
   const { id } = req.params;
@@ -151,19 +147,37 @@ exports.getAddresses = async (req, res) => {
 };
 
 exports.updateAddress = async (req, res) => {
-  const { addressID, street, city, postcode, country } = req.body;
   try {
-    const address = await Address.findByPk(addressID);
+    const { userID, street, city, postcode, country } = req.body;
+
+    let address = await Address.findOne({ where: { userID } });
+
     if (!address) {
-      return res.status(404).json({ error: 'Address not found' });
+      address = await Address.create({ userID, street, city, postcode, country });
+    } else {
+      await address.update({ street, city, postcode, country });
     }
-    address.street = street;
-    address.city = city;
-    address.postcode = postcode;
-    address.country = country;
-    await address.save();
-    res.json(address);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to update address' });
+
+    res.status(200).json(address);
+  } catch (err) {
+    console.error('Error updating address:', err.message);
+    res.status(500).send('Server Error');
   }
 };
+
+exports.ifAddressSet = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const address = await Address.findOne({ where: { userID: id } });
+    if (!address) {
+      return res.status(404).json({ message: 'Address not found' });
+    }
+    res.status(200).json({ message: 'Address exists' });
+  } catch (err) {
+    console.error('Error checking address:', err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+
+ 

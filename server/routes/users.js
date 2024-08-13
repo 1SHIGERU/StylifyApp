@@ -14,9 +14,9 @@ router.get('/getFavourites/:id', userController.getFavourites);
 router.delete('/deleteFavourite', userController.deleteFavorite);
 
 //ADRESY
-router.post('/addAddress', userController.addAddress);
-router.get('/getAddresses/:id', userController.getAddresses);
-router.patch('/updateAddress', userController.updateAddress);
+router.get('/getAddress/:id', userController.getAddresses);
+router.put('/updateAddress', userController.updateAddress);
+router.get('/ifAddressSet/:id', userController.ifAddressSet);
 
 
 module.exports = router;

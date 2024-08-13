@@ -4,7 +4,7 @@ import {OfferReview} from '../OfferReview.js';
 import Wardrobe from '../../assets/wardrobe.jpeg';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
+import { toast } from 'react-toastify';
 
 export const AddOffer = () => {
 
@@ -49,6 +49,7 @@ export const AddOffer = () => {
         }
 
         Navigate('/market')
+        toast.success('Offer added successfully', { position: 'top-center' });
     };
 
     const uploadImages = async (offerID, images) => {
@@ -77,6 +78,7 @@ export const AddOffer = () => {
             <div className='flex min-h-screen'>
                 <div className='flex justify-center w-2/3'>
                     <DragComponent onSubmit={handleFormSubmit} />
+                    
                 </div>
                 <div className='flex justify-center bg-[#8B4513] w-1/3'>
                     <img src={Wardrobe} alt='wardrobe' className='' />

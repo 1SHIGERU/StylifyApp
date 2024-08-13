@@ -3,10 +3,31 @@ import { Link } from 'react-router-dom';
 import Image from '../../assets/bck.jpg';
 import { AuthData } from '../../auth/AuthWrapper';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
 
 export const Home = () => {
 
      const { user } = AuthData();
+
+     useEffect(() => {
+          const fetchAddress = async () => {
+            if (user && user.userID) {
+              try {
+                const res = await axios.get(`http://localhost:13000/users/ifAddressSet/${user.userID}`);
+              } catch (error) {
+                if (error.response && error.response.status === 404) {
+                  toast.warn('Please provide your shipping address on your profile page.',{position: "top-center"});
+                } else {
+                  console.error('Error fetching address:', error);
+                }
+              }
+            }
+          };
+      
+          fetchAddress();
+        }, [user]);
+
 
 return (
      <>
