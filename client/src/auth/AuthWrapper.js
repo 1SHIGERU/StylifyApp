@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Image from "../assets/wardrobe.jpeg"
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 export const AuthData = () => useContext(AuthContext);
@@ -40,12 +41,26 @@ export const AuthWrapper = () => {
         email: email1,
         password: password1,
       });
+      
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
+  
       getUser();
       navigate("/account");
+      toast.success('Logged in successfully', { position: 'top-center' });
+      
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        if (error.response.status === 404) {
+          toast.error('Such an account not found', { position: 'top-center' });
+        } else if (error.response.status === 401) {
+          toast.error('Invalid Credentials', { position: 'top-center' });
+        } else {
+          toast.error('An unexpected error occurred', { position: 'top-center' });
+        }
+      } else {
+        toast.error('Server is unreachable', { position: 'top-center' });
+      }
     }
   };
 
@@ -85,9 +100,18 @@ export const AuthWrapper = () => {
         familyName: familyName1,
       });
       navigate("/login");
+      toast.success('User registered successfully', { position: 'top-center' });
     } catch (error) {
-      if(error.response.status === 400) {
-        alert("Email is taken");
+      if (error.response) {
+        if (error.response.status === 400 && error.response.data.msg === 'Email is required') {
+          toast.error('Email is required', { position: 'top-center' });
+        } else if (error.response.status === 400 && error.response.data.msg === 'User already exists') {
+          toast.error('User already exists, email is already taken', { position: 'top-center' });
+        } else {
+          toast.error('Registration failed', { position: 'top-center' });
+        }
+      } else {
+        toast.error('Server error, please try again later', { position: 'top-center' });
       }
     }
   };

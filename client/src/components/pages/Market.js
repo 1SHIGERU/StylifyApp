@@ -8,6 +8,7 @@ import { FaCartShopping } from "react-icons/fa6";
 import { AuthData } from "../../auth/AuthWrapper";
 import Loading from '../Loading';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export const Market = () => {
 
@@ -47,9 +48,11 @@ export const Market = () => {
   const handleFavouriteToggle = (offerID) => {
     if (favourites.includes(offerID)) {
       removeFromFavourites(offerID);
+      toast.error('Offer removed from favourites', { position: 'top-center' });
     } 
     else {
       addToFavourites(offerID);
+      toast.success('Offer added to favourites', { position: 'top-center' });
     }
   };
 
@@ -401,7 +404,7 @@ export const Market = () => {
                               ? 
                               '🧡'
                               : 
-                              '♡'
+                              '🤍'
                             }
                           </>
                         }

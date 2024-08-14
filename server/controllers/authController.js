@@ -10,6 +10,10 @@ const register = async (req, res) => {
 
   const { username, email, password, firstName, familyName } = req.body;
 
+  if (!email || email.trim() === '') {
+    return res.status(400).json({ msg: 'Email is required' });
+  }
+
   try {
     let user = await User.findOne({ where: { email } });
     if (user) {
@@ -17,12 +21,13 @@ const register = async (req, res) => {
     }
 
     user = await User.create({ username, email, password, firstName, familyName });
-    res.json(user);
+    res.status(201).json(user);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 };
+
 
 const login = async (req, res) => {
   const errors = validationResult(req);
@@ -31,16 +36,16 @@ const login = async (req, res) => {
   }
 
   const { email, password } = req.body;
-
   try {
     let user = await User.findOne({ where: { email } });
+    
     if (!user) {
-      return res.status(400).json({ msg: 'Invalid Credentials' });
+      return res.status(404).json({ msg: 'Such an account not found' });
     }
 
     const isMatch = password === user.password;
     if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid Credentials' });
+      return res.status(401).json({ msg: 'Invalid Credentials' });
     }
 
     const payload = {

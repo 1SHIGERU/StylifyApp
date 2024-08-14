@@ -28,7 +28,7 @@ const History = () => {
               ...transaction,
               Offer: offerDetails,
             };
-          }));
+          }));          
           
           if (type === 'bought') {
             setTransactions(transactionsWithDetails.filter(transaction => transaction.buyer === user.userID));

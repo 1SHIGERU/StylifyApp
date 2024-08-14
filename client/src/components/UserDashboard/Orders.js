@@ -4,7 +4,7 @@ import { AuthData } from "../../auth/AuthWrapper";
 
 const Orders = () => {
   const [transactions, setTransactions] = useState([]);
-  const [view, setView] = useState('bought'); // State to manage the current view
+  const [view, setView] = useState('bought');
   const { user } = AuthData();
 
   const fetchOfferDetails = async (offerId) => {
@@ -29,12 +29,22 @@ const Orders = () => {
     }
   };
 
+  const [street, setStreet] = useState('');
+  const [city, setCity] = useState('');
+  const [postcode, setPostcode] = useState('');
+  const [country, setCountry] = useState('');
+
   const fetchTransactions = async (type) => {
     try {
       const response = await axios.get(`http://localhost:13000/transactions/orders/${user.userID}`);
       const data = response.data;
+      console.log(data);
+      setStreet(data[0].Buyer.Address.street);
+      setCity(data[0].Buyer.Address.city);
+      setPostcode(data[0].Buyer.Address.postcode);
+      setCountry(data[0].Buyer.Address.country);
       const transactionsWithDetails = await Promise.all(data.map(async (transaction) => {
-        const offerDetails = await fetchOfferDetails(transaction.offer);
+      const offerDetails = await fetchOfferDetails(transaction.offer);
         return {
           ...transaction,
           Offer: offerDetails,
@@ -146,9 +156,9 @@ const Orders = () => {
                                 <div className="address-box flex ml-4 p-2">
                                   <p className="font-medium text-sm text-black mt-6">Shipping address:</p>
                                   <div className='ml-4 text-gray-600 w-auto'>
-                                    <span className=''>Górnośląska 44</span> <br />
-                                    <span className=''>40-514 Katowice, </span> 
-                                    <span className=''>Poland</span>
+                                    <span className=''>{street}</span> <br />
+                                    <span className=''>{postcode} {city}, </span> 
+                                    <span className=''>{country}</span>
 
                                   </div>
                                 </div>

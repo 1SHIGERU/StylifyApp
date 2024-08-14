@@ -1,6 +1,7 @@
 const Transaction = require('../models/Transaction');
 const User = require('../models/User');
 const Offer = require('../models/Offer');
+const Address = require('../models/Address');
 const { Sequelize } = require('sequelize');
 
 
@@ -74,31 +75,52 @@ exports.closeTransaction = async (req, res) => {
   };
   
 
-exports.getActiveTransactions = async (req, res) => {
-  try {
-      const userID = req.params.userID;
-
-      const transactions = await Transaction.findAll({
-          where: {
-              [Sequelize.Op.or]: [
-                  { seller: userID },
-                  { buyer: userID },
-              ],
-              isClosed: false,
-          },
-          include: [
-              { model: User, as: 'Seller', attributes: ['username'] },
-              { model: User, as: 'Buyer', attributes: ['username'] },
-              { model: Offer, as: 'Offer', attributes: ['title'] },
-          ],
-      });
-
-      res.status(200).json(transactions);
-  } catch (err) {
-      console.error('Error fetching user transactions:', err.message);
-      res.status(500).send('Server Error');
-  }
-};
+  exports.getActiveTransactions = async (req, res) => {
+    try {
+        const userID = req.params.userID;
+  
+        const transactions = await Transaction.findAll({
+            where: {
+                [Sequelize.Op.or]: [
+                    { seller: userID },
+                    { buyer: userID },
+                ],
+                isClosed: false,
+            },
+            include: [
+                {
+                  model: User,
+                  as: 'Seller',
+                  attributes: ['username']
+                },
+                {
+                  model: User,
+                  as: 'Buyer',
+                  attributes: ['username'],
+                  include: [
+                    {
+                      model: Address,
+                      as: 'Address',
+                      attributes: ['street', 'city', 'postcode', 'country']
+                    }
+                  ]
+                },
+                {
+                  model: Offer,
+                  as: 'Offer',
+                  attributes: ['title']
+                }
+            ],
+        });
+  
+        res.status(200).json(transactions);
+    } catch (err) {
+        console.error('Error fetching user transactions:', err.message);
+        res.status(500).send('Server Error');
+    }
+  };
+  
+  
 
 exports.getClosedTransactions = async (req, res) => {
   try {
@@ -116,6 +138,7 @@ exports.getClosedTransactions = async (req, res) => {
               { model: User, as: 'Seller', attributes: ['username'] },
               { model: User, as: 'Buyer', attributes: ['username'] },
               { model: Offer, as: 'Offer', attributes: ['title'] },
+              
           ],
       });
 

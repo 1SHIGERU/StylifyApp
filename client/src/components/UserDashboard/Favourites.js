@@ -7,6 +7,7 @@ import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
 import Loading from '../Loading';
+import { toast } from 'react-toastify';
 
 const Favourites = () => {
 
@@ -115,8 +116,8 @@ const Favourites = () => {
           </>
            :    
           <>
-            <section className="w-fit mb-32 mx-auto grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 justify-items-center justify-center gap-y-16 gap-x-14 mt-10 mb-5"></section>
-            {products.map((product) => (
+            <section className="w-fit mb-32 mx-auto grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 justify-items-center justify-center gap-y-16 gap-x-14 mt-10 mb-5">
+             {products.map((product) => (
               <div
                 key={product.offerID}
                 className="w-44 bg-white shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-[5px_5px_rgba(212,124,36,0.9),_10px_10px_rgba(212,124,36,0.6),_15px_15px_rgba(212,124,36,0.4),_20px_20px_rgba(212,124,36,0.2)]"
@@ -136,6 +137,7 @@ const Favourites = () => {
                       <a
                         onClick={(e) => {
                           e.stopPropagation();
+                          toast.error('Offer removed from favourites',{position: "top-center"});
                           removeFromFavourites(product.offerID);
                         }}
                       >
@@ -146,7 +148,7 @@ const Favourites = () => {
                 </div>
               </div>
             ))}
-            
+            </section>
           </>
           }
         

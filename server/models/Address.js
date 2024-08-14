@@ -17,7 +17,7 @@ const Address = sequelize.define('Address', {
     country: { type: DataTypes.STRING, allowNull: false },
     });
 
-User.hasOne(Address, { foreignKey: 'userID', onDelete: 'CASCADE' });
+User.hasOne(Address, { as: 'Address', foreignKey: 'userID', onDelete: 'CASCADE' });
 Address.belongsTo(User, { foreignKey: 'userID' });
 
 module.exports = Address;
