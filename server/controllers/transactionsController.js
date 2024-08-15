@@ -2,6 +2,7 @@ const Transaction = require('../models/Transaction');
 const User = require('../models/User');
 const Offer = require('../models/Offer');
 const Address = require('../models/Address');
+const Notification = require('../models/Notification');
 const { Sequelize } = require('sequelize');
 
 
@@ -74,22 +75,53 @@ exports.closeTransaction = async (req, res) => {
     }
   };
 
-  exports.markAsSent = async (req, res) => {
+  exports.changeStatus = async (req, res) => {
     try {
-      const { transactionID, isSent } = req.body;
+      const { transactionID, status } = req.body;
 
-      const transaction = await Transaction.findByPk(transactionID);
+      const transaction = await Transaction.findByPk(transactionID, {
+        include: [
+            {
+                model: Offer,
+                as: 'Offer',
+                attributes: ['title']
+            }
+        ]
+    });
+
 
       if (!transaction) {
         return res.status(404).json({ error: 'Transaction not found.' });
       }
 
-      if (transaction.isSent) {
-        return res.status(400).json({ error: 'Transaction is already marked as sent.' });
+      transaction.status = status;
+      await transaction.save();
+
+      if (status === 'shipped') {
+        const buyer = await User.findByPk(transaction.buyer);
+        console.log('Buyer:', buyer);
+        if (buyer) {
+            await Notification.create({
+                userID: buyer.userID,
+                type: 'info',
+                message: `Your item "${transaction.Offer.title}" has been shipped!`,
+                isRead: false,
+            });
+        }
       }
 
-      transaction.isSent = isSent;
-      await transaction.save();
+      if(status === 'received') {
+        const seller = await User.findByPk(transaction.seller);
+        console.log('Seller:', seller);
+        if (seller) {
+            await Notification.create({
+                userID: seller.userID,
+                type: 'info',
+                message: `Your item "${transaction.Offer.title}" has been received by the buyer! Payment will be processed shortly.`,
+                isRead: false,
+            });
+        }
+      }
 
       res.status(200).json(transaction);
     } catch (err) {

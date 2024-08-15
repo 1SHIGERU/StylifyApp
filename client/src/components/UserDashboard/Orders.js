@@ -17,6 +17,19 @@ const Orders = () => {
     }
   }
 
+  const changeStatus = async (transactionID, status) => {
+    try {
+      console.log(transactionID, status);
+      const response = await axios.put('http://localhost:13000/transactions/changeStatus', {
+        transactionID,
+        status
+      });
+      fetchTransactions();
+    } catch (error) {
+      console.error('Error changing transaction status:', error);
+    }
+  };
+
   const closeTransaction = async (transactionID) => {
     try {
       const response = await axios.put('http://localhost:13000/transactions/close', {
@@ -26,18 +39,6 @@ const Orders = () => {
       fetchTransactions();
     } catch (error) {
       console.error('Error closing transaction:', error);
-    }
-  };
-
-  const markAsSent = async (transactionID) => {
-    try {
-      const response = await axios.put('http://localhost:13000/transactions/sent', {
-        transactionID,
-        isSent: true
-      });
-      fetchTransactions();
-    } catch (error) {
-      console.error('Error marking transaction as sent:', error);
     }
   };
 
@@ -123,7 +124,7 @@ const Orders = () => {
                 ) : (
                   <button
                     className="rounded-full py-3 px-7 font-semibold text-sm leading-7 text-white bg-orange-600 max-lg:mt-5 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-indigo-400"
-                    onClick={() => markAsSent(transaction.transactionID)}
+                    onClick={() => changeStatus(transaction.transactionID, 'shipped')}
                   >
                     Mark as Shipped
                   </button>

@@ -38,3 +38,4 @@ require('./models/OfferImage');
 require('./models/Favourite');
 require('./models/Transaction');
 require('./models/Address');
+require('./models/Notification');

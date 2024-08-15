@@ -29,7 +29,7 @@ const Transaction = sequelize.define('Transaction', {
   amount: { type: DataTypes.FLOAT, allowNull: false },
   createdDate: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   isClosed: { type: DataTypes.BOOLEAN, defaultValue: false },
-  isSent: { type: DataTypes.BOOLEAN, defaultValue: false },
+  status: { type: DataTypes.STRING },
 });
 
 Transaction.belongsTo(User, { foreignKey: 'seller', as: 'Seller' });

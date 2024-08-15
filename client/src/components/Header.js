@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AuthData } from '../auth/AuthWrapper';
 import Avatar from '../assets/avatar.jpg';
 import { MdLogout } from "react-icons/md";
+import Notification from './Notification';
 
 const Header = () => {
 
@@ -22,13 +23,14 @@ const Header = () => {
             <Link to='/about'> <li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">About Us</li></Link>
             <Link to='/contact'> <li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Contact us</li></Link>
             {user.isAuthenticated ? <Link to='/addOffer'><li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Add offer</li></Link> : null}
-            
+            {user.isAuthenticated ? <Notification>
+                                    </Notification> : null}
             </ul>
           </div>
           <div class="flex items-center gap-2">
             {user.isAuthenticated ? 
             <>
-              <Link to='/account'><img src={Avatar} alt='avatar' className='w-10 h-10 ml-12 rounded-full' /></Link>
+              <Link to='/account'><img src={Avatar} alt='avatar' className='w-10 h-10 ml- rounded-full' /></Link>
               <Link to='/account'><p>{user.username}</p></Link>
               <button onClick={logout} className='transition-all duration-100 text-red-500 ml-6 hover:scale-[120%]'><MdLogout size={25} /></button>
             </>
