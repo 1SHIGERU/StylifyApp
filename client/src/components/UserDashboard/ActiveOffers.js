@@ -5,6 +5,7 @@ import Loading from '../Loading';
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { toast } from 'react-toastify';
 
 const ActiveOffers = () => {
 
@@ -18,6 +19,7 @@ const ActiveOffers = () => {
       await axios.delete(`http://localhost:13000/offers/${selectedProduct.offerID}`);
       fetchOffers();
       closeModal();
+      toast.success('Offer deleted successfully');
     } catch (error) {
       console.error('Error', error.message);
     } 

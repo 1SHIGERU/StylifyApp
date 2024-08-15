@@ -4,6 +4,7 @@ const transactionsController = require('../controllers/transactionsController');
 
 router.post('/create', transactionsController.createTransaction);
 router.put('/close', transactionsController.closeTransaction);
+router.put('/sent', transactionsController.markAsSent);
 router.get('/orders/:userID', transactionsController.getActiveTransactions);
 router.get('/history/:userID', transactionsController.getClosedTransactions);
 router.get('/countTransactions/:userID', transactionsController.countTransactionsByUserID);

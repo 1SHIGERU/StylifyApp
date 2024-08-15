@@ -1,6 +1,9 @@
 const OfferImage = require('../models/OfferImage');
+const Offer = require('../models/Offer');
 const { validationResult } = require('express-validator');
 var cloudinary = require('cloudinary').v2;
+const ColorThief = require('color-thief-node');
+const fs = require('fs');
 
 cloudinary.config({ 
   cloud_name: 'dafhtxlhb', 
@@ -39,6 +42,7 @@ exports.createOfferImage = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
+
 
 exports.getOfferImages = async (req, res) => {
   try {

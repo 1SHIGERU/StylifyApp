@@ -73,6 +73,30 @@ exports.closeTransaction = async (req, res) => {
       res.status(500).send('Server Error');
     }
   };
+
+  exports.markAsSent = async (req, res) => {
+    try {
+      const { transactionID, isSent } = req.body;
+
+      const transaction = await Transaction.findByPk(transactionID);
+
+      if (!transaction) {
+        return res.status(404).json({ error: 'Transaction not found.' });
+      }
+
+      if (transaction.isSent) {
+        return res.status(400).json({ error: 'Transaction is already marked as sent.' });
+      }
+
+      transaction.isSent = isSent;
+      await transaction.save();
+
+      res.status(200).json(transaction);
+    } catch (err) {
+      console.error('Error marking transaction as sent:', err.message);
+      res.status(500).send('Server Error');
+    }
+  };
   
 
   exports.getActiveTransactions = async (req, res) => {

@@ -107,7 +107,7 @@ const Favourites = () => {
                             You don't have any favourite offers.
                          </h1>
                          <p className="mt-4 text-gray-500">
-                            Go to <a href='/market' className="font-bold text-[#8B4513]">market</a> to find some offers.
+                            Go to <a href='/market' className="font-bold text-[#8B4513]">market</a> to find some offers you like.
                          </p>                
                     </div>
               </div>

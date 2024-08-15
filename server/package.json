@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "cloudinary": "^2.2.0",
+    "color-thief-node": "^1.0.4",
+    "colorthief": "^2.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",

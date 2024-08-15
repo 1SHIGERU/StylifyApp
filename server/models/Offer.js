@@ -35,6 +35,10 @@ const Offer = sequelize.define('Offer', {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
     },
+    dominantColor: {
+        type: DataTypes.STRING,
+    },
+
 
 });
 

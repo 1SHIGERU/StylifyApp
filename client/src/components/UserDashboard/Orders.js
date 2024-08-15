@@ -29,6 +29,18 @@ const Orders = () => {
     }
   };
 
+  const markAsSent = async (transactionID) => {
+    try {
+      const response = await axios.put('http://localhost:13000/transactions/sent', {
+        transactionID,
+        isSent: true
+      });
+      fetchTransactions();
+    } catch (error) {
+      console.error('Error marking transaction as sent:', error);
+    }
+  };
+
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
   const [postcode, setPostcode] = useState('');
@@ -38,7 +50,6 @@ const Orders = () => {
     try {
       const response = await axios.get(`http://localhost:13000/transactions/orders/${user.userID}`);
       const data = response.data;
-      console.log(data);
       setStreet(data[0].Buyer.Address.street);
       setCity(data[0].Buyer.Address.city);
       setPostcode(data[0].Buyer.Address.postcode);
@@ -110,9 +121,12 @@ const Orders = () => {
                     Mark as Received
                   </button>
                 ) : (
-                  <div className="address-box">
-                    
-                  </div>
+                  <button
+                    className="rounded-full py-3 px-7 font-semibold text-sm leading-7 text-white bg-orange-600 max-lg:mt-5 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-indigo-400"
+                    onClick={() => markAsSent(transaction.transactionID)}
+                  >
+                    Mark as Shipped
+                  </button>
                 )}
               </div>
               <div className="w-full px-3 min-[400px]:px-6">
