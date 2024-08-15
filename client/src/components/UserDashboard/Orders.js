@@ -28,6 +28,7 @@ const Orders = () => {
     } catch (error) {
       console.error('Error changing transaction status:', error);
     }
+    window.location.reload();
   };
 
   const closeTransaction = async (transactionID) => {
@@ -40,6 +41,8 @@ const Orders = () => {
     } catch (error) {
       console.error('Error closing transaction:', error);
     }
+    changeStatus(transactionID, 'received');
+    window.location.reload();
   };
 
   const [street, setStreet] = useState('');
@@ -117,7 +120,7 @@ const Orders = () => {
                 {view === 'bought' ? (
                   <button
                     className="rounded-full py-3 px-7 font-semibold text-sm leading-7 text-white bg-orange-600 max-lg:mt-5 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-indigo-400"
-                    onClick={() => closeTransaction(transaction.transactionID, 'received')}
+                    onClick={() => closeTransaction(transaction.transactionID)}
                   >
                     Mark as Received
                   </button>

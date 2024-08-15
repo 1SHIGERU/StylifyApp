@@ -86,13 +86,7 @@ exports.closeTransaction = async (req, res) => {
                 model: Offer,
                 as: 'Offer',
                 attributes: ['title']
-            },
-            {
-                model: OfferImage,
-                as: 'OfferImages',
-                attributes: ['imageURL']
             }
-
         ]
     });
 
