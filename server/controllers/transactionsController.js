@@ -1,6 +1,7 @@
 const Transaction = require('../models/Transaction');
 const User = require('../models/User');
 const Offer = require('../models/Offer');
+const OfferImage = require('../models/OfferImage');
 const Address = require('../models/Address');
 const Notification = require('../models/Notification');
 const { Sequelize } = require('sequelize');
@@ -85,7 +86,13 @@ exports.closeTransaction = async (req, res) => {
                 model: Offer,
                 as: 'Offer',
                 attributes: ['title']
+            },
+            {
+                model: OfferImage,
+                as: 'OfferImages',
+                attributes: ['imageURL']
             }
+
         ]
     });
 

@@ -117,7 +117,7 @@ const Orders = () => {
                 {view === 'bought' ? (
                   <button
                     className="rounded-full py-3 px-7 font-semibold text-sm leading-7 text-white bg-orange-600 max-lg:mt-5 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-indigo-400"
-                    onClick={() => closeTransaction(transaction.transactionID)}
+                    onClick={() => closeTransaction(transaction.transactionID, 'received')}
                   >
                     Mark as Received
                   </button>

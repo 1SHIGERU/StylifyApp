@@ -12,7 +12,6 @@ import { toast } from 'react-toastify';
 export const Account = () => {
 
      const { user } = AuthData();
-     const [activeTab, setActiveTab] = useState('account');
      const [activeOffers, setActiveOffers] = useState(0);
      const [transactionCounts, setTransactionCounts] = useState({ soldCount: 0, boughtCount: 0 });
      const [transactionSums, setTransactionSums] = useState({ soldSum: 0, boughtSum: 0 });
@@ -23,6 +22,9 @@ export const Account = () => {
      const [city, setCity] = useState('');
      const [postcode, setPostcode] = useState('');
      const [country, setCountry] = useState('');
+
+     const savedTab = localStorage.getItem('activeTab') || 'account';
+     const [activeTab, setActiveTab] = useState(savedTab);
 
      const getAddress = async () => {
           try {
@@ -192,13 +194,16 @@ export const Account = () => {
           }
         };
 
+
+
         useEffect(() => {
+          localStorage.setItem('activeTab', activeTab);
           fetchActiveOffers();
           fetchTransactions();
           fetchSum();
           getAddress();
         }
-        , []);
+        , [activeTab]);
 
         return (
           <div className="relative bg-yellow-50 overflow-hidden max-h-screen">

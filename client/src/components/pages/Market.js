@@ -19,6 +19,10 @@ export const Market = () => {
   const { user } = AuthData();
   const [filtersVisible, setFiltersVisible] = useState(false);
 
+  const handleBuyNow = () => {
+    navigate('/payment', { state: { product: selectedProduct } });
+  };
+
   const addToFavourites = async (offerID) => {
     try {
       const { data } = await axios.post(`http://localhost:13000/users/addFavourite/`, {
@@ -476,7 +480,7 @@ export const Market = () => {
                       </div>
                     </div>
                     {user.isAuthenticated && user.userID !== selectedProduct.ownerID && (    
-                      <button className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                      <button onClick={handleBuyNow} className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
                         <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
                           <FaCartShopping className="pr-4 w-8 h-8" /> BUY NOW!
                         </i>

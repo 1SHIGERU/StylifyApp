@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthData } from "../../auth/AuthWrapper";
+import Loading from '../Loading'
 
 const History = () => {
 
     const [transactions, setTransactions] = useState([]);
     const [view, setView] = useState('bought'); // State to manage the current view
     const { user } = AuthData();
+    const [loading, setLoading] = useState(true);
 
     const fetchOfferDetails = async (offerId) => {
         try {
@@ -38,11 +40,16 @@ const History = () => {
         } catch (error) {
           console.error('Error fetching transactions:', error);
         }
+        setLoading(false);
     }
 
     useEffect(() => {
         fetchTransactions(view);
       }, [view]);
+
+      if(loading){
+        return <Loading />
+      }
 
     return (
         <>

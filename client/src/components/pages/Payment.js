@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import axios from 'axios'
+import Loading from '../Loading';
 
 const stripePromise = loadStripe('pk_test_51PAvWC1PDN4klyO5gI9rRb7hQLFi1nqNazo5L5K2pmbRu6SDCwCLe4bo9Udj5uPqSXrA6mNeMDEfP75sfPLHaX05006ffHvcb3');
 
@@ -38,6 +39,7 @@ const Payment = () => {
      
     return (
         <>
+            <Loading />
         </>
     )
 }

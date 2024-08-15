@@ -88,7 +88,7 @@ const Notification = () => {
                                             Go to <a href='/market' className="font-bold text-[#8B4513]">market</a> to find some offers you like.
                                         </p>                
                                     </div>
-                            </div>
+                                </div>
                         </div>}
                     <ul>
                         {notifications.map(notification => (
