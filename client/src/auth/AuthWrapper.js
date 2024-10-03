@@ -225,7 +225,7 @@ export const AuthWrapper = () => {
       <>
         <Header />
         <RenderRoutes />
-        <Footer />
+        
       </>
     </AuthContext.Provider>
   );

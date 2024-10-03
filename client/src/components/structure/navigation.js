@@ -9,6 +9,8 @@ import { AddOffer } from "../pages/AddOffer"
 import { Market } from "../pages/Market"
 import  Payment  from "../pages/Payment"
 import PaymentSucces from "../PaymentSucces"
+import { UserPage } from "../pages/UserPage"
+import { Chat } from "../pages/Chat"
 
 
 export const nav = [
@@ -23,4 +25,7 @@ export const nav = [
      { path:     "/market",   name: "Market",      element: <Market />,     isMenu: true,     isPrivate: false  },
      { path:     "/payment",  name: "Payment",     element: <Payment />,    isMenu: false,    isPrivate: true   },
      { path:     "/payment/success",  name: "PaymentSuccess",     element: <PaymentSucces />,    isMenu: false,    isPrivate: true   },
+     { path:     "/payment/cancel",  name: "PaymentCancel",     element: <PaymentSucces />,    isMenu: false,    isPrivate: true   },
+     { path:     "/user/:id", name: "PaymentError",     element: <UserPage />,    isMenu: false,    isPrivate: false   },
+     { path:     "/chat"    , name: "Chat",        element: <Chat />,       isMenu: true,     isPrivate: true   },
 ]

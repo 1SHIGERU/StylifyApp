@@ -1,6 +1,7 @@
 import React, { useEffect,  useState } from 'react'
 import MarketJpg from '../../assets/market.jpg'
 import axios from "axios";
+import Avatar from '../../assets/avatar.jpg';
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -9,6 +10,8 @@ import { AuthData } from "../../auth/AuthWrapper";
 import Loading from '../Loading';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import PriceSlider from '../PriceSlider';
+import { Link } from 'react-router-dom';
 
 export const Market = () => {
 
@@ -83,6 +86,7 @@ export const Market = () => {
           }
         })
       );
+      console.log(offersWithOwners);
       setProducts(offersWithOwners);
     } catch (error) {
       console.log(error);
@@ -208,8 +212,8 @@ export const Market = () => {
                         <p class="text-base leading-4 dark:text-gray-300 text-gray-600 font-normal">Red</p>
                       </div>
                       <div class="flex space-x-2 md:justify-center md:items-center items-center justify-start">
-                        <div class="w-4 h-4 rounded-full bg-indigo-600 shadow"></div>
-                        <p class="text-base leading-4 dark:text-gray-300 text-gray-600 font-normal">Indigo</p>
+                        <div class="w-4 h-4 rounded-full bg-yellow-600 shadow"></div>
+                        <p class="text-base leading-4 dark:text-gray-300 text-gray-600 font-normal">Yellow</p>
                       </div>
                       <div class="flex space-x-2 justify-center items-center">
                         <div class="w-4 h-4 rounded-full bg-black shadow"></div>
@@ -223,6 +227,10 @@ export const Market = () => {
                         <div class="w-4 h-4 rounded-full bg-gray-600 shadow"></div>
                         <p class="text-base leading-4 dark:text-gray-300 text-gray-600 font-normal">Grey</p>
                       </div>
+                      <div class="flex space-x-2 md:justify-center md:items-center items-center justify-start">
+                        <div class="w-4 h-4 rounded-full bg-green-600 shadow"></div>
+                        <p class="text-base leading-4 dark:text-gray-300 text-gray-600 font-normal">Green</p>
+                      </div>
                     </div>
                   </div>
 
@@ -234,50 +242,12 @@ export const Market = () => {
                         <path d="M9.5 16C13.0899 16 16 13.0899 16 9.5C16 5.91015 13.0899 3 9.5 3C5.91015 3 3 5.91015 3 9.5C3 13.0899 5.91015 16 9.5 16Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M19 10H12C10.8954 10 10 10.8954 10 12V19C10 20.1046 10.8954 21 12 21H19C20.1046 21 21 20.1046 21 19V12C21 10.8954 20.1046 10 19 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                       </svg>
-                      <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium ">Material</p>
+                      <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium ">Price</p>
                     </div>
-                    <div class="md:flex md:space-x-6 mt-8 grid grid-cols-3 gap-y-8 flex-wrap">
-                      <div class="flex space-x-2 md:justify-center md:items-center items-center justify-start">
-                        <input class="w-4 h-4 mr-2" type="checkbox" id="Leather" name="Leather" value="Leather" />
-                        <div class="inline-block">
-                          <div class="flex space-x-6 justify-center items-center">
-                            <label class="mr-2 text-sm leading-3 dark:text-gray-300 font-normal text-gray-600" for="Leather">Leather</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="flex justify-center items-center">
-                        <input class="w-4 h-4 mr-2" type="checkbox" id="Cotton" name="Cotton" value="Cotton" />
-                        <div class="inline-block">
-                          <div class="flex space-x-6 justify-center items-center">
-                            <label class="mr-2 text-sm leading-3 dark:text-gray-300 font-normal text-gray-600" for="Cotton">Cotton</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="flex space-x-2 md:justify-center md:items-center items-center justify-end">
-                        <input class="w-4 h-4 mr-2" type="checkbox" id="Fabric" name="Fabric" value="Fabric" />
-                        <div class="inline-block">
-                          <div class="flex space-x-6 justify-center items-center">
-                            <label class="mr-2 text-sm leading-3 dark:text-gray-300 font-normal text-gray-600" for="Fabric">Fabric</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="flex space-x-2 md:justify-center md:items-center items-center justify-start">
-                        <input class="w-4 h-4 mr-2" type="checkbox" id="Crocodile" name="Crocodile" value="Crocodile" />
-                        <div class="inline-block">
-                          <div class="flex space-x-6 justify-center items-center">
-                            <label class="mr-2 text-sm leading-3 dark:text-gray-300 font-normal text-gray-600" for="Crocodile">Crocodile</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="flex justify-center items-center">
-                        <input class="w-4 h-4 mr-2" type="checkbox" id="Wool" name="Wool" value="Wool" />
-                        <div class="inline-block">
-                          <div class="flex space-x-6 justify-center items-center">
-                            <label class="mr-2 text-sm leading-3 dark:text-gray-300 font-normal text-gray-600" for="Wool">Wool</label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <div className="flex w-64 m-auto items-center h-32 justify-center">
+                      <PriceSlider />
+                  </div>
+
                   </div>
 
                   <hr class="bg-gray-200 lg:w-6/12 w-full md:my-10 my-8" />
@@ -465,10 +435,19 @@ export const Market = () => {
                     </div>
                   </div>
                   <div className="w-1/2 p-6 ml-8 overflow-y-auto max-h-96">
-                    <h2 className="company text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
-                      {selectedProduct.category}
-                    </h2>
-                    <h3 className="product mt-4 capitalize text-very-dark-blue font-bold text-4xl py-2 border-b border-gray-200">
+
+                    <div className="w-full flex justify-between items-center">
+                      <h2 className="company text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
+                        {selectedProduct.category}
+                      </h2>
+                      <Link to={`/user/${selectedProduct.ownerID}`}>
+                        <div className="flex items-center space-x-2 cursor-pointer">
+                          <img src={selectedProduct.owner.avatar || Avatar} alt="avatar" className="w-8 h-8 rounded-full" />
+                          <div className="text-black text-md">{selectedProduct.owner.username}</div>
+                        </div>
+                      </Link>
+                    </div>         
+                    <h3 className="product mt-2 capitalize text-very-dark-blue font-bold text-4xl py-2 border-b border-gray-200">
                       {selectedProduct.title}
                     </h3>
                     <p className="text-dark-grayish-blue lg:leading-6 border-b border-gray-200 py-4">

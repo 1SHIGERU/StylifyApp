@@ -27,6 +27,15 @@ const Wallet = () => {
     }
   }
 
+  const handleWithdraw = async () => {
+    try {
+      const response = await axios.put('http://localhost:13000/transactions/withdraw', { userID: user.userID });
+      await fetchBalance();
+    } catch (error) {
+      console.error('Error withdrawing:', error.message);
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       if (user && user.userID) {
@@ -109,7 +118,7 @@ const Wallet = () => {
                             </div>
                         </div>
 
-                        <button type="submit" class="inline-flex items-center justify-center w-auto px-4 py-4 mt-4 font-semibold text-white transition-all duration-200 bg-orange-600 border border-transparent rounded-full sm:ml-4 sm:mt-0 sm:w-auto hover:bg-white hover:text-orange-600  hover:border-orange-500 focus:bg-blue-700">
+                        <button onClick={handleWithdraw} class="inline-flex items-center justify-center w-auto px-4 py-4 mt-4 font-semibold text-white transition-all duration-200 bg-orange-600 border border-transparent rounded-full sm:ml-4 sm:mt-0 sm:w-auto hover:bg-white hover:text-orange-600  hover:border-orange-500 focus:bg-blue-700">
                             Withdraw
                             <svg class="w-5 h-5 ml-3 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />

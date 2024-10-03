@@ -176,7 +176,28 @@ exports.closeTransaction = async (req, res) => {
         res.status(500).send('Server Error');
     }
   };
+
+  exports.withdraw = async (req, res) => {
+    try {
+        const { userID } = req.body;
   
+        const user = await User.findByPk(userID);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        user.balance = 0;
+        await user.save();
+
+        res.status(200).json(user);
+    } catch (err) {
+        console.error('Error withdrawing funds:', err.message);
+        res.status(500).send('Server Error');
+    }
+  }
+
+
   
 
 exports.getClosedTransactions = async (req, res) => {
