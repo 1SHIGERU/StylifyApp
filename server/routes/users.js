@@ -4,6 +4,7 @@ const userController = require('../controllers/userController');
 const router = express.Router();
 
 router.post('/add', userController.addUser);
+router.post('/update', userController.updateInfo);
 router.get('/all', userController.getAllUsers);
 router.get('/user/:id', userController.getUserById);
 router.get('/balance/:id', userController.getBalance);

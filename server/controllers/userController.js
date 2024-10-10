@@ -3,6 +3,13 @@ const Favourite = require('../models/Favourite');
 const Offer = require('../models/Offer');
 const OfferImage = require('../models/OfferImage');
 const Address = require('../models/Address');
+var cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+  cloud_name: 'dafhtxlhb', 
+  api_key: '849693283372593', 
+  api_secret: 'VxfVeeQpQleSMuHEN4ENWA8VW90'
+});
 
 exports.addUser = async (req, res) => {
   try {
@@ -67,6 +74,47 @@ exports.getBalance = async (req, res) => {
     res.status(500).send('Server Error');
   }
 }
+
+exports.updateInfo = async (req, res) => { 
+  const { username, email, password, description, userID } = req.body; 
+  try {
+   
+    let imageUrl = null;
+    if (req.files && req.files.avatar) {
+      const files = Array.isArray(req.files.avatar) ? req.files.avatar : [req.files.avatar];
+        
+      if (files.length > 0) {
+        const uploadPromises = files.map(file => cloudinary.uploader.upload(file.tempFilePath));
+        const results = await Promise.all(uploadPromises);
+        const imageUrls = results.map(result => result.secure_url);
+        imageUrl = imageUrls[0]; 
+      }
+    }
+
+    const user = await User.findByPk(userID);
+    
+    if (username) user.username = username;
+    if (email) user.email = email;
+    if (password) user.password = password; 
+    if (description) user.description = description;
+    if (imageUrl) user.avatarURL = imageUrl;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: 'Profile updated successfully',
+      user,
+    });
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    return res.status(500).json({
+      message: 'Error updating profile',
+      error: error.message,
+    });
+  }
+};
+
+
 
 
 

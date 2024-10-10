@@ -84,6 +84,8 @@ export const AuthWrapper = () => {
         familyName: data.familyName,
         userID: data.userID,
         isAdmin: data.isAdmin,
+        avatar: data.avatarURL,
+        description: data.description,
       });
     } catch (error) {
       console.log(error);
@@ -127,6 +129,8 @@ export const AuthWrapper = () => {
       userID: "",
       isAdmin: false,
       isAuthenticated: false,
+      description: "",
+      avatarURL: "",
     });
     navigate("/");
   };

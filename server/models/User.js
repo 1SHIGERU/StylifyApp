@@ -27,6 +27,12 @@ const User = sequelize.define('User', {
     type: DataTypes.FLOAT,
     defaultValue: 0.0,
   },
+  avatarURL: {
+    type: DataTypes.STRING,
+  },
+  description: {
+    type: DataTypes.STRING,
+  },
 });
 
 module.exports = User;

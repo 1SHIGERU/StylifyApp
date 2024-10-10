@@ -33,7 +33,7 @@ const Header = () => {
           <div class="flex items-center gap-2">
             {user.isAuthenticated ? 
             <>
-              <Link to='/account'><img src={Avatar} alt='avatar' className='w-10 h-10 ml- rounded-full' /></Link>
+              <Link to='/account'><img src={user.avatar} alt='avatar' className='w-10 h-10 ml- rounded-full' /></Link>
               <Link to='/account'><p>{user.username}</p></Link>
               <button onClick={logout} className='transition-all duration-100 text-red-500 ml-6 hover:scale-[120%]'><MdLogout size={25} /></button>
             </>

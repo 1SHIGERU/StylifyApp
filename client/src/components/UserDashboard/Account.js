@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { AuthData } from "../../auth/AuthWrapper"
 import Img from "../../assets/avatar.jpg"
 import Favourites from './Favourites';
@@ -22,9 +22,10 @@ export const Account = () => {
      const [city, setCity] = useState('');
      const [postcode, setPostcode] = useState('');
      const [country, setCountry] = useState('');
-
      const savedTab = localStorage.getItem('activeTab') || 'account';
      const [activeTab, setActiveTab] = useState(savedTab);
+
+
 
      const getAddress = async () => {
           try {
@@ -82,16 +83,85 @@ export const Account = () => {
           }
       };
 
+      {/* MODAL oraz dane w nim*/}
+      
+      const [isModalOpen, setIsModalOpen] = useState(false);
+      const [selectedImage, setSelectedImage] = useState(user.avatar);
+      const [username, setUsername] = useState(user.username);
+      const [email, setEmail] = useState(user.email);
+      const [password, setPassword] = useState('');
+      const [repeatPassword, setRepeatPassword] = useState('');
+      const [description, setDescription] = useState(user.description);
+
+      const fileInputRef = useRef(null);
+
+      const handleEditClick = () => {
+        setIsModalOpen(true);
+      };
+
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
+
+      const handleFileChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+          const file = event.target.files[0];
+          const imageUrl = URL.createObjectURL(file);
+          setSelectedImage(imageUrl);
+        }
+      };
+
+      const handleImageClick = () => {
+        fileInputRef.current.click();
+      };
+
+      const handleSubmit = async () => {
+        const formData = new FormData();
+        formData.append('avatar', fileInputRef.current.files[0]); 
+        formData.append('username', username); 
+        formData.append('email', email); 
+        formData.append('password', password); 
+        formData.append('description', description);
+        formData.append('userID', user.userID);
+
+        try {
+          const response = await axios.post('http://localhost:13000/users/update', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data', 
+            },
+          });
+
+          if (response.status === 200) {
+            alert('Profile updated successfully');
+            closeModal();
+            window.location.reload();
+          } else {
+            alert('Error updating profile');
+          }
+        } catch (error) {
+          console.error('Error uploading data:', error);
+          alert('Error updating profile');
+        }
+      };
+
      const renderContent = () => {
           switch (activeTab) {
             case 'account':
               return (
                 <div>
                   <div class="flex items-center">
-                    <img src={Img} alt="avatar" class="w-32 h-32 rounded-full" />
-                    
-                    <h1 class="text-2xl font-bold">{user.username}</h1>
-                    {/* TUTAJ OPIS UŻYTKOWNIKA (a'la O MNIE) */}
+                    <img src={user.avatar} alt="avatar" class="w-32 h-32 rounded-full" />
+                    <div className='flex space-y-4 flex-col ml-4'>
+                      <h1 class="ml-4 text-2xl font-bold">{user.username}</h1>
+                      <hr class="text-orange-600" />
+                      <h2 className='ml-4 text-xl text-gray-800'> {user.description} </h2>
+                    </div>
+                    <button
+                      onClick={handleEditClick}
+                      className="ml-auto bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Edytuj
+                    </button>
                   </div>
                   <hr class="my-10" />
                   <div class="grid grid-cols-2 gap-x-20">
@@ -137,7 +207,7 @@ export const Account = () => {
                     <div class="overflow-hidden bg-white rounded-xl">
                     <h3 class="text-3xl font-semibold text-center text-gray-900">Your shipping details</h3>
                       <div class="px-6 sm:p-12">
-                          <form action="#" method="POST" class="mt-14">
+                          <form method="POST" class="mt-14">
                               <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
                                   <div>
                                       <label for="" class="text-base font-medium text-gray-900"> Street </label>
@@ -179,6 +249,102 @@ export const Account = () => {
                       </div>
                   </div>
                 </div>
+                {isModalOpen && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                    <div className="grid sm:grid-cols-2 items-center gap-16 p-8 mx-auto max-w-4xl bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md text-[#333] font-[sans-serif]">
+                      <div>                                    
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          className='hidden'
+                          onChange={handleFileChange}
+                        />  
+                        <img
+                          src={selectedImage}
+                          alt="avatar"
+                          className="mb-4 w-32 h-32 cursor-pointer rounded-full border-2 border-orange-500"
+                          onClick={handleImageClick} 
+                        />
+                        <h1 className="text-3xl font-extrabold">{username}</h1>
+                        <p className="text-sm text-gray-400 mt-3">{description}</p>
+                        <div className="mt-12">
+                          <h2 className="text-lg font-extrabold">Email</h2>
+                          <ul className="mt-3">
+                            <li className="flex items-center">
+                              <div className="bg-[#e6e6e6cf] h-10 w-10 rounded-full flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="#FFA500" viewBox="0 0 479.058 479.058">
+                                  <path
+                                    d="M434.146 59.882H44.912C20.146 59.882 0 80.028 0 104.794v269.47c0 24.766 20.146 44.912 44.912 44.912h389.234c24.766 0 44.912-20.146 44.912-44.912v-269.47c0-24.766-20.146-44.912-44.912-44.912zm0 29.941c2.034 0 3.969.422 5.738 1.159L239.529 264.631 39.173 90.982a14.902 14.902 0 0 1 5.738-1.159zm0 299.411H44.912c-8.26 0-14.971-6.71-14.971-14.971V122.615l199.778 173.141c2.822 2.441 6.316 3.655 9.81 3.655s6.988-1.213 9.81-3.655l199.778-173.141v251.649c-.001 8.26-6.711 14.97-14.971 14.97z"
+                                    data-original="#000000"
+                                  />
+                                </svg>
+                              </div>
+                              <a className="text-orange-500 text-sm ml-3">
+                                <small className="block">{email}</small>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <form className="ml-auto space-y-4" onSubmit={handleSubmit}>
+                        <h1 onClick={closeModal} className="cursor-pointer text-xl font-bold">X</h1> 
+                        <input
+                          required
+                          maxLength={20}
+                          type="text"
+                          placeholder="New username"
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)} 
+                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
+                        />
+                        <input
+                          required
+                          type="email"
+                          maxlength={30}
+                          placeholder="New email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)} 
+                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
+                        />
+                        <input
+                          required
+                          type="password"
+                          maxlength={20}
+                          placeholder="New password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)} 
+                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
+                        />
+                        <input
+                          required
+                          type="password"
+                          maxlength={20}
+                          placeholder="Repeat new password"
+                          value={repeatPassword}
+                          onChange={(e) => setRepeatPassword(e.target.value)} 
+                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
+                        />
+                        <textarea
+                          required
+                          placeholder="Description"
+                          maxLength={200}
+                          rows="4"
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)} 
+                          className="w-full rounded-md px-4 border text-sm pt-2.5 outline-[#FFA500]"
+                        ></textarea>
+                        <button
+                          type="submit"
+                          className="text-white bg-[#FFA500] hover:bg-orange-500 font-semibold rounded-md text-sm px-4 py-2.5 w-full"
+                        >
+                          Save
+                        </button>
+                      </form>
+
+                    </div>
+                  </div>
+                )}
               </div>
               );
             case 'favourites':
