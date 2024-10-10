@@ -132,16 +132,15 @@ export const Account = () => {
           });
 
           if (response.status === 200) {
-            alert('Profile updated successfully');
-            closeModal();
-            window.location.reload();
+            closeModal();        
           } else {
-            alert('Error updating profile');
+            console.error('Error uploading data:', response.data);
           }
         } catch (error) {
           console.error('Error uploading data:', error);
-          alert('Error updating profile');
+
         }
+
       };
 
      const renderContent = () => {

@@ -85,7 +85,7 @@ export const UserPage = () => {
             }
     
             const data = await response.json();
-            setUserData(data);
+            setUserData(data);         
             setError(null);
           } catch (err) {
             setError(err.message);
@@ -139,7 +139,6 @@ export const UserPage = () => {
                 </div>
             </section>
 
-            {/* Sekcja z profilem */}
             <section className="relative py-16 bg-blueGray-200">
                 <div className="container mx-auto px-4">
                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
@@ -149,7 +148,7 @@ export const UserPage = () => {
                             <div className="relative">
                                 <img
                                 alt="..."
-                                src={Avatar}
+                                src={userData.avatarURL || Avatar}
                                 className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
                                 />
                             </div>

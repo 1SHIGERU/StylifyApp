@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Img from '../../assets/avatar.jpg';
 import { AuthData } from '../../auth/AuthWrapper';
 
 export const Chat = () => {
 
   const { user } = AuthData();
   const [chats, setChats] = useState([]);
+  const [avatar, setAvatar] = useState(null);
   const [messages, setMessages] = useState([]);
   const [activeChatID, setActiveChatID] = useState(null);
   const [newMessage, setNewMessage] = useState('');
-  const [hoveredMessageIndex, setHoveredMessageIndex] = useState(null);
 
   useEffect(() => {
     axios.get(`http://localhost:13000/chat/user/${user.userID}`)
       .then((response) => {
         setChats(response.data);
+        console.log(response.data);
       });
   }, [user.userID]);
 
@@ -69,7 +71,7 @@ export const Chat = () => {
                   className={`flex items-center mb-4 cursor-pointer hover:border-r-2 hover:border-orange-500 p-2 rounded-md ${activeChatID === chat.chatID ? 'bg-gray-300' : ''}`}>
                   <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
                     <img
-                      src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                      src={chatPartner?.avatarURL || Img}
                       alt="User Avatar"
                       className="w-12 h-12 rounded-full"
                     />
@@ -99,7 +101,7 @@ export const Chat = () => {
                   {message.senderID !== user.userID && (
                     <div className="w-9 h-9 rounded-full flex items-center justify-center mr-2">
                       <img
-                        src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                        src={message.User?.avatarURL || Img}
                         alt="User Avatar"
                         className="w-8 h-8 rounded-full"
                       />
@@ -111,7 +113,7 @@ export const Chat = () => {
                   {message.senderID === user.userID && (
                     <div className="w-9 h-9 rounded-full flex items-center justify-center ml-2">
                       <img
-                        src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                        src={user?.avatar || Img }
                         alt="My Avatar"
                         className="w-8 h-8 rounded-full"
                       />

@@ -53,7 +53,6 @@ const createChat = async (req, res) => {
 const getMessagesByChatID = async (req, res) => {
 
     const { id: chatID } = req.params;
-
     try {
       
       const messages = await Message.findAll({
@@ -61,7 +60,8 @@ const getMessagesByChatID = async (req, res) => {
         include: [
           {
             model: User,
-            attributes: ['username']
+            attributes: ['username','avatarURL'],
+
           },
         ],
         order: [['createdAt', 'ASC']], 
@@ -90,12 +90,12 @@ const getUserChats = async (req, res) => {
           {
             model: User,
             as: 'User1',
-            attributes: ['username'],
+            attributes: ['username','avatarURL'],
           },
           {
             model: User,
             as: 'User2',
-            attributes: ['username'],
+            attributes: ['username','avatarURL'],
           },
         ],
       });
