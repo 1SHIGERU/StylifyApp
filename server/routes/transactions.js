@@ -7,6 +7,7 @@ router.put('/close', transactionsController.closeTransaction);
 router.put('/changeStatus', transactionsController.changeStatus);
 router.get('/orders/:userID', transactionsController.getActiveTransactions);
 router.get('/history/:userID', transactionsController.getClosedTransactions);
+router.get('/getTransaction/:transactionID', transactionsController.getTransactionByID);
 router.get('/countTransactions/:userID', transactionsController.countTransactionsByUserID);
 router.get('/sumTransactions/:userID', transactionsController.sumTransactionsByUserID);
 router.put('/withdraw', transactionsController.withdraw);

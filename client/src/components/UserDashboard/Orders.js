@@ -1,11 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthData } from "../../auth/AuthWrapper";
+import { toast } from 'react-toastify';
 
 const Orders = () => {
   const [transactions, setTransactions] = useState([]);
   const [view, setView] = useState('bought');
   const { user } = AuthData();
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      if (user && user.userID) {
+        try {
+          const res = await axios.get(`http://localhost:13000/users/ifAddressSet/${user.userID}`);
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            toast.warn('Please provide your shipping address on your profile page.',{position: "top-center"});
+          } else {
+            console.error('Error fetching address:', error);
+          }
+        }
+      }
+    };
+
+    fetchAddress();
+  }, [user]);
 
   const fetchOfferDetails = async (offerId) => {
     try {

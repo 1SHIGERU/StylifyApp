@@ -100,29 +100,31 @@ exports.closeTransaction = async (req, res) => {
 
       if (status === 'shipped') {
         const buyer = await User.findByPk(transaction.buyer);
-        console.log('Buyer:', buyer);
         if (buyer) {
             await Notification.create({
                 userID: buyer.userID,
                 type: 'info',
                 message: `Your item "${transaction.Offer.title}" has been shipped!`,
                 isRead: false,
+                transactionID:transactionID
             });
         }
       }
 
       if(status === 'received') {
-        const seller = await User.findByPk(transaction.seller);
-        console.log('Seller:', seller);
-        if (seller) {
+        const buyer = await User.findByPk(transaction.buyer);
+        if (buyer) {
             await Notification.create({
-                userID: seller.userID,
-                type: 'info',
-                message: `Your item "${transaction.Offer.title}" has been received by the buyer! Payment will be processed shortly.`,
+                userID: buyer.userID,
+                type: 'rate',
+                message: `You have received the item "${transaction.Offer.title}"! Click this to rate seller!`,
                 isRead: false,
+                transactionID:transactionID
             });
         }
       }
+
+      
 
       res.status(200).json(transaction);
     } catch (err) {
@@ -226,6 +228,30 @@ exports.getClosedTransactions = async (req, res) => {
       res.status(500).send('Server Error');
   }
 }
+
+exports.getTransactionByID = async (req, res) => {
+  try {
+      const { transactionID } = req.params;
+
+      const transaction = await Transaction.findByPk(transactionID, {
+          include: [
+              { model: User, as: 'Seller', attributes: ['username'] },
+              { model: User, as: 'Buyer', attributes: ['username'] },
+              { model: Offer, as: 'Offer', attributes: ['title'] },
+          ],
+      });
+
+      if (!transaction) {
+          return res.status(404).json({ error: 'Transaction not found.' });
+      }
+
+      res.status(200).json(transaction);
+  } catch (err) {
+      console.error('Error fetching transaction:', err.message);
+      res.status(500).send('Server Error');
+  }
+}
+
 
 
 exports.countTransactionsByUserID = async (req, res) => {
