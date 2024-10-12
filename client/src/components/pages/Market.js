@@ -21,22 +21,68 @@ export const Market = () => {
   const [loading, setLoading] = useState(true);
   const { user } = AuthData();
   const [filtersVisible, setFiltersVisible] = useState(false);
+  const [ownerData, setOwnerData] = useState(null);
+
 
   const handleBuyNow = () => {
     navigate('/payment', { state: { product: selectedProduct } });
   };
 
+  const fetchOwnerData = async (ownerID) => {
+    try {
+      const { data } = await axios.get(`http://localhost:13000/users/user/${ownerID}`);
+      setOwnerData(data);
+      return data;
+    } catch (error) {
+      console.error('Error fetching owner data:', error);
+    }
+  };
+  
+  const fetchOffer = async (offerID) => {
+    try {
+      const { data } = await axios.get(`http://localhost:13000/offers/${offerID}`);
+      return data;
+    } catch (error) {
+      console.error('Error fetching offer:', error);
+    }
+  };
+  
+  const createNotification = async (userID, offerID, offerTitle, offerPrice) => {
+    try {
+      await axios.post(`http://localhost:13000/notifications/create`, {
+        userID: userID,
+        offerID: offerID,
+        message: `${user.username} is interested in your offer! ${offerTitle} for ${offerPrice}$`,
+      });
+    } catch (error) {
+      console.error('Error creating notification:', error);
+    }
+  };
+  
   const addToFavourites = async (offerID) => {
     try {
+      const offerData = await fetchOffer(offerID);
+      const ownerData = await fetchOwnerData(offerData.ownerID);
+  
+      await createNotification(
+        ownerData.userID,    
+        offerID,             
+        offerData.title,     
+        offerData.price      
+      );
+  
       const { data } = await axios.post(`http://localhost:13000/users/addFavourite/`, {
         userID: user.userID,
         offerID: offerID,
       });
+
       setFavourites([...favourites, offerID]);
+  
     } catch (error) {
-      console.error(error.message);
+      console.error('Error in adding to favourites:', error.message);
     }
   };
+  
 
   const removeFromFavourites = async (offerID) => {
     try {
@@ -86,7 +132,6 @@ export const Market = () => {
           }
         })
       );
-      console.log(offersWithOwners);
       setProducts(offersWithOwners);
     } catch (error) {
       console.log(error);
@@ -96,15 +141,22 @@ export const Market = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+  
       await fetchProducts();
+  
       if (user && user.userID) {
         await fetchFavourites(user.userID);
       }
+  
       setLoading(false);
     };
-
-    fetchData();
-  }, [user]);
+  
+    if (user && user.userID) {
+      fetchData();
+    }
+  
+  }, [user && user.userID]); 
+  
   
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
