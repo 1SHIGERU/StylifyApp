@@ -15,5 +15,6 @@ router.get('/', offerImageController.getOfferImages);
 router.get('/:id', offerImageController.getOfferImageById);
 router.put('/:id', offerImageController.updateOfferImage);
 router.delete('/:id', offerImageController.deleteOfferImage);
+router.post('/recognize', offerImageController.recognizeImage);
 
 module.exports = router;

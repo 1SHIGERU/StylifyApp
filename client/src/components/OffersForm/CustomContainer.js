@@ -4,6 +4,8 @@ import { BsX } from "react-icons/bs";
 import Swal from "sweetalert2";
 import "../../index.css";
 import { AuthData } from "../../auth/AuthWrapper";
+import axios from "axios";
+import { set } from "date-fns";
 
 export function CustomDragDrop({
   ownerLicense,
@@ -78,6 +80,16 @@ export function CustomDragDrop({
       setSelectedFiles(files);
       const nFiles = files.map(async (file) => {
         const base64String = await convertFileBase64(file);
+
+        const response = await axios.post('http://localhost:13000/offerImages/recognize', {
+          image: base64String
+        });
+
+        if (response.data && response.data.labels) {
+          console.log("Rozpoznane etykiety:", response.data.labels[2].name);
+          setSelectedCategory((response.data.labels[2].name));
+        }
+
         return {
           name: file.name,
           photo: base64String,
