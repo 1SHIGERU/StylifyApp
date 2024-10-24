@@ -6,6 +6,7 @@ import "../../index.css";
 import { AuthData } from "../../auth/AuthWrapper";
 import axios from "axios";
 import { set } from "date-fns";
+import { toast } from "react-toastify";
 
 export function CustomDragDrop({
   ownerLicense,
@@ -25,11 +26,28 @@ export function CustomDragDrop({
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
-
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedGender, setSelectedGender] = useState('Men');
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
   };
+
+  const handleGenderSelect = (gender) => {
+    setSelectedGender(gender);
+  };
+    
+    const handleColorSelect = (color) => {
+      if (selectedColors.includes(color)) {
+        setSelectedColors(selectedColors.filter(c => c !== color));
+      } else {
+        if (selectedColors.length < 3) {
+          setSelectedColors([...selectedColors, color]);
+        } else {
+          toast.error('You can select up to 3 colors');
+        }
+      }
+    };
 
   const { user } = AuthData();
 
@@ -86,8 +104,8 @@ export function CustomDragDrop({
         });
 
         if (response.data && response.data.labels) {
-          console.log("Rozpoznane etykiety:", response.data.labels[2].name);
-          setSelectedCategory((response.data.labels[2].name));
+          console.log(response.data);
+          //setSelectedCategory((response.data.labels[2].name));
         }
 
         return {
@@ -192,6 +210,7 @@ export function CustomDragDrop({
     offerDetails.append("description", description);
     offerDetails.append("category", selectedCategory);
     offerDetails.append("price", price);
+    offerDetails.append("colors", selectedColors);
 
     onSubmit({
       userID: user.userID,
@@ -206,7 +225,6 @@ export function CustomDragDrop({
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* Container Drop */}
       <div
         className={`${
           dragging
@@ -312,10 +330,9 @@ export function CustomDragDrop({
         />
       </div>
       <h2 className="mt-8 text-black text-2xl">Category</h2>
-      {/* Category selector */}
       <div className="relative group">
-        <button className="outline-none focus:outline-none bg-gray-200 border px-3 py-1 rounded-sm flex items-center">
-            <span className="pr-1 flex-1">{selectedCategory}</span>
+        <button className="outline-none focus:outline-none bg-gray-200 border py-1 px-2 rounded-md flex items-center">
+            <span className="p-2 flex-1">{selectedCategory}</span>
             <span>
             <svg
                 className="fill-current h-4 w-4 transform group-hover:-rotate-180 transition duration-150 ease-in-out"
@@ -406,12 +423,52 @@ export function CustomDragDrop({
       </ul>
     </div>
     <div className="mt-8 group inline-block">
+      <h2 className="text-black text-2xl">Pick colors (max 3)</h2>   
+        {[
+          'Red', 'Green', 'Blue', 'Yellow', 'Black', 'White', 
+          'Orange', 'Purple', 'Pink', 'Brown', 'Gray', 'Cyan', 
+          'Magenta', 'Lime', 'Indigo', 'Teal', 'Olive'
+        ].map((color) => (
+          <button
+            key={color}
+            className={`w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none mr-2
+            ${selectedColors.includes(color) ? 'ring-2 ring-[#D47C24]' : ''}`}
+            style={{ backgroundColor: color.toLowerCase() }}
+            onClick={() => handleColorSelect(color)}
+          ></button>
+        ))}
+    </div>
+    <div className="mt-4">
+    
+          <button
+            className={`px-4 py-2 rounded-lg focus:outline-none mr-4 
+            ${selectedGender === 'Men' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+            onClick={() => handleGenderSelect('Men')}
+          >
+            Men
+          </button>
+          <button
+            className={`px-4 py-2 rounded-lg focus:outline-none mr-4
+            ${selectedGender === 'Women' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+            onClick={() => handleGenderSelect('Women')}
+          >
+            Women
+          </button>
+          <button
+            className={`px-4 py-2 rounded-lg focus:outline-none
+            ${selectedGender === 'Unisex' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+            onClick={() => handleGenderSelect('Unisex')}
+          >
+            Unisex
+          </button>
+    </div>
+    <div className="mt-8 group">
         <h2 className="text-black text-2xl">Price</h2>      
         <input 
           type="number" 
           placeholder="price" 
           maxLength={5} 
-          className="bg-gray-200 w-full text-sm px-4 py-3.5 rounded-md outline-[#8B4513]"
+          className="bg-gray-200 w-1/5 text-sm px-4 py-3.5 rounded-md outline-[#8B4513]"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />

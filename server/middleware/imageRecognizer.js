@@ -13,10 +13,14 @@ const detectLabels = async (base64Image) => {
     const imageBuffer = Buffer.from(cleanedBase64Image, 'base64');
 
     const result = await client.analyzeImageInStream(imageBuffer, {
-      visualFeatures: ['Tags']
+      visualFeatures: ['Tags', 'Color'] 
     });
 
-    return result.tags;
+    return {
+      tags: result.tags,
+      dominantColors: result.color.dominantColors,
+      accentColor: result.color.accentColor,
+    };
     } catch (error) {
       console.error('Error detecting labels:', error);
       return null;
