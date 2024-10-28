@@ -20,6 +20,9 @@ const Offer = sequelize.define('Offer', {
     price: {
         type: DataTypes.FLOAT,
     },
+    size: {
+        type: DataTypes.STRING,
+    },
     category: {
         type: DataTypes.STRING,
     },
@@ -31,11 +34,10 @@ const Offer = sequelize.define('Offer', {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
     },
-    forMen: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
+    gender: {
+        type: DataTypes.STRING,
     },
-    dominantColor: {
+    colors: {
         type: DataTypes.STRING,
     },
 

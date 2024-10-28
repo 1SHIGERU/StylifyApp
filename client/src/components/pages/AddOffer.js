@@ -13,20 +13,13 @@ export const AddOffer = () => {
     const [offerID, setOfferID] = useState('');
     const Navigate = useNavigate();
     const handleFormSubmit = async (data) => {
-        const newOfferDetails = new FormData();
-        newOfferDetails.append('ownerID', data.userID);
-        newOfferDetails.append('title', data.title);
-        newOfferDetails.append('price', data.price);
-        newOfferDetails.append('description', data.description);
-        newOfferDetails.append('category', data.category);
-
-        setOfferDetails(newOfferDetails);
 
         const imagesArray = [];
         for (let [key, value] of data.imagesData.entries()) {
             imagesArray.push(value);
         }
         setImages(imagesArray);
+        const colorsString = data.colors.join(', ');
 
         try {
             const response = await axios.post('http://localhost:13000/offers/', {
@@ -34,7 +27,11 @@ export const AddOffer = () => {
                 title: data.title,
                 description: data.description,
                 price: data.price,
-                category: data.category
+                category: data.category,
+                gender: data.gender,
+                colors: colorsString,
+                size: "M"
+
             });
             console.log('Offer added successfully', response.data.offerID);
             const newOfferID = response.data.offerID;
@@ -46,6 +43,7 @@ export const AddOffer = () => {
 
         } catch (error) {
             console.error('We can\'t add an offer', error);
+            return;
         }
 
         Navigate('/market')

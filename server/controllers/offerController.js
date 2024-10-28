@@ -9,7 +9,9 @@ exports.createOffer = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { ownerID, title, description, price, category, forMen } = req.body;
+  const { ownerID, title, description, price, category, gender, colors, size  } = req.body;
+
+  console.log(gender, colors, size);
 
   try {
     const newOffer = await Offer.create({
@@ -18,7 +20,10 @@ exports.createOffer = async (req, res) => {
       description,
       price,
       category,
-      forMen,
+      gender,
+      colors,
+      size,
+
     });
     res.json(newOffer);
   } catch (err) {

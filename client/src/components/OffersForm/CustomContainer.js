@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import "../../index.css";
 import { AuthData } from "../../auth/AuthWrapper";
 import axios from "axios";
-import { set } from "date-fns";
 import { toast } from "react-toastify";
 
 export function CustomDragDrop({
@@ -20,7 +19,6 @@ export function CustomDragDrop({
   const [dragging, setDragging] = useState(false);
   const fileRef = useRef(null);
 
-  // Auction details
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('T-shirts');
   const [title, setTitle] = useState('');
@@ -105,7 +103,6 @@ export function CustomDragDrop({
 
         if (response.data && response.data.labels) {
           console.log(response.data);
-          //setSelectedCategory((response.data.labels[2].name));
         }
 
         return {
@@ -211,6 +208,7 @@ export function CustomDragDrop({
     offerDetails.append("category", selectedCategory);
     offerDetails.append("price", price);
     offerDetails.append("colors", selectedColors);
+    offerDetails.append("gender", selectedGender);
 
     onSubmit({
       userID: user.userID,
@@ -218,7 +216,9 @@ export function CustomDragDrop({
       description,
       category: selectedCategory,
       price,
-      imagesData
+      imagesData,
+      colors: selectedColors,
+      gender: selectedGender
     });
 
   };
