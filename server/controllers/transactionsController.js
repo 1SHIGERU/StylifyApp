@@ -104,7 +104,7 @@ exports.closeTransaction = async (req, res) => {
             await Notification.create({
                 userID: buyer.userID,
                 type: 'info',
-                message: `Your item "${transaction.Offer.title}" has been shipped!`,
+                message: `Item "${transaction.Offer.title}" you have bought, has been shipped right now!`,
                 isRead: false,
                 transactionID:transactionID
             });

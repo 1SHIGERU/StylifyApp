@@ -1,6 +1,5 @@
-import {React,useReducer,useState} from 'react';
+import {React,useState} from 'react';
 import {DragComponent} from '../OffersForm/DragComponent';
-import {OfferReview} from '../OfferReview.js';
 import Wardrobe from '../../assets/wardrobe.jpeg';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";

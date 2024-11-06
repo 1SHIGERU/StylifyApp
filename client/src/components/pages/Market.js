@@ -125,7 +125,7 @@ export const Market = () => {
         offers.map(async (offer) => {
           try {
             const { data: owner } = await axios.get(`http://localhost:13000/users/user/${offer.ownerID}`);
-            return { ...offer, owner };
+            return { ...offer, owner };      
           } catch (ownerError) {
             console.error(`Error fetching owner data for offer ${offer.offerID}:`, ownerError);
             return { ...offer, owner: null };
@@ -153,6 +153,7 @@ export const Market = () => {
   
     if (user && user.userID) {
       fetchData();
+
     }
   
   }, [user && user.userID]); 
@@ -483,8 +484,7 @@ export const Market = () => {
                       <FaRegArrowAltCircleRight size={30} />
                     </div>
                   </div>
-                  <div className="w-1/2 p-6 ml-8 overflow-y-auto max-h-96">
-
+                  <div className="w-1/2 p-6 ml-8 no-scrollbar overflow-y-auto max-h-96">
                     <div className="w-full flex justify-between items-center">
                       <h2 className="company text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
                         {selectedProduct.category}
@@ -502,9 +502,29 @@ export const Market = () => {
                     <p className="text-dark-grayish-blue lg:leading-6 border-b border-gray-200 py-4">
                       {selectedProduct.description}
                     </p>
-                    <div className="mt-4 amount font-bold flex items-center justify-between lg:flex-col lg:items-start mb-6">
+                    <div className="mt-4 amount flex items-center justify-between lg:flex-col lg:items-start border-b border-gray-200 mb-6">
+                      <div className="discount-price items-center flex py-2">
+                        <div className="price text-2xl">${selectedProduct.price}</div>
+                      </div>
+                    </div>
+                    <div className="mt-4 amount flex items-center justify-between lg:flex-col lg:items-start mb-6">
                       <div className="discount-price items-center flex">
-                        <div className="price text-3xl">${selectedProduct.price}</div>
+                        <div className="price text-3xl">Size: {selectedProduct.size}</div>
+                        {selectedProduct.colors && selectedProduct.colors.length > 0 ? (
+                          <div className="flex space-x-2 ml-40">
+                            {(Array.isArray(selectedProduct.colors) ? selectedProduct.colors : selectedProduct.colors.split(","))
+                              .map((color) => (
+                                <div
+                                  key={color}
+                                  className="w-6 h-6 rounded-full border-2 border-gray-300"
+                                  style={{ backgroundColor: color.trim().toLowerCase() }}
+                                  title={color.trim()}
+                                ></div>
+                              ))}
+                          </div>
+                        ) : (
+                          <div className="ml-4 text-gray-500"></div>
+                        )}
                       </div>
                     </div>
                     {user.isAuthenticated && user.userID !== selectedProduct.ownerID && (    
