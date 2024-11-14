@@ -29,6 +29,7 @@ export const Home = () => {
         }, [user]);
 
 
+
 return (
      <>
      <div className="pt-18 min-h-screen flex justify-center items-center">
@@ -90,7 +91,7 @@ return (
                </div>
 
                <div class=" group relative justify-center items-center h-full w-full hidden lg:flex overflow-hidden">
-                    <img class="object-center object-cover h-full w-full hover:scale-[120%] transition duration-250" src="https://i.ibb.co/PTtRBLL/olive-tatiane-Im-Ez-F9-B91-Mk-unsplash-1.png" alt="girl-image" />
+                    <img class="object-center object-cover h-full w-full hover:scale-[120%] transition duration-250" src="https://images.pexels.com/photos/2249249/pexels-photo-2249249.jpeg" alt="girl-image" />
                     <button class="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-250 text-white bg-black bg-opacity-50 px-4 py-2">Ubrania</button>
                </div>
                <div class=" group flex justify-center items-center h-full w-full mt-4 md:hidden overflow-hidden md:mt-8 lg:hidden">

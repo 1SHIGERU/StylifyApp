@@ -2,6 +2,7 @@ const Favourite = require('../models/Favourite');
 const Offer = require('../models/Offer');
 const OfferImage = require('../models/OfferImage');
 const { validationResult } = require('express-validator');
+const { Op } = require('sequelize');
 
 exports.createOffer = async (req, res) => {
   const errors = validationResult(req);
@@ -33,10 +34,39 @@ exports.createOffer = async (req, res) => {
 };
 
 exports.getOffers = async (req, res) => {
+
   let filter = { where: { isActive: true } };
-  const { userId } = req.query;
+  
+  const { userId, minPrice, maxPrice, category, size, gender, colors } = req.query;
+  console.log('query', req.query);
   if (userId) {
     filter.where.ownerID = userId;
+  }
+
+  if (minPrice && maxPrice) {
+    filter.where.price = { [Op.between]: [minPrice, maxPrice] }; 
+  } else if (minPrice) {
+    filter.where.price = { [Op.gte]: minPrice }; 
+  } else if (maxPrice) {
+    filter.where.price = { [Op.lte]: maxPrice }; 
+  }
+
+  if (category) {
+    filter.where.category = category;
+  }
+
+  if (size) {
+    const sizesArray = size.split(',');
+    filter.where.size = { [Op.or]: sizesArray.map((s) => ({ [Op.iLike]: `%${s}%` })) };
+  }
+  
+  if (colors) {
+    const colorsArray = colors.split(',');
+    filter.where.colors = { [Op.or]: colorsArray.map((c) => ({ [Op.iLike]: `%${c}%` })) };
+  }
+
+  if (gender) {
+    filter.where.gender = gender;
   }
 
   try {
@@ -47,12 +77,30 @@ exports.getOffers = async (req, res) => {
         attributes: ['imageUrl'],
       },
     });
-    res.json(offers);
+
+    const cheapestOffer = await Offer.findOne({
+      where: filter.where,
+      order: [['price', 'ASC']],
+      limit: 1
+    });
+
+    const mostExpensiveOffer = await Offer.findOne({
+      where: filter.where,
+      order: [['price', 'DESC']], 
+      limit: 1
+    });
+
+    res.json({
+      offers,
+      cheapestPrice: cheapestOffer ? cheapestOffer.price : null,
+      mostExpensivePrice: mostExpensiveOffer ? mostExpensiveOffer.price : null
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 };
+
 
   exports.deactivateOffer = async (req, res) => {
     try {
@@ -171,3 +219,4 @@ exports.countActiveOffersByUserID = async (req, res) => {
     res.status(500).send('Server Error');
   }
 }
+
