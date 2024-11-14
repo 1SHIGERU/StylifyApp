@@ -12,10 +12,14 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import MultiRangeSlider from "multi-range-slider-react";
+import { useLocation } from 'react-router-dom';
 
 
 export const Market = () => {
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const category2 = queryParams.get('category');
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [favourites, setFavourites] = useState([]);
@@ -143,13 +147,24 @@ export const Market = () => {
     const fetchData = async () => {
       setLoading(true);
       await fetchProducts();
+  
       if (user && user.userID) {
         await fetchFavourites(user.userID);
       }
+  
       setLoading(false);
     };
-    fetchData(); 
+  
+    fetchData();
   }, [user && user.userID]);
+
+  useEffect(() => {
+    if (category2 && products.length > 0) {
+      handleFilterChange('category', category2);   
+      setSelectedCategory(category2);
+      applyFilters();
+    }
+  }, [category2, products]);
 
 
       const [selectedProduct, setSelectedProduct] = useState(null);

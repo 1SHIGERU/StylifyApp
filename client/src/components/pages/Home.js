@@ -4,9 +4,13 @@ import Image from '../../assets/bck.jpg';
 import { AuthData } from '../../auth/AuthWrapper';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 export const Home = () => {
+
+
+     const navigate = useNavigate();
 
      const { user } = AuthData();
 
@@ -29,6 +33,9 @@ export const Home = () => {
         }, [user]);
 
 
+        const handleCategoryClick = (category) => {
+          navigate(`/market?category=${category}`);
+        };
 
 return (
      <>
@@ -81,18 +88,18 @@ return (
                <div class="flex flex-col space-y-4 md:space-y-8 mt-4 md:mt-0">
                     <div class="group relative flex justify-center items-center h-full w-full overflow-hidden">
                          <img class="object-center object-cover h-full w-full transition-transform duration-250 group-hover:scale-110" src="https://i.ibb.co/SXZvYHs/irene-kredenets-DDqx-X0-7v-KE-unsplash-1.png" alt="shoe-image" />
-                         <button class="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-250 text-white bg-black bg-opacity-50 px-4 py-2">Shoes</button>
+                         <button onClick={() => handleCategoryClick('Shoes')} class="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-250 text-white bg-black bg-opacity-50 px-4 py-2">Shoes</button>
                     </div>
 
                     <div class="group relative flex justify-center items-center h-full w-full overflow-hidden">
                          <img class="object-center object-cover h-full w-full transition-transform duration-250 group-hover:scale-110" src="https://i.ibb.co/Hd1pVxW/louis-mornaud-Ju-6-TPKXd-Bs-unsplash-1-2.png" alt="watch-image" />
-                         <button class="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-250 text-white bg-black bg-opacity-50 px-4 py-2">Watches</button>
+                         <button onClick={() => handleCategoryClick('Watches')} class="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-250 text-white bg-black bg-opacity-50 px-4 py-2">Watches</button>
                     </div>
                </div>
 
                <div class=" group relative justify-center items-center h-full w-full hidden lg:flex overflow-hidden">
-                    <img class="object-center object-cover h-full w-full hover:scale-[120%] transition duration-250" src="https://images.pexels.com/photos/2249249/pexels-photo-2249249.jpeg" alt="girl-image" />
-                    <button class="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-250 text-white bg-black bg-opacity-50 px-4 py-2">Ubrania</button>
+                    <img class="object-center object-cover h-full w-full hover:scale-[120%] transition duration-250" src="https://i.pinimg.com/originals/2f/f7/7d/2ff77d149b32f6ac6b6664f9181ca803.png" alt="girl-image" />
+                    <button onClick={() => handleCategoryClick('T-shirts')} class="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-250 text-white bg-black bg-opacity-50 px-4 py-2">T-shirts</button>
                </div>
                <div class=" group flex justify-center items-center h-full w-full mt-4 md:hidden overflow-hidden md:mt-8 lg:hidden">
                     <img class="object-center object-cover h-full w-full hidden md:block hover:scale-[120%] transition duration-250" src="https://i.ibb.co/6FjW19n/olive-tatiane-Im-Ez-F9-B91-Mk-unsplash-2.png" alt="girl-image" />
