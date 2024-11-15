@@ -157,7 +157,7 @@ export const UserPage = () => {
             <section className="relative block h-500-px">
                 <div
                 className="absolute top-0 w-full h-full bg-center bg-cover"
-                style={{backgroundImage: `url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2710&q=80')`,}}>
+                style={{backgroundImage: `url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGZhc2hpb24lMjBhZXN0aGV0aWN8ZW58MHx8MHx8fDA%3D')`,}}>
                 <span id="blackOverlay" className="w-full h-full absolute opacity-50 bg-black"></span>
                 </div>
                 <div
@@ -240,8 +240,9 @@ export const UserPage = () => {
                             {userData.description}
                         </div>                      
                     </div>
-                        <section className="w-full px-16 h-[1000px] overflow-y-scroll no-scrollbar mx-auto grid 2xl:grid-cols-3 xl:grid-cols-3 md:grid-cols-3 justify-center gap-y-16 gap-x-10 pt-16 pb-16">
-                            {products.map((product) => (
+                        <section className="w-full border-t-2 border-blueGray-200 px-16 h-[1000px]  overflow-y-scroll no-scrollbar mx-auto grid 2xl:grid-cols-3 xl:grid-cols-3 md:grid-cols-3 justify-center gap-y-16 gap-x-10 pt-16 pb-16">
+                          {products.length > 0 ? (  
+                            products.map((product) => (
                                 <div
                                 key={product.offerID}
                                 className="w-72 bg-white h-[450px] shadow-md rounded-xl duration-200 hover:scale-105 hover:shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
@@ -257,7 +258,18 @@ export const UserPage = () => {
                                     <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} $</p>                                                                
                                 </div>
                                 </div>
-                            ))}
+                            ))
+                            ) : (
+                                <div className="w-full flex ">
+                                    <h2 className="lg:text-7xl w-full text-[#8B4513] text-5xl font-extrabold leading-tight">
+                                        <span className="block">no</span>
+                                        <span className="block">offers</span>
+                                        <span className="block">available</span>
+                                        <span className="block">at the moment</span>
+                                    </h2>
+                                </div>
+                            )}
+                            
                         </section>
                         <section ref={opinions} className="w-full px-16 py-16 flex flex-col items-center border-t-2 border-blueGray-200">
                             {reviews.length > 0 ? (

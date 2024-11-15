@@ -29,3 +29,5 @@ Review.belongsTo(User, { foreignKey: 'reviewerID', as: 'Reviewer' });
 Review.belongsTo(User, { foreignKey: 'reviewedID', as: 'Reviewed' });
 Review.belongsTo(Transaction, { foreignKey: 'transactionID', as: 'Transaction' });
 
+module.exports = Review;
+
