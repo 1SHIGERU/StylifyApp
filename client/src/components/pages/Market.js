@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import MultiRangeSlider from "multi-range-slider-react";
 import { useLocation } from 'react-router-dom';
+import { set } from 'date-fns';
 
 
 export const Market = () => {
@@ -331,6 +332,7 @@ export const Market = () => {
         setSelectedCategory(null);
         setSliderMinValue(hardcodedMin);
         setSliderMaxValue(hardcodedMax);
+
       };
 
       const applyFilters = () => {
@@ -657,7 +659,7 @@ export const Market = () => {
             products.map((product) => (
               <div
                 key={product.offerID}
-                className="w-72 bg-white shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-[5px_5px_rgba(212,124,36,0.9),_10px_10px_rgba(212,124,36,0.6),_15px_15px_rgba(212,124,36,0.4),_20px_20px_rgba(212,124,36,0.2)]">
+                className="w-72 bg-white shadow-md rounded-xl duration-200 hover:scale-105 hover:shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
                 <img
                   src={product.OfferImages[0]?.imageUrl}
                   alt="Product"

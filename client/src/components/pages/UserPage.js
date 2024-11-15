@@ -1,17 +1,21 @@
 import { useParams } from 'react-router-dom';
 import Avatar from '../../assets/avatar.jpg';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
 import { AuthData } from "../../auth/AuthWrapper";
 import { useNavigate } from 'react-router-dom';
+import { formatDistanceToNow } from 'date-fns';
+import { toast } from 'react-toastify';
 
 export const UserPage = () => {
+
     const { user } = AuthData();
     const navigate = useNavigate();
+    const opinions = useRef(null);
 
     const { id } = useParams();
     const [userData, setUserData] = useState({});
@@ -31,6 +35,7 @@ export const UserPage = () => {
             console.log(response.data);
             navigate('/chat');
         } catch (err) {
+            toast.error('U have to be logged in to send a message');
             console.error(err);
         }
     };
@@ -67,12 +72,45 @@ export const UserPage = () => {
     const fetchOffers = async () => {
         try {
             const res = await axios.get(`http://localhost:13000/offers/userID/${id}`);
-            console.log(res);
             setProducts(res.data);
         } catch (err) {
             console.error(err);
         }
     }
+
+    const [reviews, setReviews] = useState([]);
+    const [averageRating, setAverageRating] = useState(0);
+
+
+    const fetchReviews = async () => {
+        try {
+            const res = await axios.get(`http://localhost:13000/reviews/${id}`);
+            setReviews(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const fetchAverageRating = async () => {
+        try {
+            const res = await axios.get(`http://localhost:13000/reviews/average/${id}`);
+            setAverageRating((res.data[0].averageRating));
+        } catch (err) {
+            console.error(err); 
+        }
+    }
+
+    const [activeOffersCount, setActiveOffersCount] = useState(0);
+
+    const fetchActiveOffersCount = async () => {
+        try {
+            const res = await axios.get(`http://localhost:13000/offers/countOffers/${id}`);
+            setActiveOffersCount(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+            
 
     useEffect(() => {
         
@@ -83,23 +121,27 @@ export const UserPage = () => {
             if (!response.ok) {
               throw new Error('User not found');
             }
-    
+
             const data = await response.json();
             setUserData(data);         
             setError(null);
           } catch (err) {
             setError(err.message);
             setUserData(null); 
-          } finally {
-            
-          }
+          } 
         };
     
         fetchUser();
         fetchOffers();
+        fetchReviews();
+        fetchAverageRating();
+        fetchActiveOffersCount();
       }, [id]);
 
+
     const [error, setError] = useState(null);
+
+    const roundedValue = Number(averageRating).toFixed(1);
 
     if (error) {
         return <p>{error}</p>;
@@ -149,14 +191,14 @@ export const UserPage = () => {
                                 <img
                                 alt="..."
                                 src={userData.avatarURL || Avatar}
-                                className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+                                className="shadow-xl rounded-full h-48 w-64 align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
                                 />
                             </div>
                         </div>
 
                         <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
                             <div className="py-6 px-3 mt-32 sm:mt-0">
-                            {user.userID !== parseInt(id) && (
+                            {user && user.userID !== parseInt(id) && (
                                 <button
                                 className="bg-orange-600 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
                                 type="button"
@@ -172,9 +214,9 @@ export const UserPage = () => {
                             <div className="flex justify-center py-4 lg:pt-4 pt-8">
                                 <div className="mr-4 p-3 text-center">
                                     <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                                        10
+                                    {activeOffersCount}
                                     </span>
-                                    <span className="text-sm text-blueGray-400">Auctions</span>
+                                    <span className="text-md text-blueGray-400">active auctions</span>
                                 </div>
                             </div>
                         </div>
@@ -182,45 +224,27 @@ export const UserPage = () => {
 
                     <div className="text-center mt-8">
                                 <div class="flex justify-center items-center mb-8">
-                                    <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                    </svg>
-                                    <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                    </svg>
-                                    <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                    </svg>
-                                    <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                    </svg>
-                                    <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                    </svg>
-                                    <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">4.95</p>
+                                    <div onClick={() => opinions.current.scrollIntoView({ behavior: 'smooth' })} className="flex space-x-1 hover: cursor-pointer">
+                                        {Array.from({ length: roundedValue }).map((_, index) => (
+                                            <span key={index} className="text-yellow-500 text-xl pb-1">★</span>
+                                        ))}
+                                    </div>                                 
+                                    <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">{roundedValue}</p>
                                     <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">out of</p>
                                     <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
                                 </div>
                         <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
                             {userData.username}
                         </h3>
- 
-                        <div className="mb-2 text-blueGray-600 mt-10">
-                        
-                        Solution Manager - Creative Tim Officer
-                        </div>
-                        <div className="mb-2 text-blueGray-600">
-                        
-                        University of Computer Science
-                        </div>
+                        <div className="mb-2 px-64 text-blueGray-600 mt-10">
+                            {userData.description}
+                        </div>                      
                     </div>
-
-                    <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
-                        <section className="w-fit mb-32 mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-16 gap-x-14 mt-10 mb-5">
+                        <section className="w-full px-16 h-[1000px] overflow-y-scroll no-scrollbar mx-auto grid 2xl:grid-cols-3 xl:grid-cols-3 md:grid-cols-3 justify-center gap-y-16 gap-x-10 pt-16 pb-16">
                             {products.map((product) => (
                                 <div
                                 key={product.offerID}
-                                className="w-72 bg-white shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-[5px_5px_rgba(212,124,36,0.9),_10px_10px_rgba(212,124,36,0.6),_15px_15px_rgba(212,124,36,0.4),_20px_20px_rgba(212,124,36,0.2)]">
+                                className="w-72 bg-white h-[450px] shadow-md rounded-xl duration-200 hover:scale-105 hover:shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
                                 <img
                                     src={product.OfferImages[0]?.imageUrl}
                                     alt="Product"
@@ -235,12 +259,41 @@ export const UserPage = () => {
                                 </div>
                             ))}
                         </section>
+                        <section ref={opinions} className="w-full px-16 py-16 flex flex-col items-center border-t-2 border-blueGray-200">
+                            {reviews.length > 0 ? (
+                                reviews.map((review, index) => (
+                                    <div key={index} className="flex space-x-4 py-4 border-b border-gray-200 w-4/5">
+                                        <img
+                                            onClick={() => navigate(`/user/${review.Reviewer.userID}`)}
+                                            src={review.Reviewer.avatarURL || Avatar}
+                                            alt="profile"
+                                            className="w-20 h-20 rounded-full object-cover cursor-pointer"
+                                        />
+                                        <div className="flex-1">
+                                            <div className="flex items-center space-x-2">
+                                                <span className="font-semibold">{review.Reviewer.username}</span>                          
+                                                <div className="flex space-x-1">
+                                                    {Array.from({ length: review.rating }).map((_, index) => (
+                                                        <span key={index} className="text-yellow-500 text-sm">★</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <p className="text-gray-700">{review.comment}</p>
+                                        </div>
+                                        <span className="text-gray-400 text-sm">
+                                            {formatDistanceToNow(new Date(review.createdDate), { addSuffix: true })}
+                                        </span>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-gray-500 text-lg">Brak opinii dla tego użytkownika.</p>
+                            )}
+                        </section>
+
                         {selectedProduct && (
                             <>
-                            <div
-                                className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-                            >
-                                <div className="relative w-3/4 my-6 mx-auto max-w-4xl">                           
+                            <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                                <div className="relative w-3/4 my-6 mx-auto max-w-4xl">
                                 <div className="border-0 rounded-lg shadow-lg relative p-6 flex flex-col w-full bg-white outline-none focus:outline-none">
                                     <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                                     <h3 className="text-3xl font-semibold">
@@ -272,22 +325,41 @@ export const UserPage = () => {
                                         <FaRegArrowAltCircleRight size={30} />
                                         </div>
                                     </div>
-                                    <div className="w-1/2 p-6 ml-8 overflow-y-auto max-h-96">
-
+                                    <div className="w-1/2 p-6 ml-8 no-scrollbar overflow-y-auto max-h-96">
                                         <div className="w-full flex justify-between items-center">
                                         <h2 className="company text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
                                             {selectedProduct.category}
-                                        </h2>
+                                        </h2>           
                                         </div>         
                                         <h3 className="product mt-2 capitalize text-very-dark-blue font-bold text-4xl py-2 border-b border-gray-200">
-                                            {selectedProduct.title}
+                                        {selectedProduct.title}
                                         </h3>
                                         <p className="text-dark-grayish-blue lg:leading-6 border-b border-gray-200 py-4">
-                                            {selectedProduct.description}
+                                        {selectedProduct.description}
                                         </p>
-                                        <div className="mt-4 amount font-bold flex items-center justify-between lg:flex-col lg:items-start mb-6">
+                                        <div className="mt-4 amount flex items-center justify-between lg:flex-col lg:items-start border-b border-gray-200 mb-6">
+                                        <div className="discount-price items-center flex py-2">
+                                            <div className="price text-2xl">${selectedProduct.price}</div>
+                                        </div>
+                                        </div>
+                                        <div className="mt-4 amount flex items-center justify-between lg:flex-col lg:items-start mb-6">
                                         <div className="discount-price items-center flex">
-                                            <div className="price text-3xl">${selectedProduct.price}</div>
+                                            <div className="price text-3xl">Size: {selectedProduct.size}</div>
+                                            {selectedProduct.colors && selectedProduct.colors.length > 0 ? (
+                                            <div className="flex space-x-2 ml-40">
+                                                {(Array.isArray(selectedProduct.colors) ? selectedProduct.colors : selectedProduct.colors.split(","))
+                                                .map((color) => (
+                                                    <div
+                                                    key={color}
+                                                    className="w-6 h-6 rounded-full border-2 border-gray-300"
+                                                    style={{ backgroundColor: color.trim().toLowerCase() }}
+                                                    title={color.trim()}
+                                                    ></div>
+                                                ))}
+                                            </div>
+                                            ) : (
+                                            <div className="ml-4 text-gray-500"></div>
+                                            )}
                                         </div>
                                         </div>
                                         {user.isAuthenticated && user.userID !== selectedProduct.ownerID && (    
@@ -312,7 +384,7 @@ export const UserPage = () => {
                             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                             </>
                         )}
-                    </div>
+                    
                     </div>
                 </div>
                 </div>
