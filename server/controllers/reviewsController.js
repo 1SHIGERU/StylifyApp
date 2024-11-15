@@ -32,10 +32,10 @@ exports.getReviewsByUserID = async (req, res) => {
 
 exports.addReview = async (req, res) => {
     try {
-        const { transactionID, reviewerID, reviewedID, rating, comment } = req.body;
+        const { offerID, reviewerID, reviewedID, rating, comment } = req.body;
 
         const review = await Reviews.create({
-            transactionID,
+            offerID,
             reviewerID,
             reviewedID,
             rating,

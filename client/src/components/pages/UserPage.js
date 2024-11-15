@@ -223,6 +223,8 @@ export const UserPage = () => {
                     </div>
 
                     <div className="text-center mt-8">
+                        {roundedValue > 0 ? (  
+                            <>
                                 <div class="flex justify-center items-center mb-8">
                                     <div onClick={() => opinions.current.scrollIntoView({ behavior: 'smooth' })} className="flex space-x-1 hover: cursor-pointer">
                                         {Array.from({ length: roundedValue }).map((_, index) => (
@@ -233,6 +235,13 @@ export const UserPage = () => {
                                     <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">out of</p>
                                     <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
                                 </div>
+                            </>
+                        ) : (
+                            <>
+                                
+                            </>
+                        )}
+                                
                         <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
                             {userData.username}
                         </h3>

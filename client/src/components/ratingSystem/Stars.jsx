@@ -1,53 +1,25 @@
-import React, {useState} from 'react'
-import './stars.css'
+import React, { useState } from 'react';
+import './stars.css';
 
-const Stars = ({ onStarChange }) => {
+const Stars = ({ rating, onStarChange }) => {
+  return (
+    <form className="rating">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <label key={star}>
+          <input
+            type="radio"
+            name="stars"
+            value={star}
+            checked={rating === star} // Sprawdza, czy gwiazdka jest zaznaczona
+            onChange={() => onStarChange(star)} // Wywołuje funkcję `onStarChange`
+          />
+          {Array.from({ length: star }, (_, index) => (
+            <span className="icon" key={index}>★</span> // Renderowanie odpowiedniej liczby gwiazdek
+          ))}
+        </label>
+      ))}
+    </form>
+  );
+};
 
-    const [selectedStars, setSelectedStars] = useState(0);
-
-    const handleStarChange = (event) => {
-        const stars = parseInt(event.target.value);
-        setSelectedStars(stars);
-        if (onStarChange) {
-          onStarChange(stars);
-        }
-      };
-
-    return (
-        
-            <form class="rating">
-                <label>
-                    <input type="radio" name="stars" value="1" onChange={handleStarChange}/>
-                    <span class="icon">★</span>
-                </label>
-                <label>
-                    <input type="radio" name="stars" value="2" onChange={handleStarChange}/>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                </label>
-                <label>
-                    <input type="radio" name="stars" value="3" onChange={handleStarChange}/>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>   
-                </label>
-                <label>
-                    <input type="radio" name="stars" value="4" onChange={handleStarChange}/>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                </label>
-                <label>
-                    <input type="radio" name="stars" value="5" onChange={handleStarChange}/>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                </label>
-            </form>    
-        
-    );
-}
-export default Stars
+export default Stars;
