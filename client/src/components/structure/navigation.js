@@ -11,7 +11,7 @@ import  Payment  from "../pages/Payment"
 import PaymentSucces from "../PaymentSucces"
 import { UserPage } from "../pages/UserPage"
 import { Chat } from "../pages/Chat"
-
+import AdminDashboard from "../AdminDashboard/AdminDashboard"
 
 export const nav = [
      { path:     "/",         name: "Home",        element: <Home />,       isMenu: true,     isPrivate: false  },
@@ -28,4 +28,5 @@ export const nav = [
      { path:     "/payment/cancel",  name: "PaymentCancel",     element: <PaymentSucces />,    isMenu: false,    isPrivate: true   },
      { path:     "/user/:id", name: "PaymentError",     element: <UserPage />,    isMenu: false,    isPrivate: false   },
      { path:     "/chat"    , name: "Chat",        element: <Chat />,       isMenu: true,     isPrivate: true   },
+     { path:     "/adminDashboard", name: "AdminDashboard", element: <AdminDashboard />, isMenu: true, isPrivate: true }
 ]

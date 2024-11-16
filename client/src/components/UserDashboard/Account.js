@@ -77,7 +77,7 @@ export const Account = () => {
      const fetchActiveOffers = async () => {
           try {
               const res = await axios.get(`http://localhost:13000/offers/countOffers/${user.userID}`);
-              setActiveOffers(res.data);
+              setActiveOffers(res.data.count);
           } catch (err) {
               console.error(err.message);
           }

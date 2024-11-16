@@ -12,6 +12,7 @@ router.post(
   ],
   offerController.createOffer
 );
+router.get('/countOffersByCategory', offerController.countOffersByCategory);
 router.post('/deactivate', offerController.deactivateOffer);
 router.get('/', offerController.getOffers);
 router.get('/:id', offerController.getOfferById);
@@ -19,6 +20,7 @@ router.get('/userID/:userID', offerController.getOffersByUserId);
 router.put('/:id', offerController.updateOffer);
 router.delete('/:id', offerController.deleteOffer);
 router.get('/countOffers/:userID', offerController.countActiveOffersByUserID);
+
 
 
 module.exports = router;

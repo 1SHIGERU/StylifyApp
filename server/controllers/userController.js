@@ -4,6 +4,7 @@ const Offer = require('../models/Offer');
 const OfferImage = require('../models/OfferImage');
 const Address = require('../models/Address');
 var cloudinary = require('cloudinary').v2;
+const sequelize = require('sequelize');
 
 cloudinary.config({ 
   cloud_name: 'dafhtxlhb', 
@@ -40,7 +41,8 @@ exports.addUser = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll();
-    res.json(users);
+    const countUsers = await User.count();
+    res.json({ users, countUsers });
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).send('Server Error');
@@ -114,6 +116,34 @@ exports.updateInfo = async (req, res) => {
   }
 };
 
+exports.getDataToChart = async (req, res) => {
+  try {
+    const stats = await User.findAll({
+      attributes: [
+        [
+          sequelize.fn('TO_CHAR', sequelize.col('createdAt'), 'YYYY-MM'),
+          'month',
+        ],
+        [sequelize.fn('COUNT', sequelize.col('userID')), 'count'],
+      ],
+      group: [sequelize.fn('TO_CHAR', sequelize.col('createdAt'), 'YYYY-MM')],
+      order: [[sequelize.fn('TO_CHAR', sequelize.col('createdAt'), 'YYYY-MM'), 'ASC']],
+      raw: true,
+    });
+
+
+    const labels = stats.map(row => {
+      const date = new Date(row.month); 
+      return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+    });
+    const values = stats.map(row => parseInt(row.count, 10));
+
+    res.status(200).json({ labels, values });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to retrieve account statistics' });
+  }
+};
 
 
 

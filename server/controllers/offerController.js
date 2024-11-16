@@ -3,6 +3,8 @@ const Offer = require('../models/Offer');
 const OfferImage = require('../models/OfferImage');
 const { validationResult } = require('express-validator');
 const { Op } = require('sequelize');
+const sequelize = require('sequelize');
+
 
 exports.createOffer = async (req, res) => {
   const errors = validationResult(req);
@@ -24,7 +26,6 @@ exports.createOffer = async (req, res) => {
       gender,
       colors,
       size,
-
     });
     res.json(newOffer);
   } catch (err) {
@@ -213,10 +214,41 @@ exports.countActiveOffersByUserID = async (req, res) => {
         isActive: true,
       },
     });
-    res.json(count);
+
+    const countAll = await Offer.count({
+      where: {
+        isActive: true,
+      },
+    });
+    res.json({
+      count,
+      countAll,
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 }
+
+exports.countOffersByCategory = async (req, res) => {
+  try {
+    const items = await Offer.findAll({
+      where: {
+        isActive: true,
+      },
+      attributes: ['category', [sequelize.fn('COUNT', sequelize.col('category')), 'count']],
+      group: ['category'],
+    });      
+
+    const formattedData = items.map(item => ({
+      name: item.category,
+      count: item.dataValues.count,
+    }));
+
+    res.json({ categories: formattedData });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
 

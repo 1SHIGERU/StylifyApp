@@ -142,7 +142,7 @@ return (
                                    <span class="text-xl font-semibold text-gray-700"> 2 </span>
                                    </div>
                                    <h3 class="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">Sell and send!</h3>
-                                   <p class="mt-4 text-base text-gray-600">When someone buys your item, you will have to send it within 3 working days</p>
+                                   <p class="mt-4 text-base text-gray-600">When someone buys your item, send it as soon as possible!</p>
                               </div>
 
                               <div>

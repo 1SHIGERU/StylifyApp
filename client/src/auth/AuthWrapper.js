@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { RenderMenu, RenderRoutes } from "../components/structure/RenderNavigation";
 import Header from "../components/Header";
-import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Image from "../assets/wardrobe.jpeg"
@@ -46,7 +45,7 @@ export const AuthWrapper = () => {
       localStorage.setItem('refreshToken', data.refreshToken);
   
       getUser();
-      navigate("/account");
+      navigate("/");
       toast.success('Logged in successfully', { position: 'top-center' });
       
     } catch (error) {
@@ -83,7 +82,7 @@ export const AuthWrapper = () => {
         firstName: data.firstName,
         familyName: data.familyName,
         userID: data.userID,
-        isAdmin: data.isAdmin,
+        isAdmin: true,
         avatar: data.avatarURL,
         description: data.description,
       });

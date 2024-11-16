@@ -97,14 +97,6 @@ export function CustomDragDrop({
       const nFiles = files.map(async (file) => {
         const base64String = await convertFileBase64(file);
 
-        const response = await axios.post('http://localhost:13000/offerImages/recognize', {
-          image: base64String
-        });
-
-        if (response.data && response.data.labels) {
-          console.log(response.data);
-        }
-
         return {
           name: file.name,
           photo: base64String,

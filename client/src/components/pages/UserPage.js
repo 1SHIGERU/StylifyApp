@@ -105,7 +105,7 @@ export const UserPage = () => {
     const fetchActiveOffersCount = async () => {
         try {
             const res = await axios.get(`http://localhost:13000/offers/countOffers/${id}`);
-            setActiveOffersCount(res.data);
+            setActiveOffersCount(res.data.count);
         } catch (err) {
             console.error(err);
         }

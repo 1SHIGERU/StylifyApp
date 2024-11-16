@@ -23,7 +23,7 @@ const History = () => {
     const fetchTransactions = async (type) => {
         try {
           const response = await axios.get(`http://localhost:13000/transactions/history/${user.userID}`);
-          const data = response.data;
+          const data = response.data.transactions;
           const transactionsWithDetails = await Promise.all(data.map(async (transaction) => {
             const offerDetails = await fetchOfferDetails(transaction.offer);
             return {

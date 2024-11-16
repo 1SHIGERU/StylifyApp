@@ -206,6 +206,11 @@ exports.getClosedTransactions = async (req, res) => {
   try {
       const userID = req.params.userID;
 
+      const count = await Transaction.count({
+        where: {
+          isClosed: true,
+      }});
+
       const transactions = await Transaction.findAll({
           where: {
               [Sequelize.Op.or]: [
@@ -217,12 +222,11 @@ exports.getClosedTransactions = async (req, res) => {
           include: [
               { model: User, as: 'Seller', attributes: ['username'] },
               { model: User, as: 'Buyer', attributes: ['username'] },
-              { model: Offer, as: 'Offer', attributes: ['title'] },
-              
+              { model: Offer, as: 'Offer', attributes: ['title'] },  
           ],
       });
 
-      res.status(200).json(transactions);
+      res.status(200).json({ count, transactions });
   } catch (err) {
       console.error('Error fetching user transactions:', err.message);
       res.status(500).send('Server Error');
@@ -286,6 +290,12 @@ exports.sumTransactionsByUserID = async (req, res) => {
     try {
         const userID = req.params.userID;
 
+        const sumSold = await Transaction.sum('amount', {
+            where: {
+                isClosed: true,
+            },
+        });
+
         const soldSum = await Transaction.sum('amount', {
             where: {
                 seller: userID,
@@ -303,6 +313,7 @@ exports.sumTransactionsByUserID = async (req, res) => {
         res.status(200).json({
             soldSum,
             boughtSum,
+            sumSold
         });
     } catch (err) {
         console.error('Error summing user transactions:', err.message);

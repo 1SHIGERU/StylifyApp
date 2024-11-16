@@ -1,19 +1,6 @@
 const OfferImage = require('../models/OfferImage');
 const { validationResult } = require('express-validator');
 var cloudinary = require('cloudinary').v2;
-const { detectLabels } = require('../middleware/imageRecognizer');
-
-exports.recognizeImage = async (req, res) => {
-  const { image } = req.body;
-
-  try {
-    const labels = await detectLabels(image);
-    res.json({ labels });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Error recognizing image');
-  }
-}
 
 cloudinary.config({ 
   cloud_name: 'dafhtxlhb', 
