@@ -8,6 +8,8 @@ router.post('/update', userController.updateInfo);
 router.get('/all', userController.getAllUsers);
 router.get('/dataToChart', userController.getDataToChart);
 router.get('/user/:id', userController.getUserById);
+router.put('/ban/:id', userController.banUser);
+router.put('/unban/:id', userController.unbanUser);
 router.get('/balance/:id', userController.getBalance);
 
 //ULUBIONE

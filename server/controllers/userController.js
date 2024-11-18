@@ -116,6 +116,32 @@ exports.updateInfo = async (req, res) => {
   }
 };
 
+exports.banUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByPk(id);
+      user.isBanned = true;
+      await user.save();
+    res.json({ message: 'User banned' });
+  } catch (error) {
+    console.error('Error banning user:', error.message);
+    res.status(500).json({ error: 'Failed to ban user' });
+  }
+};
+
+exports.unbanUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByPk(id);
+      user.isBanned = false;
+      await user.save();
+    res.json({ message: 'User unbanned' });
+  } catch (error) {
+    console.error('Error unbanning user:', error.message);
+    res.status(500).json({ error: 'Failed to unban user' });
+  }
+};
+
 exports.getDataToChart = async (req, res) => {
   try {
     const stats = await User.findAll({

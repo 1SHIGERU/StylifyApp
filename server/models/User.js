@@ -33,6 +33,10 @@ const User = sequelize.define('User', {
   description: {
     type: DataTypes.STRING,
   },
+  isBanned: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
 module.exports = User;
