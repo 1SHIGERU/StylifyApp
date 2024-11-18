@@ -13,10 +13,22 @@ export const AddOffer = () => {
     const Navigate = useNavigate();
     const handleFormSubmit = async (data) => {
 
+        const { clothing = [], shoes = [] } = data.size.size;
+        let size = null;
+
+        if (clothing.length > 0 && shoes.length > 0) {
+            return;
+        } else if (clothing.length > 0) {
+            size = clothing[0];
+        } else if (shoes.length > 0) {
+            size = shoes[0];
+        } 
+
         const imagesArray = [];
         for (let [key, value] of data.imagesData.entries()) {
             imagesArray.push(value);
         }
+        
         setImages(imagesArray);
         const colorsString = data.colors.join(', ');
 
@@ -29,7 +41,7 @@ export const AddOffer = () => {
                 category: data.category,
                 gender: data.gender,
                 colors: colorsString,
-                size: "M"
+                size: size
 
             });
             console.log('Offer added successfully', response.data.offerID);
