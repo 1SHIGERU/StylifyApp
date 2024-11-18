@@ -44,7 +44,6 @@ export const AddOffer = () => {
                 size: size
 
             });
-            console.log('Offer added successfully', response.data.offerID);
             const newOfferID = response.data.offerID;
             setOfferID(newOfferID);
 

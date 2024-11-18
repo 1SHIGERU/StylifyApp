@@ -742,8 +742,8 @@ export const Market = () => {
                         {selectedProduct.category}
                       </h2>
                       <Link to={`/user/${selectedProduct.ownerID}`}>
-                        <div className="flex items-center space-x-2 cursor-pointer">
-                          <img src={selectedProduct.owner.avatarURL || Avatar} alt="avatar" className="w-8 h-8 rounded-full" />
+                        <div title={`${selectedProduct.owner.isBanned ? 'Użytkownik zbanowany' : ''}`} className="flex items-center space-x-2 cursor-pointer">
+                          <img src={selectedProduct.owner.avatarURL || Avatar} alt="avatar" className={`w-10 h-10 rounded-full${selectedProduct.owner.isBanned ? ' border-2 border-red-500' : ''}`} />
                           <div className="text-black text-md">{selectedProduct.owner.username}</div>
                         </div>
                       </Link>

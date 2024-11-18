@@ -20,7 +20,7 @@ const User = sequelize.define('User', {
   firstName: {
     type: DataTypes.STRING,
   },
-  lastName: {
+  familyName: {
     type: DataTypes.STRING,
   },
   balance: {

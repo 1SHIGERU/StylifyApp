@@ -19,13 +19,15 @@ export const AuthWrapper = () => {
     userID: "",
     isAdmin: false,
     isAuthenticated: false,
+    description: "",
+    isBanned: false,
   });
 
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1000); // 1200px jako minimalna szerokość
+      setIsMobile(window.innerWidth < 1000);
     };
 
     handleResize();
@@ -40,14 +42,23 @@ export const AuthWrapper = () => {
         email: email1,
         password: password1,
       });
-      
+
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
-  
-      getUser();
-      navigate("/");
-      toast.success('Logged in successfully', { position: 'top-center' });
-      
+
+      const userFetched = await getUser();
+
+      if(userFetched.isBanned){
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        toast.error('You have been banned, please apply for an unban on /contact ', { position: 'top-center' });
+        return;
+      }
+      else{
+        navigate("/");
+        toast.success('Logged in successfully', { position: 'top-center' });
+      }   
+
     } catch (error) {
       if (error.response) {
         if (error.response.status === 404) {
@@ -69,12 +80,17 @@ export const AuthWrapper = () => {
       if (!accessToken) {
         throw new Error('No access token available');
       }
-
+  
       const { data } = await axios.get("http://localhost:13000/api/auth/user", {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-
-      setUser({
+  
+      if (data.isBanned) {
+        console.warn("User is banned. Skipping user data assignment.");
+        return { isBanned: true };
+      }
+  
+      const userData = {
         ...user,
         isAuthenticated: true,
         username: data.username,
@@ -82,14 +98,21 @@ export const AuthWrapper = () => {
         firstName: data.firstName,
         familyName: data.familyName,
         userID: data.userID,
-        isAdmin: true,
+        isAdmin: data.isAdmin,
         avatar: data.avatarURL,
         description: data.description,
-      });
+        isBanned: false,
+      };
+  
+      setUser(userData);
+      return userData;
+  
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching user data:", error);
+      return null;
     }
   };
+  
 
   const register1 = async (username1, email1, password1, firstName1, familyName1) => {
     try {
@@ -131,6 +154,7 @@ export const AuthWrapper = () => {
       isAuthenticated: false,
       description: "",
       avatarURL: "",
+      isBanned: false,
     });
     navigate("/");
   };

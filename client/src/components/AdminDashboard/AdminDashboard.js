@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from '../../assets/avatar.jpg';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie, Line } from "react-chartjs-2";
+import { toast } from "react-toastify";
 import {
     CategoryScale,
     LinearScale,
@@ -25,6 +26,7 @@ const AdminDashboard = () => {
   const [itemsSold, setItemsSold] = useState(0);
   const [totallyEarned, setTotallyEarned] = useState(0);
   const [usersList, setUsersList] = useState([]);
+
 
   const countActiveOffers = async () => {
     try {
@@ -96,7 +98,7 @@ const AdminDashboard = () => {
   const menuItems = [
     { name: "Dashboard", icon: "🏠" },
     { name: "Users", icon: "👤" },
-    { name: "Settings", icon: "⚙️" },
+    { name: "Messages", icon: "✉️" },
     { name: "Analytics", icon: "📊" },
   ];
 
@@ -177,9 +179,9 @@ const AdminDashboard = () => {
         );
       case "Users":
         return (
-          <div className="flex flex-col space-y-4">
+          <div className="flex h-auto flex-col space-y-4">
             {usersList.map((user) => (
-                <UserCard
+              <UserCard
                 key={user.userID}
                 userID={user.userID}
                 username={user.username}
@@ -187,6 +189,8 @@ const AdminDashboard = () => {
                 avatarURL={user.avatarURL}
                 desc={user.description}
                 createdAt={user.createdAt}
+                familyName={user.familyName}
+                isBanned={user.isBanned}
               />
             ))}
           </div>
@@ -244,7 +248,7 @@ if(!user.isAdmin) return <ErrorPage/>
         </ul>
       </div>
 
-      <div className="flex-1 min-h-screen  bg-gray-100 p-8">
+      <div className="flex-1 p-8">
         <h1 className="text-3xl font-bold mb-6">{activeSection}</h1>
         {renderCards()}
       </div>
@@ -268,8 +272,30 @@ const Card = ({ title, value, growth, color }) => {
   );
 };
 
-const UserCard = ({ userID, username, firstName, avatarURL, desc, isAdmin, createdAt }) => {
+const UserCard = ({ userID, username, firstName,familyName , avatarURL, desc, isAdmin, createdAt, isBanned }) => {
 
+  const handleUserBanStatus = async (userID, action) => {
+    try {
+      const url = action === "ban" 
+        ? `http://localhost:13000/users/ban/${userID}` 
+        : `http://localhost:13000/users/unban/${userID}`;
+  
+      await axios.put(url);
+  
+      toast.success(
+        action === "ban" 
+          ? "User has been banned successfully." 
+          : "User has been unbanned successfully.", 
+        { position: "top-center" }
+      );
+
+      window.location.reload();
+    } catch (error) {
+      console.error("Error updating user ban status:", error);
+      toast.error("Failed to update user ban status.", { position: "top-center" });
+    }
+  };
+  
     const navigate = useNavigate();
     return (
     <div key={userID} className="flex space-x-4 py-4 border-b border-gray-200 w-5/5">
@@ -277,15 +303,38 @@ const UserCard = ({ userID, username, firstName, avatarURL, desc, isAdmin, creat
         onClick={() => navigate(`/user/${userID}`)}
         src={avatarURL || Avatar}
         alt="profile"
-        className="w-20 h-20 rounded-full object-cover cursor-pointer"/>
+        className={`w-20 h-20 rounded-full object-cover cursor-pointer ${isBanned ? 'border-2 border-red-500' : 'border-none'}`}/>
             <div className="flex-1">
                 <div className="flex items-center space-x-16">
                     <span className="font-semibold text-xl">{username}</span>                          
                     <div className="flex text-gray-500 space-x-1">
-                       {firstName}
+                       {firstName} {familyName}
                     </div>
                 </div>
                 <p className="text-gray-700">{desc}</p>
+                {isBanned && (
+                  <a onClick={() => handleUserBanStatus(userID, "unban")} class="mt-4 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-green-500 rounded-full shadow-md group">
+                     <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-green-500 group-hover:translate-x-0 ease">
+                     <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"/>
+                      </svg>
+                     </span>
+                   <span class="absolute flex items-center justify-center w-full h-full text-green-500 transition-all duration-300 transform group-hover:translate-x-full ease">UNBAN</span>
+                   <span class="relative invisible">UNBAN</span>
+                 </a>
+                )}
+                {!isBanned && (
+                  <a onClick={() => handleUserBanStatus(userID, "ban")} class="mt-4 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-red-500 rounded-full shadow-md group">
+                      <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-red-500 group-hover:translate-x-0 ease">
+                        <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                        </svg>
+                      </span>
+                    <span class="absolute flex items-center justify-center w-full h-full text-red-500 transition-all duration-300 transform group-hover:translate-x-full ease">BAN</span>
+                    <span class="relative invisible">BAN</span>
+                  </a>
+                )}
+        
             </div>
             <span className="text-gray-400 text-sm">
                 utworzono: {new Date(createdAt).toLocaleDateString()}
