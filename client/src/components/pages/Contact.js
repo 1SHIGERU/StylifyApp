@@ -21,7 +21,7 @@ export const Contact = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const res = await axios.post("http://localhost:13000/chat/sendContactMessage", formData);
+          const res = await axios.post(`${process.env.REACT_APP_API_URL}chat/sendContactMessage`, formData);
           toast.success("Message sent!", { position: "top-center" });
           setFormData({ fullName: '', email: '', phoneNumber: '', companyName: '', message: '' });
 

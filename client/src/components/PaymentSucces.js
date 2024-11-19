@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { AuthData } from '../auth/AuthWrapper';
-import Loading from '../components/Loading'; // Zakładam, że masz komponent Loading
+import Loading from '../components/Loading';
 
 const PaymentSuccess = () => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const PaymentSuccess = () => {
     const createTransaction = async (sessionData) => {
         try {
             if (!transactionCreated) {
-                const response = await axios.post('http://localhost:13000/transactions/create', {
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}transactions/create`, {
                     seller: sessionData.session.metadata.seller_id,
                     buyer: user.userID,
                     offer: sessionData.session.metadata.offer_id,
@@ -24,7 +24,7 @@ const PaymentSuccess = () => {
                 console.log('Transaction created:', response.data);
                 setTransactionCreated(true);
 
-                await axios.post('http://localhost:13000/offers/deactivate', {
+                await axios.post(`${process.env.REACT_APP_API_URL}offers/deactivate`, {
                     offerId: sessionData.session.metadata.offer_id
                 });
                 console.log('Offer deactivated');
@@ -32,7 +32,7 @@ const PaymentSuccess = () => {
             }
         } catch (error) {
             console.error('Error creating transaction or deactivating offer:', error);
-            setLoading(false); // Ensure loading is set to false in case of error
+            setLoading(false);
         }
     };
 
@@ -43,7 +43,7 @@ const PaymentSuccess = () => {
 
             if (sessionId) {
                 try {
-                    const response = await axios.get(`http://localhost:13000/payment/checkout/${sessionId}`);
+                    const response = await axios.get(`${process.env.REACT_APP_API_URL}payment/checkout/${sessionId}`);
                     console.log('Session details:', response.data);
                     setSession(response.data);
                     await createTransaction(response.data);
@@ -52,7 +52,7 @@ const PaymentSuccess = () => {
                     navigate('/payment/cancel');
                 }
             } else {
-                setLoading(false); // Set loading to false if sessionId is not present
+                setLoading(false);
             }
         };
 
@@ -60,7 +60,7 @@ const PaymentSuccess = () => {
     }, [location.search, navigate]);
 
     if (loading) {
-        return <Loading />; // Display loading spinner or message
+        return <Loading />;
     }
 
     return (

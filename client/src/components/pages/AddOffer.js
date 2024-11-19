@@ -33,7 +33,7 @@ export const AddOffer = () => {
         const colorsString = data.colors.join(', ');
 
         try {
-            const response = await axios.post('http://localhost:13000/offers/', {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}offers/`, {
                 ownerID: data.userID,
                 title: data.title,
                 description: data.description,
@@ -69,7 +69,7 @@ export const AddOffer = () => {
         imagesData.append('offerID', offerID);
 
         try {
-            const response = await axios.post('http://localhost:13000/offerImages/', imagesData, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}offerImages/`, imagesData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

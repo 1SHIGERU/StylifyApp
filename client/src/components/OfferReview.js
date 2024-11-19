@@ -12,7 +12,7 @@ export const OfferReview = ({ data, images }) => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post('http://localhost:13000/offers/', {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}offers/`, {
                 ownerID: ownerID,
                 title: title,
                 description: description,
@@ -41,7 +41,7 @@ export const OfferReview = ({ data, images }) => {
         imagesData.append('offerID', offerID);
 
         try {
-            const response = await axios.post('http://localhost:13000/offerImages/', imagesData, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}offerImages/`, imagesData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

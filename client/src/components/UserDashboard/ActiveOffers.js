@@ -16,7 +16,7 @@ const ActiveOffers = () => {
 
   const handleDeleteOffer = async () => {
     try {
-      await axios.delete(`http://localhost:13000/offers/${selectedProduct.offerID}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}offers/${selectedProduct.offerID}`);
       fetchOffers();
       closeModal();
       toast.success('Offer deleted successfully');
@@ -27,7 +27,7 @@ const ActiveOffers = () => {
 
   const fetchOffers = async () => {
     try {
-      const data = await axios.get(`http://localhost:13000/offers/userID/${user.userID}`);
+      const data = await axios.get(`${process.env.REACT_APP_API_URL}offers/userID/${user.userID}`);
       setProducts(data.data);
     } catch (error) {
       console.error('Error', error.message);

@@ -17,7 +17,7 @@ const Payment = () => {
     useEffect(() => {
         const createCheckoutSession = async () => {
           try {
-            const response = await axios.post('http://localhost:13000/payment/', {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}payment/`, {
               product
             });
             const session = response.data;

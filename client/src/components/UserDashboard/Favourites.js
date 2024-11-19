@@ -18,7 +18,7 @@ const Favourites = () => {
 
   const removeFromFavourites = async (offerID) => {
     try {
-      await axios.delete(`http://localhost:13000/users/deleteFavourite/`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}users/deleteFavourite/`, {
         data: {
           userID: user.userID,
           offerID: offerID,
@@ -32,10 +32,10 @@ const Favourites = () => {
 
   const fetchFavourites = async () => {
     try {
-      const { data: favouriteOffers } = await axios.get(`http://localhost:13000/users/getFavourites/${user.userID}`);
+      const { data: favouriteOffers } = await axios.get(`${process.env.REACT_APP_API_URL}users/getFavourites/${user.userID}`);
       const offersWithDetails = await Promise.all(
         favouriteOffers.map(async (fav) => {
-          const { data: offer } = await axios.get(`http://localhost:13000/offers/${fav.offerID}`);
+          const { data: offer } = await axios.get(`${process.env.REACT_APP_API_URL}offers/${fav.offerID}`);
           return offer;
         })
       );
@@ -64,7 +64,7 @@ const Favourites = () => {
   const openModal = (product) => {
       setSelectedProduct(product);
       setModalIsOpen(true);
-      setCurrentIndex(0); // Reset current index when opening a new modal
+      setCurrentIndex(0);
     };
 
   const closeModal = () => {

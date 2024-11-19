@@ -12,7 +12,7 @@ const Orders = () => {
     const fetchAddress = async () => {
       if (user && user.userID) {
         try {
-          const res = await axios.get(`http://localhost:13000/users/ifAddressSet/${user.userID}`);
+          const res = await axios.get(`${process.env.REACT_APP_API_URL}users/ifAddressSet/${user.userID}`);
         } catch (error) {
           if (error.response && error.response.status === 404) {
             toast.warn('Please provide your shipping address on your profile page.',{position: "top-center"});
@@ -28,7 +28,7 @@ const Orders = () => {
 
   const fetchOfferDetails = async (offerId) => {
     try {
-      const response = await axios.get(`http://localhost:13000/offers/${offerId}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}offers/${offerId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching offer details:', error);
@@ -39,7 +39,7 @@ const Orders = () => {
   const changeStatus = async (transactionID, status) => {
     try {
       console.log(transactionID, status);
-      const response = await axios.put('http://localhost:13000/transactions/changeStatus', {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}transactions/changeStatus`, {
         transactionID,
         status
       });
@@ -52,7 +52,7 @@ const Orders = () => {
 
   const closeTransaction = async (transactionID) => {
     try {
-      const response = await axios.put('http://localhost:13000/transactions/close', {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}transactions/close`, {
         transactionID,
         isClosed: true
       });
@@ -71,7 +71,7 @@ const Orders = () => {
 
   const fetchTransactions = async (type) => {
     try {
-      const response = await axios.get(`http://localhost:13000/transactions/orders/${user.userID}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}transactions/orders/${user.userID}`);
       const data = response.data;
       setStreet(data[0].Buyer.Address.street);
       setCity(data[0].Buyer.Address.city);

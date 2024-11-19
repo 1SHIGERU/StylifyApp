@@ -35,7 +35,7 @@ export const Market = () => {
 
   const fetchOwnerData = async (ownerID) => {
     try {
-      const { data } = await axios.get(`http://localhost:13000/users/user/${ownerID}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}users/user/${ownerID}`);
       setOwnerData(data);
       return data;
     } catch (error) {
@@ -45,7 +45,7 @@ export const Market = () => {
   
   const fetchOffer = async (offerID) => {
     try {
-      const { data } = await axios.get(`http://localhost:13000/offers/${offerID}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}offers/${offerID}`);
       return data;
     } catch (error) {
       console.error('Error fetching offer:', error);
@@ -54,7 +54,7 @@ export const Market = () => {
   
   const createNotification = async (userID, offerID, offerTitle, offerPrice) => {
     try {
-      await axios.post(`http://localhost:13000/notifications/create`, {
+      await axios.post(`${process.env.REACT_APP_API_URL}notifications/create`, {
         userID: userID,
         offerID: offerID,
         message: `${user.username} is interested in your offer! ${offerTitle} for ${offerPrice}$`,
@@ -76,7 +76,7 @@ export const Market = () => {
         offerData.price      
       );
   
-      const { data } = await axios.post(`http://localhost:13000/users/addFavourite/`, {
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}users/addFavourite/`, {
         userID: user.userID,
         offerID: offerID,
       });
@@ -90,7 +90,7 @@ export const Market = () => {
 
   const removeFromFavourites = async (offerID) => {
     try {
-        await axios.delete(`http://localhost:13000/users/deleteFavourite/`, {
+        await axios.delete(`${process.env.REACT_APP_API_URL}users/deleteFavourite/`, {
           data: {
             userID: user.userID,
             offerID: offerID,
@@ -115,7 +115,7 @@ export const Market = () => {
 
   const fetchFavourites = async (userID) => {
     try {
-      const { data } = await axios.get(`http://localhost:13000/users/getFavourites/${userID}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}users/getFavourites/${userID}`);
       setFavourites(data.map(fav => fav.offerID));
     } catch (error) {
       console.error('Error fetching favourites:', error);
@@ -125,12 +125,12 @@ export const Market = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data: { offers } } = await axios.get(`http://localhost:13000/offers?${params}`);
+      const { data: { offers } } = await axios.get(`${process.env.REACT_APP_API_URL}offers?${params}`);
      
       const offersWithOwners = await Promise.all(
         offers.map(async (offer) => {
           try {
-            const { data: owner } = await axios.get(`http://localhost:13000/users/user/${offer.ownerID}`);
+            const { data: owner } = await axios.get(`${process.env.REACT_APP_API_URL}users/user/${offer.ownerID}`);
             return { ...offer, owner };      
           } catch (ownerError) {
             console.error(`Error fetching owner data for offer ${offer.offerID}:`, ownerError);

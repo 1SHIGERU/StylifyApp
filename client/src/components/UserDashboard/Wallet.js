@@ -11,7 +11,7 @@ const Wallet = () => {
 
   const fetchBalance = async () => {
     try {
-      const { data: balance } = await axios.get(`http://localhost:13000/users/balance/${user.userID}`);
+      const { data: balance } = await axios.get(`${process.env.REACT_APP_API_URL}users/balance/${user.userID}`);
       setBalance(balance);
     } catch (error) {
       console.error('Error fetching balance:', error.message);
@@ -20,7 +20,7 @@ const Wallet = () => {
 
   const fetchTransactionCounts = async () => {
     try {
-      const res = await axios.get(`http://localhost:13000/transactions/countTransactions/${user.userID}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}transactions/countTransactions/${user.userID}`);
       setTransactionCounts(res.data);
     } catch (error) {
       console.error('Error fetching transaction counts:', error.message);
@@ -29,7 +29,7 @@ const Wallet = () => {
 
   const handleWithdraw = async () => {
     try {
-      const response = await axios.put('http://localhost:13000/transactions/withdraw', { userID: user.userID });
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}transactions/withdraw`, { userID: user.userID });
       await fetchBalance();
     } catch (error) {
       console.error('Error withdrawing:', error.message);

@@ -6,13 +6,13 @@ import Loading from '../Loading'
 const History = () => {
 
     const [transactions, setTransactions] = useState([]);
-    const [view, setView] = useState('bought'); // State to manage the current view
+    const [view, setView] = useState('bought');
     const { user } = AuthData();
     const [loading, setLoading] = useState(true);
 
     const fetchOfferDetails = async (offerId) => {
         try {
-          const response = await axios.get(`http://localhost:13000/offers/${offerId}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}offers/${offerId}`);
           return response.data;
         } catch (error) {
           console.error('Error fetching offer details:', error);
@@ -22,7 +22,7 @@ const History = () => {
 
     const fetchTransactions = async (type) => {
         try {
-          const response = await axios.get(`http://localhost:13000/transactions/history/${user.userID}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}transactions/history/${user.userID}`);
           const data = response.data.transactions;
           const transactionsWithDetails = await Promise.all(data.map(async (transaction) => {
             const offerDetails = await fetchOfferDetails(transaction.offer);

@@ -18,7 +18,7 @@ const Notification = () => {
 
     const fetchNotifications = async () => {
         try {
-            const response = await axios.get(`http://localhost:13000/notifications/${user.userID}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}notifications/${user.userID}`);
             const newNotifications = response.data;
             setNotifications(newNotifications);
             const hasUnread = newNotifications.some(notification => !notification.isRead);
@@ -36,7 +36,7 @@ const Notification = () => {
 
     const setRead = async (id) => {
         try {
-            const response = await axios.put('http://localhost:13000/notifications/set-read', { id });
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}notifications/set-read`, { id });
             fetchNotifications();
             
         } catch (error) {
@@ -47,7 +47,7 @@ const Notification = () => {
 
     const deleteNotification = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:13000/notifications/${id}`);
+            const response = await axios.delete(`${process.env.REACT_APP_API_URL}notifications/${id}`);
             fetchNotifications();
         } catch (error) {
             console.error('Error deleting notification:', error);
@@ -73,7 +73,7 @@ const Notification = () => {
 
     const fetchOwner = async (ownerId) => {
         try {
-            const response = await axios.get(`http://localhost:13000/users/user/${ownerId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}users/user/${ownerId}`);
             setOwner(response.data);
         } catch (error) {
             console.error('Error fetching owner:', error);
@@ -82,7 +82,7 @@ const Notification = () => {
 
     const fetchOfferDetails = async (offerId) => {
         try {
-          const response = await axios.get(`http://localhost:13000/offers/${offerId}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}offers/${offerId}`);
           fetchOwner(response.data.ownerID);
           return response.data;
 
@@ -96,7 +96,7 @@ const Notification = () => {
 
     const fetchTransactions = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:13000/transactions/getTransaction/${id}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}transactions/getTransaction/${id}`);
             const data = response.data;
             const transactionWithDetails = await fetchOfferDetails(data.offer);
             setItemData(transactionWithDetails); 
@@ -119,7 +119,7 @@ const Notification = () => {
         };
    
         try {
-          const response = await axios.post('http://localhost:13000/reviews/', reviewData);
+          const response = await axios.post(`${process.env.REACT_APP_API_URL}reviews/`, reviewData);
           console.log(response.data);
         } catch (error) {
           console.error('Error rating:', error);

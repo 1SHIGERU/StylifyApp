@@ -38,7 +38,7 @@ export const AuthWrapper = () => {
 
   const login = async (email1, password1) => {
     try {
-      const { data } = await axios.post("http://localhost:13000/api/auth/login/", {
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}api/auth/login/`, {
         email: email1,
         password: password1,
       });
@@ -81,7 +81,7 @@ export const AuthWrapper = () => {
         throw new Error('No access token available');
       }
   
-      const { data } = await axios.get("http://localhost:13000/api/auth/user", {
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}api/auth/user`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
   
@@ -116,7 +116,7 @@ export const AuthWrapper = () => {
 
   const register1 = async (username1, email1, password1, firstName1, familyName1) => {
     try {
-      const { data } = await axios.post("http://localhost:13000/api/auth/register/", {
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}api/auth/register/`, {
         username: username1,
         email: email1,
         password: password1,

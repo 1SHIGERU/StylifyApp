@@ -29,7 +29,7 @@ export const Account = () => {
 
      const getAddress = async () => {
           try {
-              const res = await axios.get(`http://localhost:13000/users/getAddress/${user.userID}`);
+              const res = await axios.get(`${process.env.REACT_APP_API_URL}users/getAddress/${user.userID}`);
               setStreet(res.data[0].street);
               setCity(res.data[0].city);
               setPostcode(res.data[0].postcode);
@@ -42,7 +42,7 @@ export const Account = () => {
         const handleUploadAddress = async (e) => {
           e.preventDefault();
           try {
-            await axios.put(`http://localhost:13000/users/updateAddress`, {
+            await axios.put(`${process.env.REACT_APP_API_URL}users/updateAddress`, {
               userID: user.userID,
               street,
               city,
@@ -58,7 +58,7 @@ export const Account = () => {
 
      const fetchSum = async () => {
           try {
-              const res = await axios.get(`http://localhost:13000/transactions/sumTransactions/${user.userID}`);
+              const res = await axios.get(`${process.env.REACT_APP_API_URL}transactions/sumTransactions/${user.userID}`);
               setTransactionSums(res.data);
           } catch (err) {
               console.error(err.message);
@@ -67,7 +67,7 @@ export const Account = () => {
 
      const fetchTransactions = async () => {
           try {
-              const res = await axios.get(`http://localhost:13000/transactions/countTransactions/${user.userID}`);
+              const res = await axios.get(`${process.env.REACT_APP_API_URL}transactions/countTransactions/${user.userID}`);
               setTransactionCounts(res.data);
           } catch (err) {
               console.error(err.message);
@@ -76,7 +76,7 @@ export const Account = () => {
 
      const fetchActiveOffers = async () => {
           try {
-              const res = await axios.get(`http://localhost:13000/offers/countOffers/${user.userID}`);
+              const res = await axios.get(`${process.env.REACT_APP_API_URL}offers/countOffers/${user.userID}`);
               setActiveOffers(res.data.count);
           } catch (err) {
               console.error(err.message);
@@ -125,7 +125,7 @@ export const Account = () => {
         formData.append('userID', user.userID);
 
         try {
-          const response = await axios.post('http://localhost:13000/users/update', formData, {
+          const response = await axios.post(`${process.env.REACT_APP_API_URL}users/update`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data', 
             },

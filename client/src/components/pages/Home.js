@@ -18,7 +18,7 @@ export const Home = () => {
           const fetchAddress = async () => {
             if (user && user.userID) {
               try {
-                const res = await axios.get(`http://localhost:13000/users/ifAddressSet/${user.userID}`);
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}users/ifAddressSet/${user.userID}`);
               } catch (error) {
                 if (error.response && error.response.status === 404) {
                   toast.warn('Please provide your shipping address on your profile page.',{position: "top-center"});

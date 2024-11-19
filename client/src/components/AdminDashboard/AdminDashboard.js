@@ -30,7 +30,7 @@ const AdminDashboard = () => {
 
   const countActiveOffers = async () => {
     try {
-      const res = await axios.get("http://localhost:13000/offers/countOffers/1");
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}offers/countOffers/1`);
       setActiveOffers(res.data.count);
     } catch (err) {
       console.error(err.message);
@@ -39,7 +39,7 @@ const AdminDashboard = () => {
 
   const countUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:13000/users/all");
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}users/all`);
       setUsersList(res.data.users)
       setAccountRegistered(res.data.countUsers);
     } catch (err) {
@@ -49,7 +49,7 @@ const AdminDashboard = () => {
 
   const countItemsSold = async () => {
     try {
-      const res = await axios.get("http://localhost:13000/transactions/history/1");
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}transactions/history/1`);
       setItemsSold(res.data.count);
     } catch (err) {
       console.error(err.message);
@@ -58,7 +58,7 @@ const AdminDashboard = () => {
 
   const sumTransactions = async () => {
     try {
-      const res = await axios.get("http://localhost:13000/transactions/sumTransactions/1");
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}transactions/sumTransactions/1`);
       setTotallyEarned(res.data.sumSold);
     } catch (err) {
       console.error(err.message);
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
 
   const getUserChartData = async () => {
     try {
-      const res = await axios.get("http://localhost:13000/users/dataToChart");
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}users/dataToChart`);
       const data = res.data;
       setUserChartData({
         labels: data.labels,
@@ -98,7 +98,7 @@ const AdminDashboard = () => {
 
   const getContactMessages = async () => {
     try {
-      const res = await axios.get("http://localhost:13000/chat/getContactMessages");
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}chat/getContactMessages`);
       setContactMessages(res.data);
     } catch (err) {
       console.error(err.message);
@@ -119,7 +119,7 @@ const AdminDashboard = () => {
 
   const fetchChartData = async () => {
     try {
-        const res = await axios.get("http://localhost:13000/offers/countOffersByCategory");
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}offers/countOffersByCategory`);
         const categories = res.data.categories;
     
         const data = categories.map(cat => cat.count);
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
 
   const handleMessageDelete = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:13000/chat/deleteContactMessage/${id}`);
+      const res = await axios.delete(`${process.env.REACT_APP_API_URL}chat/deleteContactMessage/${id}`);
       console.log(res.data);
       setContactMessages(res.data);
     } catch (err) {
@@ -322,8 +322,8 @@ const UserCard = ({ userID, username, firstName,familyName , avatarURL, desc, is
   const handleUserBanStatus = async (userID, action) => {
     try {
       const url = action === "ban" 
-        ? `http://localhost:13000/users/ban/${userID}` 
-        : `http://localhost:13000/users/unban/${userID}`;
+        ? `${process.env.REACT_APP_API_URL}users/ban/${userID}` 
+        : `${process.env.REACT_APP_API_URL}users/unban/${userID}`;
   
       await axios.put(url);
   

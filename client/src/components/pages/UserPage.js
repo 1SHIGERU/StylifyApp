@@ -27,7 +27,7 @@ export const UserPage = () => {
     const handleMessageClick = async () => {
         try {
 
-            const response = await axios.post('http://localhost:13000/chat/create', {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}chat/create`, {
                 user1ID: user.userID,
                 user2ID: parseInt(id)
             });
@@ -71,7 +71,7 @@ export const UserPage = () => {
 
     const fetchOffers = async () => {
         try {
-            const res = await axios.get(`http://localhost:13000/offers/userID/${id}`);
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}offers/userID/${id}`);
             setProducts(res.data);
         } catch (err) {
             console.error(err);
@@ -84,7 +84,7 @@ export const UserPage = () => {
 
     const fetchReviews = async () => {
         try {
-            const res = await axios.get(`http://localhost:13000/reviews/${id}`);
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}reviews/${id}`);
             setReviews(res.data);
         } catch (err) {
             console.error(err);
@@ -93,7 +93,7 @@ export const UserPage = () => {
 
     const fetchAverageRating = async () => {
         try {
-            const res = await axios.get(`http://localhost:13000/reviews/average/${id}`);
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}reviews/average/${id}`);
             setAverageRating((res.data[0].averageRating));
         } catch (err) {
             console.error(err); 
@@ -104,7 +104,7 @@ export const UserPage = () => {
 
     const fetchActiveOffersCount = async () => {
         try {
-            const res = await axios.get(`http://localhost:13000/offers/countOffers/${id}`);
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}offers/countOffers/${id}`);
             setActiveOffersCount(res.data.count);
         } catch (err) {
             console.error(err);
@@ -114,8 +114,8 @@ export const UserPage = () => {
     const handleBanStatusChange = async (userID, action) => {
         try {
           const url = action === "ban" 
-            ? `http://localhost:13000/users/ban/${userID}` 
-            : `http://localhost:13000/users/unban/${userID}`;
+            ? `${process.env.REACT_APP_API_URL}users/ban/${userID}` 
+            : `${process.env.REACT_APP_API_URL}users/unban/${userID}`;
       
           await axios.put(url);
       
@@ -138,7 +138,7 @@ export const UserPage = () => {
         
         const fetchUser = async () => {
           try {
-            const response = await fetch(`http://localhost:13000/users/user/${id}`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}users/user/${id}`);
             
             if (!response.ok) {
               throw new Error('User not found');

@@ -13,7 +13,7 @@ export const Chat = () => {
   const [newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
-    axios.get(`http://localhost:13000/chat/user/${user.userID}`)
+    axios.get(`${process.env.REACT_APP_API_URL}chat/user/${user.userID}`)
       .then((response) => {
         setChats(response.data);
         console.log(response.data);
@@ -22,7 +22,7 @@ export const Chat = () => {
 
   useEffect(() => {
     if (activeChatID) {
-      axios.get(`http://localhost:13000/chat/${activeChatID}`)
+      axios.get(`${process.env.REACT_APP_API_URL}chat/${activeChatID}`)
         .then((response) => {
           setMessages(response.data);
         })
@@ -43,7 +43,7 @@ export const Chat = () => {
       messageContent: newMessage,
     };
 
-    axios.post('http://localhost:13000/chat/add-message', messageData)
+    axios.post(`${process.env.REACT_APP_API_URL}chat/add-message`, messageData)
       .then((response) => {
         setMessages((prevMessages) => [...prevMessages, response.data]); 
         setNewMessage('');
