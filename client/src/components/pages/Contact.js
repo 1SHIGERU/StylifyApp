@@ -1,9 +1,35 @@
 import React from 'react'
-import { FaLocationDot } from "react-icons/fa6";
-import { FaPhone } from "react-icons/fa";
-import { IoMdMail } from "react-icons/io";
+import {toast } from 'react-toastify';
+import axios from 'axios';
 
 export const Contact = () => {
+
+
+    const [formData, setFormData] = React.useState({
+        fullName: '',
+        email: '',
+        phoneNumber: '',
+        companyName: '',
+        message: ''
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+          const res = await axios.post("http://localhost:13000/chat/sendContactMessage", formData);
+          toast.success("Message sent!", { position: "top-center" });
+          setFormData({ fullName: '', email: '', phoneNumber: '', companyName: '', message: '' });
+
+        } catch (err) {
+          console.error(err.message);
+          toast.error("Failed to send message.", { position: "top-center" });
+        }
+      };
 
     return (
       <>
@@ -56,41 +82,43 @@ export const Contact = () => {
             <div class="mt-6 overflow-hidden bg-white rounded-xl">
                 <div class="px-6 py-12 sm:p-12">
                     <h3 class="text-3xl font-semibold text-center text-gray-900">Send us a message</h3>
+                    <p className='text-center text-gray-500'>We will get back to you as soon as possible</p>
+                    <p className='text-center text-gray-500 text-sm'>Fields marked with * are required</p>
 
-                    <form action="#" method="POST" class="mt-14">
+                    <form onSubmit={handleSubmit} class="mt-14">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
                             <div>
-                                <label for="" class="text-base font-medium text-gray-900"> Your name </label>
+                                <label for="" class="text-base font-medium text-gray-900"> Your name *</label>
                                 <div class="mt-2.5 relative">
-                                    <input required type="text" name="" id="" placeholder="Enter your full name" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
+                                    <input name='fullName' required onChange={handleInputChange} type="text" value={formData.fullName}  placeholder="Enter your full name" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
                                 </div>
                             </div>
 
                             <div>
-                                <label for="" class="text-base font-medium text-gray-900"> Email address </label>
+                                <label for="" class="text-base font-medium text-gray-900"> Email address *</label>
                                 <div class="mt-2.5 relative">
-                                    <input type="email" required name="" id="" placeholder="Enter your email address" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
+                                    <input name='email' type="email" onChange={handleInputChange} value={formData.email} required placeholder="Enter your email address" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
                                 </div>
                             </div>
 
                             <div>
                                 <label for="" class="text-base font-medium text-gray-900"> Phone number </label>
                                 <div class="mt-2.5 relative">
-                                    <input type="tel" name="" id="" placeholder="Enter your phone number" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
+                                    <input name='phoneNumber' type="tel" onChange={handleInputChange} value={formData.phoneNumber} placeholder="Enter your phone number" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
                                 </div>
                             </div>
 
                             <div>
                                 <label for="" class="text-base font-medium text-gray-900"> Company name </label>
                                 <div class="mt-2.5 relative">
-                                    <input type="text" name="" id="" placeholder="Enter company name" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
+                                    <input name='companyName' type="text" onChange={handleInputChange} value={formData.companyName}  placeholder="Enter company name" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
                                 </div>
                             </div>
 
                             <div class="sm:col-span-2">
-                                <label for="" class="text-base font-medium text-gray-900"> Message </label>
+                                <label for="" class="text-base font-medium text-gray-900"> Message *</label>
                                 <div class="mt-2.5 relative">
-                                    <textarea required name="" id="" placeholder="What's on your mind" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md resize-y focus:outline-none focus:border-orange-500" rows="4"></textarea>
+                                    <textarea name='message' onChange={handleInputChange} required value={formData.message} placeholder="What's on your mind" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md resize-y focus:outline-none focus:border-orange-500" rows="4"></textarea>
                                 </div>
                             </div>
 

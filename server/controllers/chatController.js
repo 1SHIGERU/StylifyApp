@@ -2,6 +2,7 @@ const { Sequelize } = require('sequelize');
 const User = require('../models/User');
 const Chat = require('../models/Chat');
 const Message = require('../models/Message');
+const ContactMessage = require('../models/ContactMessage');
 
 const createChat = async (req, res) => {
     const { user1ID, user2ID } = req.body;
@@ -48,6 +49,36 @@ const createChat = async (req, res) => {
       res.status(500).json({ error: 'Failed to send message' });
     }
   };
+
+
+const sendContactMessage = async (req, res) => {
+    const { email, fullName, message, phoneNumber, companyName } = req.body;
+
+    try {
+        const newContactMessage = await ContactMessage.create({
+            email,
+            fullName,
+            message,
+            phoneNumber,
+            companyName
+        });
+
+        res.status(201).json(newContactMessage);
+    } catch (error) {
+        console.error('Error sending contact message:', error);
+        res.status(500).json({ error: 'Failed to send contact message' });
+    }
+}
+
+const getContactMessages = async (req, res) => {
+    try {
+        const contactMessages = await ContactMessage.findAll();
+        res.status(200).json(contactMessages);
+    } catch (error) {
+        console.error('Error retrieving contact messages:', error);
+        res.status(500).json({ error: 'Failed to retrieve contact messages' });
+    }
+}
 
 
 const getMessagesByChatID = async (req, res) => {
@@ -107,9 +138,28 @@ const getUserChats = async (req, res) => {
     }
   };
 
+const deleteContactMessage = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await ContactMessage.destroy({
+            where: {
+              contactMessageID: id
+            }
+        });
+        res.status(200).json({ message: 'Contact message deleted' });
+    } catch (error) {
+        console.error('Error deleting contact message:', error);
+        res.status(500).json({ error: 'Failed to delete contact message' });
+    }
+}
+
 module.exports = {
     createChat,
     sendMessage,
     getMessagesByChatID,
-    getUserChats
+    getUserChats,
+    sendContactMessage,
+    getContactMessages,
+    deleteContactMessage
+
 };

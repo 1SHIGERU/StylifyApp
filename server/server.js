@@ -47,4 +47,5 @@ require('./models/Notification');
 require('./models/Message');
 require('./models/Chat');
 require('./models/Reviews');
+require('./models/ContactMessage');
 
