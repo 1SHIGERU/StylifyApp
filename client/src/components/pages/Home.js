@@ -9,9 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
 
-
      const navigate = useNavigate();
-
      const { user } = AuthData();
 
      useEffect(() => {
@@ -131,7 +129,7 @@ return (
                                    <div class="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
                                    <span class="text-xl font-semibold text-gray-700"> 1 </span>
                                    </div>
-                                   <a href='/register'>
+                                   <a onClick={() => navigate("/register")}>
                                         <h3 class="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">List an item!</h3>
                                    </a>
                                    <p class="mt-4 text-base text-gray-600">To list an item, you must have a user account</p>

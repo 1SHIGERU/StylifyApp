@@ -5,6 +5,7 @@ import { Transition } from '@headlessui/react';
 import { formatDistanceToNow } from 'date-fns';
 import {AuthData} from '../auth/AuthWrapper';
 import RateSeller from './RateSeller';
+import { useNavigate } from 'react-router-dom';
 
 const Notification = () => {
 
@@ -14,7 +15,7 @@ const Notification = () => {
     const [isBouncing, setIsBouncing] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [acctualNotification, setAcctualNotification] = useState(0);
-
+    const navigate = useNavigate();
 
     const fetchNotifications = async () => {
         try {
@@ -186,7 +187,7 @@ const Notification = () => {
                                             You don't have any notifications at the moment.
                                         </h1>
                                         <p className="mt-4 text-gray-500">
-                                            Go to <a href='/market' className="font-bold text-[#8B4513]">market</a> to find some offers you like.
+                                            Go to <a onClick={() => navigate("/market")} className="font-bold text-[#8B4513]">market</a> to find some offers you like.
                                         </p>                
                                     </div>
                                 </div>

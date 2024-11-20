@@ -36,7 +36,7 @@ export const Login = () => {
                          <p class="text-xl mt-6">Glad to see you again!</p>
                               <p class="text-sm mt-10">Don't have an account 
                               
-                              <a onClick={navigate("/register")}  className="text-[#8B4513] font-semibold hover:underline ml-1 cursor-pointer">
+                              <a onClick={() => navigate("/register")}  className="text-[#8B4513] font-semibold hover:underline ml-1 cursor-pointer">
                                    Register here
                               </a></p>
                               

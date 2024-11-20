@@ -68,7 +68,7 @@ const PaymentSuccess = () => {
             {session ? (
                 <div className="px-4 pt-32 mx-auto min-h-screen">
                     <div className="max-w-lg sm:text-center sm:mx-auto">
-                        <a href="/" aria-label="Go Home" title="Logo" className="inline-block mb-4">
+                        <a aria-label="Go Home" title="Logo" className="inline-block mb-4">
                             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-100">
                                 <svg className="w-10 h-10 text-deep-purple-accent-400" stroke="currentColor" viewBox="0 0 52 52">
                                     <polygon strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" points="29 13 14 29 25 29 23 39 38 23 27 23"></polygon>
@@ -95,10 +95,10 @@ const PaymentSuccess = () => {
                         </p>
                         <hr className="my-8 border-gray-300" />
                         <div className="flex items-center mb-3 sm:justify-center">
-                            <a href="/" className="inline-block text-[#8B4513] border-b-2 border-[#8B4513] px-5 py-3 text-md font-medium focus:outline-none focus:ring">
+                            <a onClick={() => navigate("/")} className="inline-block text-[#8B4513] border-b-2 border-[#8B4513] px-5 py-3 text-md font-medium focus:outline-none focus:ring">
                                 Go Back Home
                             </a>
-                            <a href="/account" className="ml-4 bg-[#8B4513] inline-block rounded px-5 py-3 text-md font-medium text-white focus:outline-none focus:ring">
+                            <a onClick={() => navigate("/account")} className="ml-4 bg-[#8B4513] inline-block rounded px-5 py-3 text-md font-medium text-white focus:outline-none focus:ring">
                                 Your account
                             </a>
                         </div>
@@ -114,7 +114,7 @@ const PaymentSuccess = () => {
                             You are not authorized to view this page.
                         </h1>
                         <p className="mt-4 text-gray-500">
-                            Go to your <a href='/account' className="font-bold text-[#8B4513]">account</a>.
+                            Go to your <a onClick={() => navigate("/account")} className="font-bold text-[#8B4513]">account</a>.
                         </p>
                     </div>
                 </div>

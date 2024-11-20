@@ -1,8 +1,10 @@
 import { AuthData } from "../../auth/AuthWrapper"
+import { useNavigate } from "react-router-dom"
 
 export const ErrorPage = () => {
 
      const { user } = AuthData();
+     const navigate = useNavigate();
 
      return (
           <div className="flex h-screen pt-16 flex-col bg-white">
@@ -22,13 +24,13 @@ export const ErrorPage = () => {
                          </p>
 
                          <a
-                         href="/"
+                         onClick={() => navigate("/")}
                          className="mt-6 inline-block text-[#8B4513] border-b-2 border-[#8B4513] px-5 py-3 text-md font-medium focus:outline-none focus:ring"
                          >
                          Go Back Home
                          </a>
                          <a
-                         href="/login"
+                         onClick={() => navigate("/login")}
                          className="mt-6 ml-4 bg-[#8B4513] inline-block rounded px-5 py-3 text-md font-medium text-white focus:outline-none focus:ring"
                          >
                          Login

@@ -6,12 +6,14 @@ import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const ActiveOffers = () => {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = AuthData();
+  const { navigate } = useNavigate();
 
 
   const handleDeleteOffer = async () => {
@@ -93,10 +95,10 @@ const prevSlide = () => {
                          <p className="mt-4 text-gray-500">
                             We would love to see your offers soon!
                          </p>
-                         <a href='/market' className="mt-6 inline-block text-[#8B4513] border-b-2 border-[#8B4513] px-5 py-3 text-md font-medium focus:outline-none focus:ring">
+                         <a onClick={() => navigate("/market")} className="mt-6 inline-block text-[#8B4513] border-b-2 border-[#8B4513] px-5 py-3 text-md font-medium focus:outline-none focus:ring">
                             Go market
                          </a>
-                         <a href="/addOffer" className="mt-6 ml-4 bg-[#8B4513] inline-block rounded px-5 py-3 text-md font-medium text-white focus:outline-none focus:ring">
+                         <a onClick={() => navigate("/addOffer")} className="mt-6 ml-4 bg-[#8B4513] inline-block rounded px-5 py-3 text-md font-medium text-white focus:outline-none focus:ring">
                              Add an offer
                          </a>
                     </div>

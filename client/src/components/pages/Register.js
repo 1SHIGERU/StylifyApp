@@ -53,7 +53,7 @@ export const Register = () => {
                                    </h2>
                                    <p className="text-xl mt-6">Create your account!</p>
                                    <p className="text-sm mt-10">Already have an account?
-                                        <a href="/login" className="text-[#8B4513] font-semibold hover:underline ml-1 cursor-pointer">
+                                        <a onClick={() => navigate("/login")} className="text-[#8B4513] font-semibold hover:underline ml-1 cursor-pointer">
                                              Log in!
                                         </a>
                                    </p>
