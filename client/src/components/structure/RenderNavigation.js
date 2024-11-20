@@ -21,7 +21,7 @@ export const RenderRoutes = () => {
              
              </Routes>
         )
-   }
+}
    
    export const RenderMenu = () => {
    

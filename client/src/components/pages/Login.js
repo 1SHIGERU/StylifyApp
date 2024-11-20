@@ -1,14 +1,14 @@
 import { useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthData } from "../../auth/AuthWrapper"
-import { useForm } from "react-hook-form";
-import axios from "axios";
+
 
 export const Login = () => {
 
      const { login } = AuthData();
      const [ formData, setFormData ] = useReducer((formData, newItem) => { return ( {...formData, ...newItem} )}, {email: "", password: ""})
      const [ errorMessage, setErrorMessage ] = useState("");
+     const navigate = useNavigate();
 
      const handleChange = (e) => {
           const { name, value } = e.target;
@@ -35,9 +35,11 @@ export const Login = () => {
                          </h2>
                          <p class="text-xl mt-6">Glad to see you again!</p>
                               <p class="text-sm mt-10">Don't have an account 
-                              <a href="/register" className="text-[#8B4513] font-semibold hover:underline ml-1 cursor-pointer">
+                              
+                              <a onClick={navigate("/register")}  className="text-[#8B4513] font-semibold hover:underline ml-1 cursor-pointer">
                                    Register here
                               </a></p>
+                              
                          </div>
                          <form class="space-y-6 max-w-md md:ml-auto max-md:mx-auto w-full">
                          <h3 class="text-3xl font-extrabold mb-8 max-md:text-center">
