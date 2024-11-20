@@ -20,8 +20,8 @@ exports.createCheckoutSession = async (req, res) =>{
                 },
             }],
         mode: 'payment',
-        success_url: `http://localhost:3000/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `http://localhost:3000/payment/cancel`,
+        success_url: `https://stylify-client.onrender.com/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `https://stylify-client.onrender.com/payment/cancel`,
         metadata: {
             offer_id: product.offerID,
             seller_id: product.ownerID,
