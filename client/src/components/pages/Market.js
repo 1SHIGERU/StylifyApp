@@ -667,7 +667,7 @@ export const Market = () => {
                   onClick={() => openModal(product)}
                 />
                 <div className="px-4 py-3 w-72">
-                  <span className="text-gray-400 mr-3 uppercase text-xs">{product.category}</span>
+                  <span className="text-gray-400 mr-3 uppercase text-xs">{product.category}</span><p className='text-gray-400 text-xs ml-2'>{product.size}</p>
                   <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
                   <div className="flex items-center">
                     <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} $</p>
