@@ -212,7 +212,8 @@ export const Market = () => {
         category: '',
         size: { clothing: [], shoes: [] },
         gender: '',
-        colors: []
+        colors: [],
+        name: '',
       });
 
       const [sliderMinValue, setSliderMinValue] = useState(filters.minPrice || hardcodedMin);
