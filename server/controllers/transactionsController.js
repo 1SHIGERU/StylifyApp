@@ -200,7 +200,6 @@ exports.closeTransaction = async (req, res) => {
   }
 
 
-  
 
 exports.getClosedTransactions = async (req, res) => {
   try {
@@ -209,6 +208,11 @@ exports.getClosedTransactions = async (req, res) => {
       const count = await Transaction.count({
         where: {
           isClosed: true,
+      }});
+
+      const address = await Address.findAll({
+        where: {
+          userID: userID,
       }});
 
       const transactions = await Transaction.findAll({
@@ -226,7 +230,7 @@ exports.getClosedTransactions = async (req, res) => {
           ],
       });
 
-      res.status(200).json({ count, transactions });
+      res.status(200).json({ count, transactions, address });
   } catch (err) {
       console.error('Error fetching user transactions:', err.message);
       res.status(500).send('Server Error');

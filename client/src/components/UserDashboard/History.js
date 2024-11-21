@@ -29,8 +29,9 @@ const History = () => {
             return {
               ...transaction,
               Offer: offerDetails,
-            };
-          }));          
+            };      
+          }));   
+          console.log(transactionsWithDetails);       
           
           if (type === 'bought') {
             setTransactions(transactionsWithDetails.filter(transaction => transaction.buyer === user.userID));
@@ -78,7 +79,7 @@ const History = () => {
               </div>
     
               {transactions.map(transaction => (
-                <div key={transaction.transactionID} className="main-box mb-4 border border-gray-200 rounded-xl pt-6 max-w-xl max-lg:mx-auto lg:max-w-full">
+                <div key={transaction.transactionID} className="main-box duration-200 hover:scale-105 hover:shadow-md mb-4 border border-gray-200 rounded-xl pt-6 max-w-xl max-lg:mx-auto lg:max-w-full">
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between px-6 pb-6 border-b border-gray-200">
                     <div className="data">
                       <p className="font-semibold text-base leading-7 text-black">
