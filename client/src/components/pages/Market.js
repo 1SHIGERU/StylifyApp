@@ -13,14 +13,13 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import MultiRangeSlider from "multi-range-slider-react";
 import { useLocation } from 'react-router-dom';
-import { set } from 'date-fns';
 
 
 export const Market = () => {
 
   const location = useLocation();
+  const category2 = location.state?.category;
   const queryParams = new URLSearchParams(location.search);
-  const category2 = queryParams.get('category');
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [favourites, setFavourites] = useState([]);
@@ -283,7 +282,8 @@ export const Market = () => {
         category: filters.category,
         size: Object.values(filters.size).flat().join(','),
         colors: filters.colors.join(','),
-        gender: filters.gender
+        gender: filters.gender,
+        name: filters.name,
       }).toString();
 
 
@@ -327,6 +327,7 @@ export const Market = () => {
           size: { clothing: [], shoes: [] },
           gender:'',
           colors: [],
+          name:''
         });
         setSelectedGender(null);
         setSelectedCategory(null);
@@ -386,7 +387,16 @@ export const Market = () => {
                         </button>
                       </div>
                     )}
-                  </div>    
+                  </div>  
+                  <div class="relative text-gray-600">
+                    <input onChange={(e) => handleFilterChange('name', e.target.value)} value={filters.name} type="search" maxLength={20} name="serch" placeholder="Search" class="bg-gray-200  w-96 h-12 px-5 pr-10 rounded-full text-sm focus:outline-gray-600"/>
+                    <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
+                      <svg class="w-6 h-6 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-width="1.4" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+                      </svg>
+                    </button>
+                  </div>
+
                     <button onClick={toggleFilters} class="cursor-pointer text-white sm:flex hidden hover:bg-gray-700 focus:ring focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-4 px-6 bg-gray-800 flex text-base leading-4 font-normal text-white justify-center items-center">
                       <svg class="w-[28px] h-[28px] text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="1" d="M6 4v10m0 0a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m0 0v2m6-16v2m0 0a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m0 0v10m6-16v10m0 0a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m0 0v2"/>
@@ -654,6 +664,19 @@ export const Market = () => {
               </div> 
             </div>
         </div>  
+
+        {products.length === 0 ? (
+          <div className="w-full h-300 flex flex-col items-center justify-center">
+            <h2 className="lg:text-7xl text-[#8B4513] text-5xl font-extrabold leading-tight">
+              <span className="block">no</span>
+              <span className="block">offers</span>
+              <span className="block">available</span>
+              <span className="block">at the moment</span>
+              <span className='text-2xl text-gray-700'>Try to reset your filters!</span>
+            </h2>
+            
+          </div>
+        ) : null}
         <section className="w-fit mx-auto grid 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 items-center justify-center gap-y-16 gap-x-14 mt-10 mb-16">
           {products.length > 0 ? (
             products.map((product) => (
@@ -667,7 +690,7 @@ export const Market = () => {
                   onClick={() => openModal(product)}
                 />
                 <div className="px-4 py-3 w-72">
-                  <span className="text-gray-400 mr-3 uppercase text-xs">{product.category}</span><p className='text-gray-400 text-xs ml-2'>{product.size}</p>
+                  <span className="text-gray-400 mr-3 uppercase text-xs">{product.category}</span><p className='text-gray-400 text-xs'>{product.size}</p>
                   <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
                   <div className="flex items-center">
                     <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} $</p>
@@ -698,6 +721,7 @@ export const Market = () => {
             ))
           ) : (
            <>
+              
            </>
           )}
         </section>

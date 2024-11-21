@@ -58,7 +58,7 @@ export const Chat = () => {
       <div className="flex min-h-screen pt-16">
         <div className="w-1/4 bg-white border-r border-gray-300">
           <header className="p-4 flex justify-between items-center bg-[#D47C24] text-white">
-            <h1 className="text-2xl font-semibold">Chat with the sellers</h1>
+            <h1 className="text-2xl font-semibold">Chats</h1>
           </header>
 
           <div className="overflow-y-auto h-screen p-3 mb-9 pb-20">
@@ -134,9 +134,9 @@ export const Chat = () => {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type a message..."
-                  className="w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500"/>
+                  className="w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-orange-500"/>
                 <button
-                  className="bg-indigo-500 text-white px-4 py-2 rounded-md ml-2"
+                  className="bg-orange-500 text-white px-4 py-2 rounded-md ml-2"
                   onClick={sendMessage}>
                   Send
                 </button>

@@ -38,7 +38,7 @@ exports.getOffers = async (req, res) => {
 
   let filter = { where: { isActive: true } };
   
-  const { userId, minPrice, maxPrice, category, size, gender, colors } = req.query;
+  const { userId, minPrice, maxPrice, category, size, gender, colors, name } = req.query;
   console.log('query', req.query);
   if (userId) {
     filter.where.ownerID = userId;
@@ -54,6 +54,10 @@ exports.getOffers = async (req, res) => {
 
   if (category) {
     filter.where.category = category;
+  }
+
+  if (name) {
+    filter.where.title = { [Op.iLike]: `%${name}%` };
   }
 
   if (size) {

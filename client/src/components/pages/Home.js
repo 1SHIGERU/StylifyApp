@@ -31,9 +31,10 @@ export const Home = () => {
         }, [user]);
 
 
-        const handleCategoryClick = (category) => {
-          navigate(`/market?category=${category}`);
-        };
+     const handleCategoryClick = (category) => {
+          navigate(`/market`, { state: { category: category } });
+     };
+      
 
 return (
      <>
