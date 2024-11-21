@@ -319,6 +319,27 @@ export const Market = () => {
           };
         });
       };
+
+      const [sortOption, setSortOption] = useState('');
+      const handleSort = (option) => {
+        setSortOption(option);
+        setDropdownOpen(false);
+      };
+
+      const sortProducts = (products, option) => {
+        switch (option) {
+          case 'highestPrice':
+            return [...products].sort((a, b) => b.price - a.price);
+          case 'lowestPrice':
+            return [...products].sort((a, b) => a.price - b.price);
+          case 'oldest':
+            return [...products].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+          case 'newest':
+            return [...products].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          default:
+            return products;
+        }
+      };
       
       const resetFilters = () => {
         setFilters({
@@ -374,23 +395,35 @@ export const Market = () => {
                     </button>
                     {dropdownOpen && (
                       <div className="absolute top-12 right-0 w-48 py-2 bg-gray-100 rounded-b-lg shadow-xl">
-                        <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-400 hover:text-white">
-                          Najwyższa cena
+                        <button
+                          onClick={() => handleSort('highestPrice')}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-400 hover:text-white"
+                        >
+                          Highest price
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-400 hover:text-white">
-                          Najniższa cena
+                        <button
+                          onClick={() => handleSort('lowestPrice')}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-400 hover:text-white"
+                        >
+                          Lowest price
                         </button>
-                        <button  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-400 hover:text-white">
-                          Najstarsza aukcja
+                        <button
+                          onClick={() => handleSort('oldest')}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-400 hover:text-white"
+                        >
+                          Oldest auction
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-400 hover:text-white">
-                          Najnowsza aukcja
+                        <button
+                          onClick={() => handleSort('newest')}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-400 hover:text-white"
+                        >
+                          Newest auction
                         </button>
                       </div>
                     )}
                   </div>  
                   <div class="relative text-gray-600">
-                    <input onChange={(e) => handleFilterChange('name', e.target.value)} value={filters.name} type="search" maxLength={20} name="serch" placeholder="Search" class="bg-gray-200  w-96 h-12 px-5 pr-10 rounded-full text-sm focus:outline-gray-600"/>
+                    <input onChange={(e) => handleFilterChange('name', e.target.value)} value={filters.name} type="search" maxLength={20} name="serch" placeholder="Search" class="bg-gray-100 shadow-xl w-96 h-12 px-5 pr-10 rounded-full text-sm focus:outline-gray-600"/>
                     <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
                       <svg onClick={()=> applyFilters()} class="w-6 h-6 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="1.4" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
@@ -680,18 +713,22 @@ export const Market = () => {
         ) : null}
         <section className="w-fit mx-auto grid 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 items-center justify-center gap-y-16 gap-x-14 mt-10 mb-16">
           {products.length > 0 ? (
-            products.map((product) => (
+            sortProducts(products, sortOption).map((product) => (
               <div
                 key={product.offerID}
-                className="w-72 bg-white shadow-md rounded-xl duration-200 hover:scale-105 hover:shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
+                onClick={() => openModal(product)}
+                className="w-72  hover:cursor-pointer bg-white shadow-md rounded-xl duration-200 hover:scale-105 hover:shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
                 <img
                   src={product.OfferImages[0]?.imageUrl}
                   alt="Product"
-                  className="h-80 w-72 object-cover rounded-t-xl hover:cursor-pointer"
-                  onClick={() => openModal(product)}
+                  className="h-80 w-72 object-cover rounded-t-xl"
                 />
                 <div className="px-4 py-3 w-72">
-                  <span className="text-gray-400 mr-3 uppercase text-xs">{product.category}</span><p className='text-gray-400 text-xs'>{product.size}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 uppercase text-xs">{product.category}</span>
+                    <p className="text-gray-500 text-xs">{new Date(product.createdAt).toLocaleDateString()}</p>
+                  </div>
+                  <p className="text-gray-400 text-xs">{product.size}</p>
                   <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
                   <div className="flex items-center">
                     <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} $</p>
