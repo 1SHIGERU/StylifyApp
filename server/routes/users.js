@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post('/add', userController.addUser);
 router.post('/update', userController.updateInfo);
+router.post('/updatePassword', userController.changePassword);
 router.get('/all', userController.getAllUsers);
 router.get('/dataToChart', userController.getDataToChart);
 router.get('/user/:id', userController.getUserById);

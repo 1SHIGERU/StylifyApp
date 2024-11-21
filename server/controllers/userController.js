@@ -78,7 +78,7 @@ exports.getBalance = async (req, res) => {
 }
 
 exports.updateInfo = async (req, res) => { 
-  const { username, email, password, description, userID } = req.body; 
+  const { username, email, description, userID } = req.body; 
   try {
    
     let imageUrl = null;
@@ -97,7 +97,6 @@ exports.updateInfo = async (req, res) => {
     
     if (username) user.username = username;
     if (email) user.email = email;
-    if (password) user.password = password; 
     if (description) user.description = description;
     if (imageUrl) user.avatarURL = imageUrl;
 
@@ -113,6 +112,31 @@ exports.updateInfo = async (req, res) => {
       message: 'Error updating profile',
       error: error.message,
     });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  const { currentPassword, repeatPassword, newPassword, userID } = req.body;
+
+  try {
+
+    const user = await User.findByPk(userID);
+    
+    if (currentPassword !== user.password) {
+      return res.status(400).json();
+    }
+
+    if (newPassword !== repeatPassword) {
+      return res.status(405).json();
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return res.status(200).json();
+  } catch (err) {
+    console.error("Error changing password:", err.message);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 

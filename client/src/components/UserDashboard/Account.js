@@ -83,15 +83,45 @@ export const Account = () => {
           }
       };
 
+      {/* ZMIANA HASŁA */}
+
+      const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+      const [oldPassword, setOldPassword] = useState('');
+      const [newPassword, setNewPassword] = useState('');
+      const [newPasswordRepeat, setNewPasswordRepeat] = useState('');
+
+      const handlePasswordChange = () => {
+        setIsPasswordModalOpen(true);
+      }
+
+      const changePassword = async (e) => {
+        e.preventDefault();
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}users/updatePassword`, {
+          userID: user.userID,
+          currentPassword: oldPassword,
+          newPassword: newPassword,
+          repeatPassword: newPasswordRepeat
+        });
+
+        if (response.status === 200) {
+          toast.success('Password changed successfully! 🎉', {position:"top-center"})
+          setIsPasswordModalOpen(false);
+        } else if(response.status === 400) {
+          toast.error('Current password is incorrect', {position:"top-center"})
+        } else if(response.status === 405) {
+          toast.error('New password and repeat password are not the same', {position:"top-center"})
+        } else {
+               }
+
+      }
+
       {/* MODAL oraz dane w nim*/}
       
       const [isModalOpen, setIsModalOpen] = useState(false);
       const [selectedImage, setSelectedImage] = useState(user.avatar);
       const [username, setUsername] = useState(user.username);
       const [email, setEmail] = useState(user.email);
-      const [password, setPassword] = useState('');
-      const [repeatPassword, setRepeatPassword] = useState('');
-      const [description, setDescription] = useState(user.description);
+      const [description, setDescription] = useState(user.description);   
 
       const fileInputRef = useRef(null);
 
@@ -120,7 +150,6 @@ export const Account = () => {
         formData.append('avatar', fileInputRef.current.files[0]); 
         formData.append('username', username); 
         formData.append('email', email); 
-        formData.append('password', password); 
         formData.append('description', description);
         formData.append('userID', user.userID);
 
@@ -132,6 +161,7 @@ export const Account = () => {
           });
 
           if (response.status === 200) {
+            toast.success('Profile updated successfully! 🎉', {position:"top-center"});
             closeModal();        
           } else {
             console.error('Error uploading data:', response.data);
@@ -159,7 +189,13 @@ export const Account = () => {
                       onClick={handleEditClick}
                       className="ml-auto bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
                     >
-                      Edytuj
+                      Edit profile
+                    </button>
+                    <button
+                      onClick={handlePasswordChange}
+                      className="bg-orange-500 ml-4 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Change your password
                     </button>
                   </div>
                   <hr class="my-10" />
@@ -306,24 +342,6 @@ export const Account = () => {
                           onChange={(e) => setEmail(e.target.value)} 
                           className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
                         />
-                        <input
-                          required
-                          type="password"
-                          maxlength={20}
-                          placeholder="New password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)} 
-                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
-                        />
-                        <input
-                          required
-                          type="password"
-                          maxlength={20}
-                          placeholder="Repeat new password"
-                          value={repeatPassword}
-                          onChange={(e) => setRepeatPassword(e.target.value)} 
-                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
-                        />
                         <textarea
                           required
                           placeholder="Description"
@@ -341,6 +359,46 @@ export const Account = () => {
                         </button>
                       </form>
 
+                    </div>
+                  </div>
+                )}
+
+                {isPasswordModalOpen && (
+                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                    <div className="items-center p-8 mx-auto max-w-md bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md text-[#333] font-[sans-serif]">
+                    <p className='text-right cursor-pointer text-red-700' onClick={() => setIsPasswordModalOpen(false)}>X</p>
+                    <h2 className='text-2xl text-brown-700 font-bold text-center mb-4'>Change your password</h2>
+                    <form className="ml-auto space-y-4" onSubmit={changePassword}>
+                        <input
+                          required
+                          maxLength={20}
+                          type="password"
+                          placeholder="Your acctual password"
+                          onChange={(e) => setOldPassword(e.target.value)} 
+                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
+                        />
+                        <input
+                          required
+                          maxLength={20}
+                          type="password"
+                          placeholder="New password"
+                          onChange={(e) => setNewPassword(e.target.value)} 
+                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
+                        />
+                        <input
+                          required
+                          maxLength={20}
+                          type="password"
+                          placeholder="Repeat new password"
+                          onChange={(e) => setNewPasswordRepeat(e.target.value)} 
+                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
+                        /> 
+                        <button
+                          type="submit"
+                          className="text-white bg-[#FFA500] hover:bg-orange-500 font-semibold rounded-md text-sm px-4 py-2.5 w-full">
+                          Save
+                        </button>
+                      </form>
                     </div>
                   </div>
                 )}

@@ -48,24 +48,24 @@ return (
                {user.isAuthenticated ? 
                     <>
                          <Link to="/addOffer"> 
-                         <button className="mr-8 border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2 dark:text-neutral-200 transition duration-250 mt-8">
+                         <button className="mr-8 border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2  transition duration-250 mt-8">
                               Add an offer 
                          </button></Link>
                          
                          <Link to="/market">
-                         <button className="border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2 dark:text-neutral-200 transition duration-250 mt-8">
+                         <button className="border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2  transition duration-250 mt-8">
                                Go to market
                          </button></Link>
                     </>
                     :
                     <>
                          <Link to="/login">
-                         <button className=" mr-8 border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2 dark:text-neutral-200 transition duration-250 mt-8">
+                         <button className=" mr-8 border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2 transition duration-250 mt-8">
                               Get started
                          </button></Link>
 
                          <Link to="/market">
-                         <button className="border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2 dark:text-neutral-200 transition duration-250 mt-8">
+                         <button className="border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2 transition duration-250 mt-8">
                               Go to market
                          </button></Link>
                     </>
@@ -77,7 +77,7 @@ return (
           <div class="2xl:mx-auto 2xl:container py-12 px-4 sm:px-6 xl:px-20 2xl:px-0 w-full">
           <div class="flex flex-col jusitfy-center items-center space-y-10">
                <div class="flex flex-col justify-center items-center ">
-               <h1 class="text-3xl xl:text-4xl font-semibold leading-7 xl:leading-9 text-gray-800 dark:text-white">Shop By Category</h1>
+               <h1 class="text-3xl xl:text-4xl font-semibold leading-7 xl:leading-9 text-gray-800">Shop By Category</h1>
                </div>
                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-x-4 md:gap-x-8 w-full">
                <div class="group flex justify-center items-center h-full w-full">

@@ -469,8 +469,8 @@ export const Market = () => {
                   </div>
                   <hr class="bg-gray-200 lg:w-6/12 w-full md:my-10 my-8" />
                   <div>
-                    <div class="flex space-x-1 text-gray-800 dark:text-white">
-                      <svg class="w-[28px] h-[28px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <div class="flex space-x-1 text-gray-800 ">
+                      <svg class="w-[28px] h-[28px] text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 17.345a4.76 4.76 0 0 0 2.558 1.618c2.274.589 4.512-.446 4.999-2.31.487-1.866-1.273-3.9-3.546-4.49-2.273-.59-4.034-2.623-3.547-4.488.486-1.865 2.724-2.899 4.998-2.31.982.236 1.87.793 2.538 1.592m-3.879 12.171V21m0-18v2.2"/>
                       </svg>
                       <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium ">Price</p>
@@ -548,8 +548,8 @@ export const Market = () => {
                   </div>
                   <hr class="bg-gray-200 lg:w-6/12 w-full md:my-10 my-8" />
                   <div>
-                    <div class="flex space-x-2 text-gray-800 dark:text-white ">
-                      <svg class="w-[28px] h-[28px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <div class="flex space-x-2 text-gray-800  ">
+                      <svg class="w-[28px] h-[28px] text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-width="1" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                       </svg>
                       <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium ">Gender</p>
@@ -584,8 +584,8 @@ export const Market = () => {
                   </div>
                   <hr class="bg-gray-300 lg:w-6/12 w-full md:my-10 my-8" />
                   <div>
-                    <div class="flex space-x-2 text-gray-800 dark:text-white ">
-                      <svg class="w-[28px] h-[28px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <div class="flex space-x-2 text-gray-800  ">
+                      <svg class="w-[28px] h-[28px] text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="1" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
                       </svg>
                       <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium ">Category</p>
@@ -688,10 +688,10 @@ export const Market = () => {
                     </div>
                   </div>           
                   <div class="hidden md:block absolute right-64 bottom-0 md:py-10 lg:px-20 md:px-6 py-9 px-4">
-                    <button onClick={resetFilters} class="hover:bg-gray-700 dark:bg-white dark:text-gray-800 dark:hover:bg-gray-100 focus:ring focus:ring-offset-2 focus:ring-gray-800 text-base leading-4 font-medium py-4 px-10 text-white bg-gray-800">Reset Filters</button>
+                    <button onClick={resetFilters} class="hover:bg-gray-700 focus:ring focus:ring-offset-2 focus:ring-gray-800 text-base leading-4 font-medium py-4 px-10 text-white bg-gray-800">Reset Filters</button>
                   </div>
                   <div class="hidden md:block absolute right-0 bottom-0 md:py-10 lg:px-20 md:px-6 py-9 px-4">
-                    <button onClick={applyFilters} class="hover:bg-gray-700 dark:bg-white dark:text-gray-800 dark:hover:bg-gray-100 focus:ring focus:ring-offset-2 focus:ring-gray-800 text-base leading-4 font-medium py-4 px-10 text-white bg-gray-800">Search</button>
+                    <button onClick={applyFilters} class="hover:bg-gray-700 focus:ring focus:ring-offset-2 focus:ring-gray-800 text-base leading-4 font-medium py-4 px-10 text-white bg-gray-800">Search</button>
                   </div>
                 </div>
                 )}
