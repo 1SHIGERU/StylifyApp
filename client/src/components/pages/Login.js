@@ -26,7 +26,7 @@ export const Login = () => {
      return (
           <>
              
-               <div class="font-[sans-serif] pt-32">
+               <div class="font-[sans-serif] pt-24 overflow-hidden">
                     <div class="min-h-screen flex fle-col items-center justify-center py-6 px-4">
                     <div class="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">
                          <div class="max-md:text-center">

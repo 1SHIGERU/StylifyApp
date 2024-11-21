@@ -325,7 +325,7 @@ export const Account = () => {
                       <form className="ml-auto space-y-4" onSubmit={handleSubmit}>
                         <h1 onClick={closeModal} className="cursor-pointer text-xl font-bold">X</h1> 
                         <input
-                          required
+                          
                           maxLength={20}
                           type="text"
                           placeholder="New username"
@@ -334,7 +334,7 @@ export const Account = () => {
                           className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
                         />
                         <input
-                          required
+                          
                           type="email"
                           maxlength={30}
                           placeholder="New email"
@@ -343,7 +343,7 @@ export const Account = () => {
                           className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
                         />
                         <textarea
-                          required
+                          
                           placeholder="Description"
                           maxLength={200}
                           rows="4"

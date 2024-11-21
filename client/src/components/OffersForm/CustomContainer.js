@@ -222,6 +222,11 @@ export function CustomDragDrop({
     const offerDetails = new FormData();
     const imagesData = new FormData();
 
+    if(price < 1) {
+      toast.error('Price must be greater than 0');
+      return;
+    }
+
     selectedFiles.forEach((file, index) => {
       imagesData.append("images", file);  
     });

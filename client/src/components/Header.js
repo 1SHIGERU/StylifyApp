@@ -23,11 +23,9 @@ const Header = () => {
             <Link to='/contact'> <li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Contact us</li></Link>
             {user.isAuthenticated ? <Link to='/addOffer'><li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Add offer</li></Link> : null}
             {user.isAuthenticated ?<div className='cursor-pointer'> <Notification/></div> : null}
-            {user.isAuthenticated ? <Link to='/chat'> <svg className="w-6 h-6 cursor-pointer text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            {user.isAuthenticated ? <Link to='/chat'> <svg className="w-6 h-6 cursor-pointer text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z"/>
                                     </svg></Link>: null}
-
-            
             </ul>
           </div>
           <div class="flex items-center gap-2">
@@ -35,7 +33,7 @@ const Header = () => {
             <>
               {user.isAdmin ? 
               <>
-                <Link to='/adminDashboard'><img src={user.avatar} alt='avatar' className='w-10 h-10 ml- rounded-full' /></Link>
+                <Link to='/adminDashboard'><img src={user.avatar || Avatar}  alt='avatar' className='w-10 h-10 ml- rounded-full' /></Link>
                 <Link to='/adminDashboard'><p>{user.username}</p></Link>
               </>
               : 

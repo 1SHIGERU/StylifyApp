@@ -75,6 +75,7 @@ export const Contact = () => {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                         <p class="mt-6 text-lg font-medium leading-relaxed text-gray-900">Świerklany 44-266</p>
+                        <p class="mt-1 text-lg font-medium leading-relaxed text-gray-900">ul. Słoneczna 1</p>
                     </div>
                 </div>
             </div>
