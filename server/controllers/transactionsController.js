@@ -209,28 +209,25 @@ exports.getClosedTransactions = async (req, res) => {
         where: {
           isClosed: true,
       }});
-
-      const address = await Address.findAll({
-        where: {
-          userID: userID,
-      }});
-
+      
       const transactions = await Transaction.findAll({
-          where: {
-              [Sequelize.Op.or]: [
-                  { seller: userID },
-                  { buyer: userID },
-              ],
-              isClosed: true,
-          },
-          include: [
-              { model: User, as: 'Seller', attributes: ['username'] },
-              { model: User, as: 'Buyer', attributes: ['username'] },
-              { model: Offer, as: 'Offer', attributes: ['title'] },  
+        where: {
+          [Sequelize.Op.or]: [
+            { seller: userID },
+            { buyer: userID },
           ],
-      });
+          isClosed: true,
+        },
+        include: [
+          { model: User, as: 'Seller', attributes: ['username'] },
+          { model: User, as: 'Buyer', attributes: ['username'], include: [
+            { model: Address, as: 'Address', attributes: ['street', 'city', 'postcode', 'country'] }
+          ] },
+          { model: Offer, as: 'Offer', attributes: ['title'] },
+        ],
+      });  
 
-      res.status(200).json({ count, transactions, address });
+      res.status(200).json({ count, transactions });
   } catch (err) {
       console.error('Error fetching user transactions:', err.message);
       res.status(500).send('Server Error');

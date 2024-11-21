@@ -138,10 +138,9 @@ const History = () => {
                                     <div className="address-box flex ml-4 p-2">
                                       <p className="font-medium text-sm text-black mt-6">Delivered to:</p>
                                       <div className='ml-4 text-gray-600 w-auto'>
-                                        <span className=''>Górnośląska 44</span> <br />
-                                        <span className=''>40-514 Katowice, </span> 
-                                        <span className=''>Poland</span>
-    
+                                        <span className=''>{transaction.Buyer.Address.street}</span> <br />
+                                        <span className=''>{transaction.Buyer.Address.postcode}, {transaction.Buyer.Address.city} </span> 
+                                        <span className=''>{transaction.Buyer.Address.country}</span>
                                       </div>
                                     </div>
                                 )}

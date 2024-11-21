@@ -141,14 +141,14 @@ const Orders = () => {
                     className="rounded-full py-3 px-7 font-semibold text-sm leading-7 text-white bg-orange-600 max-lg:mt-5 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-indigo-400"
                     onClick={() => closeTransaction(transaction.transactionID)}
                   >
-                    Mark as Received
+                    Mark as received
                   </button>
                 ) : (
                   <button
                     className="rounded-full py-3 px-7 font-semibold text-sm leading-7 text-white bg-orange-600 max-lg:mt-5 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-indigo-400"
                     onClick={() => changeStatus(transaction.transactionID, 'shipped')}
                   >
-                    Mark as Shipped
+                    Mark as shipped
                   </button>
                 )}
               </div>
@@ -192,7 +192,7 @@ const Orders = () => {
                               ) : (
                                 <div className="address-box flex ml-4 p-2">
                                   <p className="font-medium text-sm text-black mt-6">Shipping address:</p>
-                                  <div className='ml-4 text-gray-600 w-auto'>
+                                  <div className='mt-6 px-2 text-gray-600 w-auto'>
                                     <span className=''>{street}</span> <br />
                                     <span className=''>{postcode} {city}, </span> 
                                     <span className=''>{country}</span>
