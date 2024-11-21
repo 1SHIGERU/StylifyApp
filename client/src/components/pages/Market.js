@@ -392,7 +392,7 @@ export const Market = () => {
                   <div class="relative text-gray-600">
                     <input onChange={(e) => handleFilterChange('name', e.target.value)} value={filters.name} type="search" maxLength={20} name="serch" placeholder="Search" class="bg-gray-200  w-96 h-12 px-5 pr-10 rounded-full text-sm focus:outline-gray-600"/>
                     <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
-                      <svg class="w-6 h-6 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <svg onClick={()=> applyFilters()} class="w-6 h-6 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="1.4" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
                       </svg>
                     </button>
