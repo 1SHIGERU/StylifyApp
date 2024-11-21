@@ -99,6 +99,7 @@ const AdminDashboard = () => {
   const getContactMessages = async () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}chat/getContactMessages`);
+      console.log(res.data);
       setContactMessages(res.data);
     } catch (err) {
       console.error(err.message);
@@ -154,9 +155,9 @@ const AdminDashboard = () => {
 
   const handleMessageDelete = async (id) => {
     try {
+      console.log(id);
       const res = await axios.delete(`${process.env.REACT_APP_API_URL}chat/deleteContactMessage/${id}`);
-      console.log(res.data);
-      setContactMessages(res.data);
+      getContactMessages();
     } catch (err) {
       console.error(err.message);
     }
@@ -218,14 +219,17 @@ const AdminDashboard = () => {
       case "Messages":
         return (
           <section class="">
-            <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 gap-6 px-4 mt-12 sm:px-0 xl:mt-20 xl:grid-cols-4 sm:grid-cols-2">
-                  {contactMessages.map((item, index) => (
-                      <div key={index} class="overflow-hidden bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.3)]">
-                      <p onClick={() => handleMessageDelete(index)} className="block right-0 top-0 text-red-500 hover:cursor-pointer">X</p>
+            {contactMessages.length === 0 && (
+              <p className="text-gray-600">No messages to display.</p>
+            )}
+            <div class="px-4 mx-auto overflow-scroll no-scrollbar  max-w-7xl sm:px-6 lg:px-8">    
+                <div class="grid mb-8 grid-cols-1 gap-6 px-4 mt-12 sm:px-0 xl:mt-20 xl:grid-cols-4 sm:grid-cols-2">        
+                  {contactMessages.map((item) => (
+                      <div key={item.contactMessageID} class="overflow-hidden bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.3)]">
+                      <p onClick={() => handleMessageDelete(item.contactMessageID)} className="block right-0 top-0 text-red-500 hover:cursor-pointer">X</p>
                           <div class="px-2 py-6">     
                               <div class="flex items-center justify-between">
-                                  <img class="flex-shrink-0 object-cover w-10 h-10 rounded-full" src="https://cdn.rareblocks.xyz/collection/celebration/images/testimonials/7/avatar-1.jpg" alt="" />
+                                  <img class="flex-shrink-0 object-cover w-10 h-10 rounded-full" src={Avatar} alt="" />
                                   <div class="min-w-0 ml-3 mr-auto">
                                       <p class="text-base font-semibold text-black truncate">{item.fullName}</p>{item.phoneNumber}
                                       <p class="text-sm text-gray-600 truncate">{item.companyName}</p>
@@ -242,7 +246,7 @@ const AdminDashboard = () => {
                   ))}                      
                 </div>
             </div>
-        </section>
+          </section>
 
         );
       case "Analytics":
