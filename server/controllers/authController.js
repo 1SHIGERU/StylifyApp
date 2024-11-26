@@ -10,14 +10,15 @@ const register = async (req, res) => {
 
   const { username, email, password, firstName, familyName } = req.body;
 
-  if (!email || email.trim() === '') {
-    return res.status(400).json({ msg: 'Email is required' });
-  }
-
   try {
     let user = await User.findOne({ where: { email } });
     if (user) {
-      return res.status(400).json({ msg: 'User already exists' });
+      return res.status(404).json({ msg: 'The user with specified email address already exists' });
+    }
+
+    let user1 = await User.findOne({ where: { username } });
+    if (user1) {
+      return res.status(405).json({ msg: 'The user with specified username address already exists' });
     }
 
     user = await User.create({ username, email, password, firstName, familyName });

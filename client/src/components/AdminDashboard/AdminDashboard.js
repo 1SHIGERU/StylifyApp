@@ -172,7 +172,7 @@ const AdminDashboard = () => {
             <Card title="Active offers" value={activeOffers} />
             <Card title="Accounts registered" value={accountsRegistered} />
             <Card title="Items sold" value={itemsSold} />
-            <Card title="Totally earned" value={"$"+totallyEarned} />
+            <Card title="In total" value={"$"+totallyEarned} />
           </div>
           <div className="flex">
           <div className="flex flex-col w-96 h-96 bg-white shadow-md p-16 rounded-xl justify-center items-center mt-8 duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
@@ -190,7 +190,30 @@ const AdminDashboard = () => {
                 Accounts registered per month
             </h2>
             {userChartData && userChartData.labels.length > 0 ? (
-                <Line data={userChartData} />
+                
+                <Line data={userChartData}
+                options={{
+                  scales: {
+                    y: {
+                      suggestedMin: Math.min(userChartData.datasets[0].data[0]) - 1,
+                      suggestedMax: Math.max(userChartData.datasets[0].data[1]) + 1,
+                      ticks: {
+                        stepSize: 1, 
+                        color: "#8B4513", 
+                      },
+                    },
+                    x: {
+                      ticks: {
+                        color: "#8B4513", 
+                        font: {
+                          size: 14,
+                        },
+                      },
+                    },
+                  },
+                }}
+                        
+                />
             ) : (
                 <p>Loading chart...</p>
             )}

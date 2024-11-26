@@ -25,21 +25,29 @@ export const Register = () => {
         setFormData({ [name]: value });
     };
 
-     const onSubmit = (data) => {
-        if (data.password !== data.repeatPassword) {
-            setError("repeatPassword", { type: "manual", message: "Passwords must match" });
-        } else {
-            clearErrors("repeatPassword");          
-        }
-     };
-
-    const doRegister = async () => { 
-        try {            
-            await register1(formData.userName, formData.email, formData.password, formData.firstName, formData.familyName)
-        } catch (error) {   
-               console.error('Error registering:', error.message);
-        }         
+    const onSubmit = async (data) => {
+     if (data.password !== data.repeatPassword) {
+       setError("repeatPassword", {
+         type: "manual",
+         message: "Passwords must match",
+       });
+       return;
+     } else {
+       clearErrors("repeatPassword");
      }
+
+     try {
+       await register1(
+         data.userName,
+         data.email,
+         data.password,
+         data.firstName,
+         data.familyName
+       );
+     } catch (error) {
+       console.error("Error registering:", error.message);
+     }
+   };
 
     return (
         <>
@@ -83,7 +91,7 @@ export const Register = () => {
                                         </error>
                                    </div>
                                    <div>
-                                        <input {...register("email", { required: true, pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i, })} value={formData.email} name="email" onChange={handleChange} type="text" className="bg-gray-200 w-full text-sm px-4 py-3.5 rounded-md outline-[#8B4513]" placeholder="email" />
+                                        <input {...register("email", { required: true, pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i, })} value={formData.email} name="email" onChange={handleChange} type="email" className="bg-gray-200 w-full text-sm px-4 py-3.5 rounded-md outline-[#8B4513]" placeholder="email" />
                                         <error class="text-red-500">
                                              {errors.email?.type === "required" && "Email is required"}
                                              {errors.email?.type === "pattern" && "Entered email is in wrong format"}
@@ -102,7 +110,7 @@ export const Register = () => {
                                         </error>
                                    </div>
                                    <div className="!mt-10">
-                                        <button type="submit" onClick={doRegister} className="transition duration-250 w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-[#8B4513] border-2 border-[#8B4513] hover:bg-[#8B4513] hover:text-white focus:outline-none">
+                                        <button type="submit" className="transition duration-250 w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-[#8B4513] border-2 border-[#8B4513] hover:bg-[#8B4513] hover:text-white focus:outline-none">
                                              Create account
                                         </button>
                                    </div>

@@ -127,10 +127,10 @@ export const AuthWrapper = () => {
       toast.success('User registered successfully', { position: 'top-center' });
     } catch (error) {
       if (error.response) {
-        if (error.response.status === 400 && error.response.data.msg === 'Email is required') {
-          toast.error('Email is required', { position: 'top-center' });
-        } else if (error.response.status === 400 && error.response.data.msg === 'User already exists') {
-          toast.error('User already exists, email is already taken', { position: 'top-center' });
+        if (error.response.status === 404) {
+          toast.error(`${error.response.data.msg}`, { position: 'top-center' });
+        } else if (error.response.status === 405) {
+          toast.error(`${error.response.data.msg}`, { position: 'top-center' });
         } else {
           toast.error('Registration failed', { position: 'top-center' });
         }
