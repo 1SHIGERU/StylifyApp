@@ -20,6 +20,9 @@ const Offer = sequelize.define('Offer', {
     price: {
         type: DataTypes.FLOAT,
     },
+    currency: {
+        type: DataTypes.STRING,
+    },
     size: {
         type: DataTypes.STRING,
     },

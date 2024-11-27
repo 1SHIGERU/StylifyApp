@@ -125,7 +125,7 @@ export const Market = () => {
   const fetchProducts = async () => {
     try {
       const { data: { offers } } = await axios.get(`${process.env.REACT_APP_API_URL}offers?${params}`);
-     
+      console.log(offers);
       const offersWithOwners = await Promise.all(
         offers.map(async (offer) => {
           try {
@@ -731,7 +731,7 @@ export const Market = () => {
                   <p className="text-gray-400 text-xs">{product.size}</p>
                   <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
                   <div className="flex items-center">
-                    <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} $</p>
+                    <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} <span className='font-bold'>{product.currency}</span></p>
                     <div className="ml-auto text-4xl flex text-orange-400 hover:cursor-pointer">
                       <a
                         onClick={(e) => {
@@ -818,7 +818,7 @@ export const Market = () => {
                     </p>
                     <div className="mt-4 amount flex items-center justify-between lg:flex-col lg:items-start border-b border-gray-200 mb-6">
                       <div className="discount-price items-center flex py-2">
-                        <div className="price text-2xl">${selectedProduct.price}</div>
+                        <div className="price text-2xl">{selectedProduct.price} <span className='font-bold'>{selectedProduct.currency}</span></div>
                       </div>
                     </div>
                     <div className="mt-4 amount flex items-center justify-between lg:flex-col lg:items-start mb-6">

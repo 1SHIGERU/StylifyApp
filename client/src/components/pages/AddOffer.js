@@ -11,6 +11,8 @@ export const AddOffer = () => {
     const [images, setImages] = useState([]);
     const [offerID, setOfferID] = useState('');
     const Navigate = useNavigate();
+
+
     const handleFormSubmit = async (data) => {
 
         const { clothing = [], shoes = [] } = data.size.size;
@@ -41,7 +43,8 @@ export const AddOffer = () => {
                 category: data.category,
                 gender: data.gender,
                 colors: colorsString,
-                size: size
+                size: size,
+                currency: data.currency
 
             });
             const newOfferID = response.data.offerID;

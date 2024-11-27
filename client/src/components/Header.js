@@ -13,19 +13,23 @@ const Header = () => {
 
   useEffect(() => {
     const fetchUnreadMessages = async () => {
+      if (!user || !user.userID) return;
+  
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}chat/checkUnread/${user.userID}`);
         setHowMuchUnreadMessages(response.data.unreadCount);
-        
       } catch (error) {
         console.error('Błąd przy sprawdzaniu wiadomości:', error);
       }
     };
-
-     const interval = setInterval(fetchUnreadMessages, 5000);
-
-     return () => clearInterval(interval);
-   }, [user.userID]);
+  
+    if (user && user.userID) {
+      const interval = setInterval(fetchUnreadMessages, 5000);
+  
+      return () => clearInterval(interval);
+    }
+  }, [user]); 
+  
 
   return (
     <header class="fixed w-full shadow-lg px-24 py-4 z-50 bg-white shadow-[rgba(0,_0,_0,_0.1)_0px_60px_40px_-7px]  ">

@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import "../../index.css";
 import { AuthData } from "../../auth/AuthWrapper";
 import { toast } from "react-toastify";
+import { set } from "date-fns";
 
 export function CustomDragDrop({
   ownerLicense,
@@ -25,6 +26,7 @@ export function CustomDragDrop({
   const [price, setPrice] = useState('');
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedGender, setSelectedGender] = useState('Men');
+  const [selectedCurrency, setSelectedCurrency] = useState('PLN');
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
@@ -238,6 +240,7 @@ export function CustomDragDrop({
     offerDetails.append("colors", selectedColors);
     offerDetails.append("gender", selectedGender);
     offerDetails.append("size", filters);
+    offerDetails.append("currency", selectedCurrency);
 
     onSubmit({
       userID: user.userID,
@@ -248,7 +251,8 @@ export function CustomDragDrop({
       imagesData,
       colors: selectedColors,
       gender: selectedGender,
-      size: filters
+      size: filters,
+      currency: selectedCurrency
     });
 
   };
@@ -585,8 +589,29 @@ export function CustomDragDrop({
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
+        <button
+            className={`px-4 ml-8 py-2 rounded-lg focus:outline-none mr-4 
+            ${selectedCurrency === 'USD' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+            onClick={() => setSelectedCurrency('USD')}
+          >
+            USD
+          </button>
+          <button
+            className={`px-4 py-2 rounded-lg focus:outline-none mr-4
+            ${selectedCurrency === 'EUR' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+            onClick={() => setSelectedCurrency('EUR')}
+          >
+            EUR
+          </button>
+          <button
+            className={`px-4 py-2 rounded-lg focus:outline-none
+            ${selectedCurrency === 'PLN' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+            onClick={() => setSelectedCurrency('PLN')}
+          >
+            PLN
+          </button>
     </div>
-    <button type="submit" className="bg-[#8B4513] ml-96 text-white text-lg px-4 py-2 rounded-xl">List an item!</button>
+    <button type="submit" className="bg-[#D47C24] text-white text-lg px-4 py-2 rounded-xl mt-8 mb-4">List an item!</button>
     </form>
   );
 }

@@ -11,7 +11,7 @@ exports.createCheckoutSession = async (req, res) =>{
             {
                 quantity: 1,
                 price_data: {
-                    currency: 'usd',
+                    currency: product.currency,
                     product_data: {
                         name: product.title,
                         images: [product.OfferImages[0]?.imageUrl],

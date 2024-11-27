@@ -304,7 +304,7 @@ export const UserPage = () => {
                                 <div className="px-4 py-3 w-72">
                                     <span className="text-gray-400 mr-3 uppercase text-xs">{product.category}</span>
                                     <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
-                                    <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} $</p>                                                                
+                                    <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} <span className='font-bold'>{product.currency}</span></p>                                                                
                                 </div>
                                 </div>
                             ))

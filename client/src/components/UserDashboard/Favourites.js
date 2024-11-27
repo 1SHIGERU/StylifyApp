@@ -132,8 +132,8 @@ const Favourites = () => {
                   <span className="text-gray-400 mr-3 uppercase text-xs">{product.category}</span>
                   <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
                   <div className="flex items-center">
-                    <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} $</p>
-                    <div className="ml-20 text-2xl flex text-orange-400 hover:cursor-pointer">
+                    <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} <span className='font-bold'>{product.currency}</span></p>
+                    <div className="ml-16 text-2xl flex text-orange-400 hover:cursor-pointer">
                       <a
                         onClick={(e) => {
                           e.stopPropagation();
