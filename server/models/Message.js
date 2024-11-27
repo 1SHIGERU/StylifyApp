@@ -29,6 +29,10 @@ const Message = sequelize.define('Message', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  isRead: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false, 
+  },
 }, {
   timestamps: true,
 });

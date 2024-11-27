@@ -4,6 +4,7 @@ const Chat = require('../models/Chat');
 const Message = require('../models/Message');
 const ContactMessage = require('../models/ContactMessage');
 
+
 const createChat = async (req, res) => {
     const { user1ID, user2ID } = req.body;
 
@@ -50,6 +51,57 @@ const createChat = async (req, res) => {
     }
   };
 
+
+  const checkUnreadMessages = async (req, res) => {
+    const { id: userID } = req.params;
+    try {
+      const chats = await Chat.findAll({
+        where: {
+          [Sequelize.Op.or]: [
+            { user1ID: userID },
+            { user2ID: userID },
+          ],
+        },
+      });
+  
+      const chatIDs = chats.map((chat) => chat.chatID);
+  
+      const unreadCount = await Message.count({
+        where: {
+          chatID: chatIDs,
+          senderID: { [Sequelize.Op.ne]: userID },
+          isRead: false,
+        },
+      });
+  
+      res.status(200).json({ unreadCount });
+    } catch (error) {
+      console.error('Błąd przy sprawdzaniu nieprzeczytanych wiadomości:', error);
+      res.status(500).send('Nie udało się sprawdzić wiadomości');
+    }
+  };
+
+  const setAsRead = async (req, res) => {
+  
+    const { userID, chatID } = req.body;
+
+  try {
+    await Message.update(
+      { isRead: true }, 
+      {
+        where: {
+          chatID,
+          senderID: { [Sequelize.Op.ne]: userID },
+        },
+      }
+    );
+
+    res.status(200).send('Wiadomości oznaczone jako przeczytane');
+  } catch (error) {
+    console.error('Błąd przy oznaczaniu wiadomości jako przeczytane:', error);
+    res.status(500).send('Nie udało się oznaczyć wiadomości');
+  }
+};
 
 const sendContactMessage = async (req, res) => {
     const { email, fullName, message, phoneNumber, companyName } = req.body;
@@ -160,6 +212,7 @@ module.exports = {
     getUserChats,
     sendContactMessage,
     getContactMessages,
-    deleteContactMessage
-
+    deleteContactMessage,
+    checkUnreadMessages,
+    setAsRead
 };

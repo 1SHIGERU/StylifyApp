@@ -13,6 +13,9 @@ router.post('/create', chatController.createChat);
 router.post('/add-message', chatController.sendMessage);
 router.get('/:id', chatController.getMessagesByChatID);
 router.get('/user/:id', chatController.getUserChats);
+router.post('/setAsRead', chatController.setAsRead);
+router.get('/checkUnread/:id', chatController.checkUnreadMessages);
+
 
 
 router.delete('/deleteContactMessage/:id', chatController.deleteContactMessage);

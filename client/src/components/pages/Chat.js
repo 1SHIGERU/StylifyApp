@@ -53,6 +53,21 @@ export const Chat = () => {
       });
   };
 
+  useEffect(() => {
+    const markMessagesAsRead = async () => {
+      try {
+        await axios.post(`${process.env.REACT_APP_API_URL}chat/setAsRead/`,
+          { chatID: activeChatID, userID: user.userID }
+        );
+        
+      } catch (error) {
+        console.error('Błąd przy oznaczaniu wiadomości jako przeczytane:', error);
+      }
+    };
+
+    markMessagesAsRead();
+  }, [activeChatID]);
+
   return (
     <>
       <div className="flex min-h-screen pt-16">
