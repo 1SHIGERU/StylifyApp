@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import "../../index.css";
 import { AuthData } from "../../auth/AuthWrapper";
 import { toast } from "react-toastify";
-import { set } from "date-fns";
 
 export function CustomDragDrop({
   ownerLicense,
@@ -23,7 +22,7 @@ export function CustomDragDrop({
   const [selectedCategory, setSelectedCategory] = useState('T-shirts');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState(1);
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedGender, setSelectedGender] = useState('Men');
   const [selectedCurrency, setSelectedCurrency] = useState('PLN');
@@ -218,12 +217,12 @@ export function CustomDragDrop({
     });
   };
 
+  const offerDetails = new FormData();
+  const imagesData = new FormData();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const offerDetails = new FormData();
-    const imagesData = new FormData();
-
     if(price < 1) {
       toast.error('Price must be greater than 0');
       return;
@@ -258,7 +257,7 @@ export function CustomDragDrop({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+ <>
       <div
         className={`${
           dragging
@@ -573,45 +572,45 @@ export function CustomDragDrop({
                         </div>
                       ))}
                     </div>
-    </div>
-    <div className="mt-8 group">
-        <div class="flex space-x-2 text-gray-800 ">
-          <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 17.345a4.76 4.76 0 0 0 2.558 1.618c2.274.589 4.512-.446 4.999-2.31.487-1.866-1.273-3.9-3.546-4.49-2.273-.59-4.034-2.623-3.547-4.488.486-1.865 2.724-2.899 4.998-2.31.982.236 1.87.793 2.538 1.592m-3.879 12.171V21m0-18v2.2"/>
-          </svg>
-          <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium mb-2">Price</p>
-        </div>      
-        <input 
-          type="number" 
-          placeholder="price" 
-          maxLength={5} 
-          className="bg-gray-200 w-1/5 text-sm px-4 py-3.5 rounded-md outline-[#8B4513]"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        <button
-            className={`px-4 ml-8 py-2 rounded-lg focus:outline-none mr-4 
-            ${selectedCurrency === 'USD' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
-            onClick={() => setSelectedCurrency('USD')}
-          >
-            USD
-          </button>
-          <button
-            className={`px-4 py-2 rounded-lg focus:outline-none mr-4
-            ${selectedCurrency === 'EUR' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
-            onClick={() => setSelectedCurrency('EUR')}
-          >
-            EUR
-          </button>
-          <button
-            className={`px-4 py-2 rounded-lg focus:outline-none
-            ${selectedCurrency === 'PLN' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
-            onClick={() => setSelectedCurrency('PLN')}
-          >
-            PLN
-          </button>
-    </div>
-    <button type="submit" className="bg-[#D47C24] text-white text-lg px-4 py-2 rounded-xl mt-8 mb-4">List an item!</button>
-    </form>
+                </div>
+                <div className="mt-8 group">
+                    <div class="flex space-x-2 text-gray-800 ">
+                      <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 17.345a4.76 4.76 0 0 0 2.558 1.618c2.274.589 4.512-.446 4.999-2.31.487-1.866-1.273-3.9-3.546-4.49-2.273-.59-4.034-2.623-3.547-4.488.486-1.865 2.724-2.899 4.998-2.31.982.236 1.87.793 2.538 1.592m-3.879 12.171V21m0-18v2.2"/>
+                      </svg>
+                      <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium mb-2">Price</p>
+                    </div>      
+                    <input 
+                      type="number" 
+                      placeholder={price}
+                      maxLength={5} 
+                      className="bg-gray-200 w-1/5 text-sm px-4 py-3.5 rounded-md outline-[#8B4513]"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                    <button
+                        className={`px-4 ml-8 py-2 rounded-lg focus:outline-none mr-4 
+                        ${selectedCurrency === 'USD' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+                        onClick={() => setSelectedCurrency('USD')}
+                      >
+                        USD
+                      </button>
+                      <button
+                        className={`px-4 py-2 rounded-lg focus:outline-none mr-4
+                        ${selectedCurrency === 'EUR' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+                        onClick={() => setSelectedCurrency('EUR')}
+                      >
+                        EUR
+                      </button>
+                      <button
+                        className={`px-4 py-2 rounded-lg focus:outline-none
+                        ${selectedCurrency === 'PLN' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+                        onClick={() => setSelectedCurrency('PLN')}
+                      >
+                        PLN
+                      </button>
+                </div>
+                <button onClick={handleSubmit} type="submit" className="bg-[#D47C24] text-white text-lg px-4 py-2 rounded-xl mt-8 mb-4">List an item!</button>
+     </>
   );
 }
