@@ -174,15 +174,10 @@ exports.updateOffer = async (req, res) => {
 
   try {
     let offer = await Offer.findByPk(id);
-    if (!offer) {
-      return res.status(404).json({ msg: 'Offer not found' });
-    }
 
     offer.title = title || offer.title;
     offer.description = description || offer.description;
     offer.price = price || offer.price;
-    offer.category = category || offer.category;
-    offer.isActive = isActive !== undefined ? isActive : offer.isActive;
 
     await offer.save();
     res.json(offer);
