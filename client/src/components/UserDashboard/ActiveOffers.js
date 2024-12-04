@@ -173,24 +173,24 @@ const ActiveOffers = () => {
             <div
             key={product.offerID}
             onClick={() => openModal(product)}
-            className="w-56  hover:cursor-pointer bg-white shadow-md rounded-xl duration-200 hover:scale-105 hover:shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
-            <img
-              src={product.OfferImages[0]?.imageUrl}
-              alt="Product"
-              className="h-60 w-72 object-cover rounded-t-xl"
-            />
-            <div className="px-4 py-3 w-56">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 uppercase text-xs">{product.category}</span>
-                <p className="text-gray-500 text-xs">{new Date(product.createdAt).toLocaleDateString()}</p>
-              </div>
-              <p className="text-gray-400 text-xs">{product.size}</p>
-              <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
-              <div className="flex items-center">
-                <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} <span className='font-bold'>{product.currency}</span></p>
+            className="w-56 hover:cursor-pointer bg-white shadow-md rounded-xl duration-200 hover:scale-105 hover:shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
+              <img
+                src={product.OfferImages[0]?.imageUrl}
+                alt="Product"
+                className="h-60 w-72 object-cover rounded-t-xl"
+              />
+              <div className="px-4 py-3 w-56">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400 uppercase text-xs">{product.category}</span>
+                  <p className="text-gray-500 text-xs">{new Date(product.createdAt).toLocaleDateString()}</p>
+                </div>
+                <p className="text-gray-400 text-xs">{product.size}</p>
+                <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
+                <div className="flex items-center">
+                  <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} <span className='font-bold'>{product.currency}</span></p>
                 </div>
               </div>
-            </div>
+              </div>
           ))}
           </section>
         </>

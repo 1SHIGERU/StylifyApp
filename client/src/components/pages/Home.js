@@ -46,29 +46,33 @@ return (
                <p className="text-xl mt-4">Stylify is here to help you make the most of your wardrobe. We provide you with the latest fashion trends and help you create the perfect outfit for any occasion.</p>
                
                {user.isAuthenticated ? 
-                    <>
+                    <div className='flex flex-row'>
                          <Link to="/addOffer"> 
-                         <button className="mr-8 border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2  transition duration-250 mt-8">
-                              Add an offer 
-                         </button></Link>
+                              <button className="flex relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                                   <span class="relative z-10">Add an offer</span>
+                              </button>
+                         </Link>
                          
                          <Link to="/market">
-                         <button className="border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2  transition duration-250 mt-8">
-                               Go to market
-                         </button></Link>
-                    </>
+                              <button className="flex ml-8 relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                                   <span class="relative z-10">Go to market</span>
+                              </button>
+                         </Link>
+                    </div>
                     :
-                    <>
+                    <div className='flex flex-row'>
                          <Link to="/login">
-                         <button className=" mr-8 border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2 transition duration-250 mt-8">
-                              Get started
-                         </button></Link>
+                              <button className="flex relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                                   <span class="relative z-10">Get started</span>
+                              </button>
+                         </Link>
 
                          <Link to="/market">
-                         <button className="border-b-2 border-[#D47C24] text-[#D47C24] px-12 py-4 tracking-widest font-bold bg-transparent hover:border-[#D47C24] hover:border-b-2 transition duration-250 mt-8">
-                              Go to market
-                         </button></Link>
-                    </>
+                              <button className="flex ml-8 relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                                   <span class="relative z-10">Go to market</span>
+                              </button>
+                         </Link>
+                         </div>
                }               
                
           </div>

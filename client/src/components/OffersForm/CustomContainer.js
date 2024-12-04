@@ -222,8 +222,24 @@ export function CustomDragDrop({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if(price < 1) {
+
+    if(selectedFiles.length < 1) {
+      toast.error('Please upload at least one image');
+      return;
+    }
+
+    if(title.length < 1) {
+      toast.error('Title is required');
+      return;
+    }
+
+    if(description.length < 1) {
+      toast.error('Description is required');
+      return;
+    }
+
+
+    if(price <= 0) {
       toast.error('Price must be greater than 0');
       return;
     }
@@ -290,30 +306,25 @@ export function CustomDragDrop({
             or drag and drop
           </div>
           <div className="text-[10px] font-normal text-gray-500">
-            Maximum 15 images PNG, JPG or JPEG
+            Maximum 16 images PNG, JPG or JPEG
           </div>
         </div>
       </div>
   
       {ownerLicense.length > 0 && (
-        <div className="mt-4 grid grid-cols-2 gap-y-4 gap-x-4">
+        <div className="mt-4 grid grid-cols-4 gap-y-4 gap-x-4">
           {ownerLicense.map((img, index) => (
             <div key={index} className="w-full px-3 py-3.5 rounded-md bg-slate-200 space-y-3">
               <div className="flex justify-between">
                 <div className="w-[70%] flex justify-start items-center space-x-2">
                   <div
                     className="text-[#5E62FF] text-[37px] cursor-pointer"
-                    onClick={() => showImage(img.photo)}
-                  >
-                    {img.type.match(/image.*/i) ? (
-                      <FaRegFileImage />
-                    ) : (
-                      <FaRegFile />
-                    )}
+                    onClick={() => showImage(img.photo)}>
+                    <img src={img.photo} alt={img.name} className="w-12 h-12 object-cover rounded-md" />
                   </div>
                   <div className="space-y-1">
                     <div className="text-xs font-medium text-gray-500">
-                      {img.name}
+                      {img.type}
                     </div>
                     <div className="text-[10px] font-medium text-gray-400">{`${Math.floor(
                       img.size / 1024
@@ -328,9 +339,7 @@ export function CustomDragDrop({
                     >
                       <BsX className="ml-auto" />
                     </div>
-                    <div className="text-[10px] font-medium text-gray-400">
-                      Done
-                    </div>
+                   
                   </div>
                 </div>
               </div>
@@ -378,7 +387,7 @@ export function CustomDragDrop({
         </svg>
           <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium mb-2">Category</p>
       </div>
-      <div className="relative group">
+      <div className="relative group w-32">
         <button className="outline-none focus:outline-none bg-gray-200 border py-1 px-2 rounded-md flex items-center">
             <span className="p-2 flex-1">{selectedCategory}</span>
             <span>
@@ -534,7 +543,7 @@ export function CustomDragDrop({
                   </svg>
             <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium">Size</p>
           </div>
-        <div className="md:flex md:space-x-4 mt-4 grid grid-cols-3 gap-y-8 flex-wrap">
+                    <div className="md:flex md:space-x-4 mt-4 grid grid-cols-3 gap-y-8 flex-wrap">
                       {clothingSizes.map((size) => (
                         <div
                           key={size}
@@ -542,7 +551,7 @@ export function CustomDragDrop({
                           onClick={() => handleSizeToggle(size, 'clothing')}
                         >
                           <div
-                            className={`w-6 h-6 rounded-full flex justify-center items-center shadow ${
+                            className={`w-6 h-6 transition duration-100 hover:scale-[120%] rounded-full flex justify-center items-center shadow ${
                               filters.size.clothing && filters.size.clothing.includes(size)
                                 ? "bg-orange-500 text-white"
                                 : "bg-gray-200 text-gray-700"
@@ -553,7 +562,8 @@ export function CustomDragDrop({
                         </div>
                       ))}
                     </div>
-                    <div className="md:flex md:space-x-4 mt-8 grid grid-cols-3 gap-y-8 flex-wrap">
+                    <hr className="mt-4"/>
+                    <div className="md:flex md:space-x-3 mt-4 grid grid-cols-3 gap-y-8 flex-wrap">
                       {shoeSizes.map((size) => (
                         <div
                           key={size}
@@ -561,7 +571,7 @@ export function CustomDragDrop({
                           onClick={() => handleSizeToggle(size, 'shoes')}
                         >
                           <div
-                            className={`w-6 h-6 rounded-full flex justify-center items-center shadow ${
+                            className={`w-6 h-6 rounded-full transition duration-100 hover:scale-[120%] flex justify-center items-center shadow ${
                               filters.size.shoes && filters.size.shoes.includes(size)
                                 ? "bg-orange-500 text-white"
                                 : "bg-gray-200 text-gray-700"

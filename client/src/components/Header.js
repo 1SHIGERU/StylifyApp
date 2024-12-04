@@ -44,18 +44,20 @@ const Header = () => {
             <Link to='/market'><li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Market</li></Link>
             <Link to='/contact'> <li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Contact us</li></Link>
             {user.isAuthenticated ? <Link to='/addOffer'><li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Add offer</li></Link> : null}
-            {user.isAuthenticated ?<div className='cursor-pointer'> <Notification/></div> : null}
+            {user.isAuthenticated ?<div className='cursor-pointer '> <Notification/></div> : null}
             {user.isAuthenticated ? 
             <Link to='/chat'> 
-            {howMuchUnreadMessages > 0 ? (<span class="relative flex h-3 w-3">
+              <div className=''>
+              {howMuchUnreadMessages > 0 ? (<span class="relative flex h-3 w-3">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
               </span>) : null}
-
-              <svg className={`w-6 h-6 cursor-pointer text-gray-800 ${howMuchUnreadMessages > 0 ? 'mb-2' : ''}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z"/>
-               </svg>
-            </Link>:
+                <svg className={`w-6 h-6 cursor-pointer text-gray-800 ${howMuchUnreadMessages > 0 ? 'mb-2' : ''}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z"/>
+                </svg>
+              </div>
+            </Link>
+            :
             null}
             </ul>
           </div>
@@ -64,17 +66,28 @@ const Header = () => {
             <>
               {user.isAdmin ? 
               <>
-                <Link to='/adminDashboard'><img src={user.avatar || Avatar}  alt='avatar' className='w-10 h-10 ml- rounded-full' /></Link>
-                <Link to='/adminDashboard'><p>{user.username}</p></Link>
+                <div className="relative inline-block">
+                  <span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-3xl">👑</span>
+                  <Link to="/adminDashboard">
+                    <img
+                      src={user.avatar || Avatar}
+                      alt="avatar"
+                      className="w-10 h-10 rounded-full"
+                    />
+                  </Link>
+                </div>
+                <Link to="/adminDashboard">
+                  <p>{user.username}</p>
+                </Link>
               </>
               : 
               <>
-                <Link to='/account'><img src={user.avatar} alt='avatar' className='w-10 h-10 ml- rounded-full' /></Link>
+                <Link to='/account'><img src={user.avatar || Avatar} alt='avatar' className='w-10 h-10 ml- rounded-full' /></Link>
                 <Link to='/account'><p>{user.username}</p></Link>
               </>
               }
        
-              <button onClick={logout} className='transition-all duration-100 text-red-500 ml-6 hover:scale-[120%]'><MdLogout size={25} /></button>
+              <button onClick={logout} className='transition-all duration-200 text-red-500 ml-6 hover:scale-[120%]'><MdLogout size={25} /></button>
             </>
             :
             <>

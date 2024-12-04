@@ -8,6 +8,8 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
 import Loading from '../Loading';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import Avatar from '../../assets/avatar.jpg';
 
 const Favourites = () => {
 
@@ -39,6 +41,7 @@ const Favourites = () => {
           return offer;
         })
       );
+      console.log(offersWithDetails);
       setProducts(offersWithDetails);
     } catch (error) {
       console.error('Error fetching favourites:', error.message);
@@ -107,7 +110,7 @@ const Favourites = () => {
                             You don't have any favourite offers.
                          </h1>
                          <p className="mt-4 text-gray-500">
-                            Go to <a onClick={() => navigate("/market")} className="font-bold text-[#8B4513]">market</a> to find some offers you like.
+                            Go to <a onClick={() => navigate("/market")} className="font-bold text-[#8B4513] cursor-pointer">market</a> to find some offers you like.
                          </p>                
                     </div>
               </div>
@@ -116,38 +119,42 @@ const Favourites = () => {
           </>
            :    
           <>
-            <section className="w-fit mb-32 mx-auto grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 justify-items-center justify-center gap-y-16 gap-x-14 mt-10 mb-5">
-             {products.map((product) => (
-              <div
-                key={product.offerID}
-                className="w-44 bg-white shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-[5px_5px_rgba(212,124,36,0.9),_10px_10px_rgba(212,124,36,0.6),_15px_15px_rgba(212,124,36,0.4),_20px_20px_rgba(212,124,36,0.2)]"
-              >
-                <img
-                  src={product.OfferImages[0]?.imageUrl}
-                  alt="Product"
-                  className="h-60 w-72 object-cover rounded-t-xl hover:cursor-pointer"
+           <section className="w-fit mb-32 mx-auto grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 justify-items-center justify-center gap-y-16 gap-x-14 mt-10 mb-5">
+              {products.map((product) => (
+                <div
+                  key={product.offerID}
                   onClick={() => openModal(product)}
-                />
-                <div className="px-4 py-3 w-72">
-                  <span className="text-gray-400 mr-3 uppercase text-xs">{product.category}</span>
-                  <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
-                  <div className="flex items-center">
-                    <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price} <span className='font-bold'>{product.currency}</span></p>
-                    <div className="ml-16 text-2xl flex text-orange-400 hover:cursor-pointer">
-                      <a
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toast.error('Offer removed from favourites',{position: "top-center"});
-                          removeFromFavourites(product.offerID);
-                        }}
-                      >
-                        🧡
-                      </a>
+                  className="w-56 bg-white shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-[5px_5px_rgba(212,124,36,0.9),_10px_10px_rgba(212,124,36,0.6),_15px_15px_rgba(212,124,36,0.4),_20px_20px_rgba(212,124,36,0.2)]"
+                >
+                  <img
+                    src={product.OfferImages[0]?.imageUrl}
+                    alt="Product"
+                    className="h-60 w-72 object-cover rounded-t-xl hover:cursor-pointer"
+                  />
+                  <div className="px-4 py-3 w-56">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400 uppercase text-xs">{product.category}</span>
+                      <p className="text-gray-500 text-xs">{new Date(product.createdAt).toLocaleDateString()}</p>
+                    </div>
+                    <p className="text-gray-400 text-xs">{product.size}</p>
+                    <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
+                    <div className="flex justify-between items-center my-3">
+                      <p className="text-lg font-semibold text-black cursor-auto">{product.price} <span className='font-bold'>{product.currency}</span></p>
+                      <div className="text-2xl text-orange-400 hover:cursor-pointer">
+                        <a
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toast.error('Offer removed from favourites', { position: "top-center" });
+                            removeFromFavourites(product.offerID);
+                          }}
+                        >
+                          🧡
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
             </section>
           </>
           }
@@ -185,35 +192,62 @@ const Favourites = () => {
                       <FaRegArrowAltCircleRight size={30} />
                     </div>
                   </div>
-                  <div className="w-1/2 p-6 ml-8 overflow-y-auto max-h-96">
-                    <h2 className="company text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
-                      {selectedProduct.category}
-                    </h2>
-                    <h3 className="product mt-4 capitalize text-very-dark-blue font-bold text-4xl py-2 border-b border-gray-200">
+                  <div className="w-1/2 p-6 ml-8 no-scrollbar overflow-y-auto max-h-96">
+                    <div className="w-full flex justify-between items-center">
+                      <h2 className="company text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
+                        {selectedProduct.category}
+                      </h2>
+                      <Link to={`/user/${selectedProduct.ownerID}`}>
+                        <div title={`${selectedProduct.isBanned ? 'Użytkownik zbanowany' : ''}`} className="flex items-center space-x-2 cursor-pointer">
+                          <img src={selectedProduct.avatarURL || Avatar} alt="avatar" className={`w-10 h-10 rounded-full${selectedProduct.isBanned ? ' border-2 border-red-500' : ''}`} />
+                          <div className="text-black text-md">{selectedProduct.username}</div>
+                        </div>
+                      </Link>
+                    </div>         
+                    <h3 className="product mt-2 capitalize text-very-dark-blue font-bold text-4xl py-2 border-b border-gray-200">
                       {selectedProduct.title}
                     </h3>
                     <p className="text-dark-grayish-blue lg:leading-6 border-b border-gray-200 py-4">
                       {selectedProduct.description}
                     </p>
-                    <div className="mt-4 amount font-bold flex items-center justify-between lg:flex-col lg:items-start mb-6">
-                      <div className="discount-price items-center flex">
-                        <div className="price text-3xl">${selectedProduct.price}</div>
+                    <div className="mt-4 amount flex items-center justify-between lg:flex-col lg:items-start border-b border-gray-200 mb-6">
+                      <div className="discount-price items-center flex py-2">
+                        <div className="price text-2xl">{selectedProduct.price} <span className='font-bold'>{selectedProduct.currency}</span></div>
                       </div>
                     </div>
-                    <button 
-                      className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300"
-                      onClick={handleBuyNow}
-                    >
-                      <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
-                        <FaCartShopping className="pr-4 w-8 h-8" /> BUY NOW!
-                      </i>
-                    </button>
+                    <div className="mt-4 amount flex items-center justify-between lg:flex-col lg:items-start mb-6">
+                      <div className="discount-price items-center flex">
+                        <div className="price text-3xl">Size: {selectedProduct.size}</div>
+                        {selectedProduct.colors && selectedProduct.colors.length > 0 ? (
+                          <div className="flex space-x-2 ml-40">
+                            {(Array.isArray(selectedProduct.colors) ? selectedProduct.colors : selectedProduct.colors.split(","))
+                              .map((color) => (
+                                <div
+                                  key={color}
+                                  className="w-6 h-6 rounded-full border-2 border-gray-300"
+                                  style={{ backgroundColor: color.trim().toLowerCase() }}
+                                  title={color.trim()}
+                                ></div>
+                              ))}
+                          </div>
+                        ) : (
+                          <div className="ml-4 text-gray-500"></div>
+                        )}
+                      </div>
+                    </div>
+                    {user.isAuthenticated && user.userID !== selectedProduct.ownerID && (    
+                      <button onClick={handleBuyNow} className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                        <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
+                          <FaCartShopping className="pr-4 w-8 h-8" /> BUY NOW!
+                        </i>
+                      </button>
+                    )}         
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          <div onClick={closeModal} className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       )}
       </>

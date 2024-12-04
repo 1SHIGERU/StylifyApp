@@ -26,7 +26,7 @@ export function DragComponent({
                         ownerLicense={ownerLicense}
                         onUpload={uploadFiles}
                         onDelete={deleteFile}
-                        count={10}
+                        count={16}
                         formats={["jpg", "jpeg", "png"]}
                         onSubmit={onSubmit}
                     />

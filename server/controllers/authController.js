@@ -55,9 +55,10 @@ const login = async (req, res) => {
       }
     };
 
-    const accessToken = jwt.sign(payload, 'accessTokenSecret', { expiresIn: '46m' });
+    const accessToken = jwt.sign(payload, 'accessTokenSecret', { expiresIn: '1d' });
     const refreshToken = jwt.sign(payload, 'refreshTokenSecret', { expiresIn: '7d' });
-    res.json({ accessToken, refreshToken });
+
+    res.json({ accessToken, refreshToken })
     
   } catch (err) {
     console.error(err.message);

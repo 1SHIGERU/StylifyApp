@@ -45,6 +45,7 @@ export const Market = () => {
   const fetchOffer = async (offerID) => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}offers/${offerID}`);
+      console.log(data)
       return data;
     } catch (error) {
       console.error('Error fetching offer:', error);
@@ -203,11 +204,11 @@ export const Market = () => {
         setFiltersVisible(!filtersVisible);
       };
 
-      const hardcodedMin = 1;
+      const hardcodedMin = 0;
       const hardcodedMax = 500;
 
       const [filters, setFilters] = useState({
-        minPrice: 1,
+        minPrice: 0,
         maxPrice: 500,
         category: '',
         size: { clothing: [], shoes: [] },
@@ -822,8 +823,10 @@ export const Market = () => {
                       </div>
                     </div>
                     <div className="mt-4 amount flex items-center justify-between lg:flex-col lg:items-start mb-6">
-                      <div className="discount-price items-center flex">
-                        <div className="price text-3xl">Size: {selectedProduct.size}</div>
+                      <div className="discount-price items-center flex"> 
+                        {selectedProduct.size && (
+                          <div className="price text-3xl">Size: {selectedProduct.size}</div>
+                          )}           
                         {selectedProduct.colors && selectedProduct.colors.length > 0 ? (
                           <div className="flex space-x-2 ml-40">
                             {(Array.isArray(selectedProduct.colors) ? selectedProduct.colors : selectedProduct.colors.split(","))

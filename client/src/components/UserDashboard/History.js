@@ -52,108 +52,50 @@ const History = () => {
         return <Loading />
       }
 
-    return (
-        <>
-        <h1 className='text-4xl font-bold mb-4'>Your orders history</h1>
-        <h1 className='text-xl font-bold mb-2 text-orange-600'>we keep your order history for 7 days.</h1>
-        <hr />
-          <section className="py-12 relative">
-            <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
-              <div className="flex justify-between mb-6">
-                <button
-                  onClick={() => setView('bought')}
-                  className={`rounded-full py-3 px-7 font-semibold text-sm leading-7 ${
-                    view === 'bought' ? 'bg-orange-600 text-white' : 'border-2 border-orange-600 text-orange-600'
-                  } shadow-sm transition-all duration-300 hover:shadow-[0_3px_10px_rgb(0,0,0,0.4)]`}
-                >
-                  Bought
-                </button>
-                <button
-                  onClick={() => setView('sold')}
-                  className={`rounded-full py-3 px-7 font-semibold text-sm leading-7 ${
-                    view === 'sold' ? 'bg-orange-600 text-white' : 'border-2 border-orange-600 text-orange-600'
-                  } shadow-sm transition-all duration-500 hover:shadow-[0_3px_10px_rgb(0,0,0,0.4)]`}
-                >
-                  Sold
-                </button>
-              </div>
+      return (
+        <div className="flex">
+          <aside className="w-1/4 p-6 bg-white pt-16">
+            <h2 className="text-2xl font-bold mb-6">Orders history</h2>
+            <ul>
+              <li className="mb-4">
+                <a onClick={() => setView('bought')} className={`flex text-lg px-4 transition cursor-pointer duration-200 text-gray-600 ${view === 'bought' ? 'text-orange-500 font-bold border-r-2 border-orange-500' : 'hover:scale-105'}`}>Bought</a>
+              </li>
+              <li>
+                <a onClick={() => setView('sold')} className={`flex text-lg px-4 transition duration-200 cursor-pointer text-gray-600 ${view === 'sold' ? "text-orange-500 font-bold border-r-2 border-orange-500" : "hover:scale-105"}`}>Sold</a>
+              </li>
+            </ul>
+          </aside>
     
+    
+          <main className="w-3/4 p-6">
+            {view === 'sold' && (
+             <>
+              <h1 className="text-3xl text-gray-700 font-bold mb-4">These items have been delivered</h1>
+             </>
+            )}
+            {view === 'bought' && (
+             <>
+              <h1 className="text-3xl text-gray-700 font-bold mb-4">You picked up these items</h1>
+             </>
+            )}
+    
+            <div className="space-y-4 2xl:mr-96 xl:mr-64">  
               {transactions.map(transaction => (
-                <div key={transaction.transactionID} className="main-box duration-200 hover:scale-105 hover:shadow-md mb-4 border border-gray-200 rounded-xl pt-6 max-w-xl max-lg:mx-auto lg:max-w-full">
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between px-6 pb-6 border-b border-gray-200">
-                    <div className="data">
-                      <p className="font-semibold text-base leading-7 text-black">
-                        Order ID: <span className="text-orange-600 font-medium">#{transaction.transactionID}</span>
-                      </p>
-                      <p className="font-semibold text-base leading-7 text-black mt-4">
-                        Order Payment: <span className="text-gray-400 font-medium">{new Date(transaction.createdDate).toLocaleDateString()}</span>
-                      </p>
-                    </div>
-                    {view === 'bought' ? (
-                        <></>
-                    ) : (
-                      <div className="address-box">
-                        
-                      </div>
-                    )}
-                  </div>
-                  <div className="w-full px-3 min-[400px]:px-6">
-                    <div className="flex flex-col lg:flex-row items-center py-6 border-b border-gray-200 gap-6 w-full">
-                      <div className="img-box max-lg:w-full">
-                        <img
-                          src={transaction.Offer.OfferImages?.[0]?.imageUrl || 'https://pagedone.io/asset/uploads/1701167607.png'}
-                          alt={transaction.Offer.title}
-                          className="aspect-square w-full lg:max-w-[140px]"
-                        />
-                      </div>
-                      <div className="flex flex-row items-center w-full">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 w-full">
-                          <div className="flex items-center">
-                            <div>
-                              <h2 className="font-semibold text-2xl leading-8 text-black mb-3">
-                                {transaction.Offer.title}
-                              </h2>
-                              <p className="font-normal text-lg leading-8 text-gray-500 mb-3">
-                                By: {transaction.Seller.username}
-                              </p>
-                              <div className="flex items-center">
-                                <p className="font-medium text-base leading-7 text-black pr-4 mr-4 border-r border-gray-200">
-                                  Category: <span className="text-orange-600">{transaction.Offer.category}</span>
-                                </p>
-    
-                              </div>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-5">
-                            <div className="col-span-5 lg:col-span-1 flex items-center max-lg:mt-3">
-                              <div className="flex gap-3 lg:block">
-                                <p className="font-medium text-sm leading-7 text-black">Price</p>
-                                <p className="lg:mt-4 font-medium text-xl leading-7 text-orange-600">${transaction.amount}</p>
-                              </div>                      
-                            </div>
-                            {view === 'bought' ? (
-                                    <>
-                                    </>
-                                  ) : (
-                                    <div className="address-box flex ml-4 p-2">
-                                      <p className="font-medium text-sm text-black mt-6">Delivered to:</p>
-                                      <div className='ml-4 text-gray-600 w-auto'>
-                                        <span className=''>{transaction.Buyer.Address.street}</span> <br />
-                                        <span className=''>{transaction.Buyer.Address.postcode}, {transaction.Buyer.Address.city} </span> 
-                                        <span className=''>{transaction.Buyer.Address.country}</span>
-                                      </div>
-                                    </div>
-                                )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex transition duration-200 hover:scale-105 items-center bg-white border border-gray-200 shadow-md rounded-lg p-4 hover:shadow-lg transition">
+                  <img src={transaction.Offer.OfferImages?.[0]?.imageUrl || 'https://pagedone.io/asset/uploads/1701167607.png'} alt="Product" class="w-20 h-20 rounded-lg object-cover" />
+                  <div className="ml-4 flex-1">
+                    <p className="text-gray-600 mb-2">{new Date(transaction.createdAt).toLocaleDateString()}</p>
+                    <h3 className="text-lg font-semibold text-gray-800 truncate">{transaction.Offer.title}</h3>
+                    <p className="text-gray-600">{transaction.amount} zł</p>
+                    <p className="text-sm text-gray-400">
+                      {view === 'bought' ? '' : ''}
+                    </p>
+                  </div>                 
                 </div>
               ))}
             </div>
-          </section>
-        </>
+          </main>
+        </div>
       );
 };
 

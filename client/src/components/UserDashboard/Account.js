@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { AuthData } from "../../auth/AuthWrapper"
-import Img from "../../assets/avatar.jpg"
+import Avatar from "../../assets/avatar.jpg";
 import Favourites from './Favourites';
 import ActiveOffers from './ActiveOffers';
 import Wallet from './Wallet';
@@ -96,24 +96,36 @@ export const Account = () => {
 
       const changePassword = async (e) => {
         e.preventDefault();
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}users/updatePassword`, {
-          userID: user.userID,
-          currentPassword: oldPassword,
-          newPassword: newPassword,
-          repeatPassword: newPasswordRepeat
-        });
-
-        if (response.status === 200) {
-          toast.success('Password changed successfully! 🎉', {position:"top-center"})
-          setIsPasswordModalOpen(false);
-        } else if(response.status === 400) {
-          toast.error('Current password is incorrect', {position:"top-center"})
-        } else if(response.status === 405) {
-          toast.error('New password and repeat password are not the same', {position:"top-center"})
-        } else {
-               }
-
-      }
+      
+        try {
+          const response = await axios.post(`${process.env.REACT_APP_API_URL}users/updatePassword`, {
+            userID: user.userID,
+            currentPassword: oldPassword,
+            newPassword: newPassword,
+            repeatPassword: newPasswordRepeat,
+          });
+      
+          if (response.status === 200) {
+            toast.success('Password changed successfully! 🎉', { position: "top-center" });
+            setIsPasswordModalOpen(false);
+          }
+        } catch (error) {
+          if (error.response) {
+            const { status, data } = error.response;
+      
+            if (status === 400 && data.message === "Current password is incorrect") {
+              toast.error('Current password is incorrect', { position: "top-center" });
+            } else if (status === 405 && data.message === "Passwords do not match") {
+              toast.error('New password and repeat password are not the same', { position: "top-center" });
+            } else {
+              toast.error('An unknown error occurred', { position: "top-center" });
+            }
+          } else {
+            toast.error('Network error. Please try again.', { position: "top-center" });
+          }
+        }
+      };
+      
 
       {/* MODAL oraz dane w nim*/}
       
@@ -177,9 +189,9 @@ export const Account = () => {
           switch (activeTab) {
             case 'account':
               return (
-                <div>
-                  <div class="flex items-center">
-                    <img src={user.avatar} alt="avatar" class="w-32 h-32 rounded-full" />
+                <div className='px-8'>
+                  <div class="flex mt-8 items-center">
+                    <img src={user.avatar || Avatar} alt="avatar" class="w-32 h-32 rounded-full" />
                     <div className='flex space-y-4 flex-col ml-4'>
                       <h1 class="ml-4 text-2xl font-bold">{user.username}</h1>
                       <hr class="text-orange-600" />
@@ -187,43 +199,41 @@ export const Account = () => {
                     </div>
                     <button
                       onClick={handleEditClick}
-                      className="ml-auto bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Edit profile
+                      className="ml-auto relative mt-4 flex h-[50px] w-40 items-center justify-center border-2 border-orange-500 overflow-hidden bg-white text-orange-400 shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                      <span class="relative z-11">Edit profile</span>
                     </button>
                     <button
                       onClick={handlePasswordChange}
-                      className="bg-orange-500 ml-4 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Change your password
+                      className="relative ml-4 mt-4 flex h-[50px] w-40 items-center justify-center border-2 border-orange-500 overflow-hidden bg-white text-orange-400 shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                      <span class="relative z-10">Change password</span>
                     </button>
                   </div>
                   <hr class="my-10" />
                   <div class="grid grid-cols-2 gap-x-20">
-                    <div>
+                    <div className='border-r-2 border-gray-200 pr-16'>
                       <h2 class="text-2xl font-bold mb-4">Stats</h2>
                       <div class="grid grid-cols-2 gap-4">
                         <div class="col-span-2">
-                          <div class="p-4 bg-yellow-200 rounded-xl">
-                            <div class="font-bold text-xl text-gray-800 leading-none">Good day, <br />{user.username}</div>
+                          <div class="bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+                            <div class="font-bold text-xl text-gray-800 leading-none">Good morning, <br />{user.username}</div>
                             <div class="mt-5">                        
-                              <button onClick={() => setActiveTab('activeOffers')} type="button" class="inline-flex items-center justify-center py-2 px-3 rounded-xl bg-white text-gray-800 text-sm font-semibold transition">
+                              <button onClick={() => setActiveTab('activeOffers')} type="button" class="inline-flex items-center justify-center py-2 bg-white text-gray-800 text-sm font-semibold transition duration-200 hover:border-b-2 hover:border-orange-500">
                                 Active offers: <span className='text-orange-600 ml-2'> {activeOffers} </span>
                               </button>
                             </div>
                           </div>
                         </div>
-                        <div class="p-4 bg-yellow-100 rounded-xl text-gray-800">
-                          <div class="font-bold text-2xl leading-none">{transactionCounts.soldCount}</div>
+                        <div class="bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+                          <div class="font-bold text-2xl text-orange-500 leading-none">{transactionCounts.soldCount}</div>
                           <div class="mt-2">Items sold</div>
                         </div>
-                        <div class="p-4 bg-yellow-100 rounded-xl text-gray-800">
-                          <div class="font-bold text-2xl leading-none">{transactionCounts.boughtCount}</div>
+                        <div class="bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+                          <div class="font-bold text-2xl text-orange-500 leading-none">{transactionCounts.boughtCount}</div>
                           <div class="mt-2">Items bought</div>
                         </div>
                         <div class="col-span-2"> 
-                          <div class="p-4 bg-yellow-200 rounded-xl">    
-                            <div class="font-bold text-xl mb-4 text-gray-800 leading-none">Bilans finansowy: <span className='text-orange-500'>{bilans} zł </span></div> 
+                          <div class="bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">    
+                            <div class="font-bold text-xl mb-4 text-gray-800 leading-none">Financial balance: <span className='text-orange-500'>{bilans} zł </span></div> 
                               <div className='flex'>                    
                                    <div className='w-1/2'>
                                         <h1 className='font-bold'>Earned:</h1>
@@ -239,49 +249,43 @@ export const Account = () => {
                       </div>
                     </div>
                     
-                    <div class="overflow-hidden bg-white rounded-xl">
-                    <h3 class="text-3xl font-semibold text-center text-gray-900">Your shipping details</h3>
-                      <div class="px-6 sm:p-12">
-                          <form method="POST" class="mt-14">
-                              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
-                                  <div>
-                                      <label for="" class="text-base font-medium text-gray-900"> Street </label>
-                                      <div class="mt-2.5 relative">
-                                          <input onChange={(e) => setStreet(e.target.value)} value={street} required minLength={3} maxLength={50} type="text" name="" id="" placeholder="Enter your full street" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
-                                      </div>
-                                  </div>
-
-                                  <div>
-                                      <label for="" class="text-base font-medium text-gray-900"> City </label>
-                                      <div class="mt-2.5 relative">
-                                          <input onChange={(e) => setCity(e.target.value)} value={city} pattern="[A-Za-z\s]+" minLength={2} maxLength={50}  required type="text" name="" id="" placeholder="Enter your city" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
-                                      </div>
-                                  </div>
-
-                                  <div>
-                                      <label for="" class="text-base font-medium text-gray-900"> Postcode </label>
-                                      <div class="mt-2.5 relative">
-                                          <input onChange={(e) => setPostcode(e.target.value)} value={postcode} title="Please enter a valid postcode (e.g., 12-345)"  required pattern="[0-9]{2}-[0-9]{3}"  type="text" name="" id="" placeholder="Enter your postcode" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
-                                      </div>
-                                  </div>
-
-                                  <div>
-                                      <label for="" class="text-base font-medium text-gray-900"> Country </label>
-                                      <div class="mt-2.5 relative">
-                                          <input onChange={(e) => setCountry(e.target.value)} value={country} pattern="[A-Za-z\s]+" minlength="2" maxlength="50" required type="text" name="" id="" placeholder="Enter your country" class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orange-500" />
-                                      </div>
-                                  </div>
-                                  <div class="sm:col-span-2">
-                                      <button onClick={handleUploadAddress} class="mt-4 bg-white w-full text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center justify-center">
-                                        <span class="mr-2">Apply</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                          <path fill="currentcolor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
-                                        </svg>
-                                      </button>
-                                  </div>
-                              </div>
-                          </form>
+                    <div class="bg-white">
+                    <div class="flex justify-center py-10 items-center bg-white">
+                    <form class="bg-white">
+                          <h1 class="text-gray-800 font-bold text-3xl mb-1">Shipping details</h1>
+                          <p class="text-md font-normal text-gray-600 mb-7">Seller is gonna need it</p>
+                      <div class="flex items-center w-96 border-2 py-2 px-3 rounded-2xl mb-4 focus-within:border-orange-500">
+                        <div class="pr-2">
+                          🏡
+                        </div>
+                        <input onChange={(e) => setStreet(e.target.value)} value={street} required minLength={3} maxLength={50} class="pl-2 border-none focus:outline-none w-full" type="text" name="street" id="street" placeholder="Street" />
                       </div>
+
+                      <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4 focus-within:border-orange-500">
+                        <div class="pr-2">
+                          🏙️
+                        </div>
+                        <input onChange={(e) => setCity(e.target.value)} value={city} pattern="[A-Za-z\s]+" minLength={2} maxLength={50} class="pl-2 border-none focus:outline-none w-full" type="text" name="city" id="city" placeholder="City" />
+                      </div>
+
+                      <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4 focus-within:border-orange-500">
+                        <div class="pr-2">
+                          📯
+                        </div>
+                        <input onChange={(e) => setPostcode(e.target.value)} value={postcode} title="Please enter a valid postcode (e.g., 12-345)"  required pattern="[0-9]{2}-[0-9]{3}" class="pl-2 border-none focus:outline-none w-full" type="text" name="postcode" id="postcode" placeholder="Postcode" />
+                      </div>
+
+                      <div class="flex items-center border-2 py-2 px-3 rounded-2xl focus-within:border-orange-500">
+                        <div class="pr-2 text-gray-700">
+                          🌍
+                        </div>
+                        <input onChange={(e) => setCountry(e.target.value)} value={country} pattern="[A-Za-z\s]+" minlength="2" maxlength="50" required class="pl-2 border-none focus:outline-none w-full" type="text" name="country" id="country" placeholder="Country" />
+                      </div>
+                          <button onClick={handleUploadAddress} class="relative mx-auto mt-4 flex h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                            <span class="relative z-10">Save address</span>
+                          </button>       
+                    </form>
+                    </div>
                   </div>
                 </div>
                 {isModalOpen && (
@@ -295,7 +299,7 @@ export const Account = () => {
                           onChange={handleFileChange}
                         />  
                         <img
-                          src={selectedImage}
+                          src={selectedImage || Avatar}
                           alt="avatar"
                           className="mb-4 w-32 h-32 cursor-pointer rounded-full border-2 border-orange-500"
                           onClick={handleImageClick} 
@@ -323,9 +327,8 @@ export const Account = () => {
                       </div>
                       
                       <form className="ml-auto space-y-4" onSubmit={handleSubmit}>
-                        <h1 onClick={closeModal} className="cursor-pointer text-xl font-bold">X</h1> 
-                        <input
-                          
+                        <h1 onClick={closeModal} className="cursor-pointer text-md text-red-700 text-right ">X</h1> 
+                        <input                        
                           maxLength={20}
                           type="text"
                           placeholder="New username"
@@ -333,8 +336,7 @@ export const Account = () => {
                           onChange={(e) => setUsername(e.target.value)} 
                           className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
                         />
-                        <input
-                          
+                        <input                          
                           type="email"
                           maxlength={30}
                           placeholder="New email"
@@ -342,8 +344,7 @@ export const Account = () => {
                           onChange={(e) => setEmail(e.target.value)} 
                           className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
                         />
-                        <textarea
-                          
+                        <textarea                 
                           placeholder="Description"
                           maxLength={200}
                           rows="4"
@@ -358,7 +359,6 @@ export const Account = () => {
                           Save
                         </button>
                       </form>
-
                     </div>
                   </div>
                 )}
@@ -429,82 +429,59 @@ export const Account = () => {
         , [activeTab]);
 
         return (
-          <div className="relative bg-yellow-50 overflow-hidden max-h-screen">
-              <aside class="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-54">
-               <div class="flex flex-col justify-between h-full">
-                    <div class="flex-grow">
-                    <div class="px-4 py-6 text-center border-b">
-                         <h1 class="text-xl font-bold leading-none"><span class="text-yellow-700">Task Manager</span> App</h1>
-                    </div>
-                    <div class="p-4">
-                         <ul class="space-y-4">
-                         <li>
-                         <a onClick={() => setActiveTab('account')} className={`cursor-pointer flex items-center font-bold text-sm py-2 px-4 w-full text-left ${
-                              activeTab === 'account' ? 'border-b-2 border-orange-500' : 'bg-white hover:bg-yellow-50 text-gray-900'
-                         }`}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" className="mr-4" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
-                              Account                            
-                         </a>
+          <div className="flex h-screen pt-16">
+              <div className="text-gray-500 w-1/5 p-6 shadow-md ">                     
+                      <h2 class="lg:text-3xl mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+                        User Dashboard
+                      </h2>           
+                      <ul class="space-y-6">
+                         <li onClick={() => setActiveTab('account')} className={`flex transition duration-200 items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'account' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                              }`}>    
+                            <span className="text-xl">🏠</span>
+                            <span className="text-lg">General</span>         
                          </li>
 
-                         <li>
-                         <a onClick={() => setActiveTab('favourites')} className={`cursor-pointer flex items-center  font-bold text-sm py-3 px-4 w-full text-left ${
-                              activeTab === 'favourites' ? 'border-b-2 border-orange-500' : 'bg-white hover:bg-yellow-50 text-gray-900'
-                         }`}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" className=" mr-4" viewBox="0 0 512 512"><path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"/></svg>
-                              Favourites
-                         </a>
+                         <li onClick={() => setActiveTab('favourites')} className={`flex transition duration-200  items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'favourites' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                              }`}>    
+                            <span className="text-xl">🤍</span>
+                            <span className="text-lg">Favourites</span>         
                          </li>
 
-                         <li>
-                         <a onClick={() => setActiveTab('activeOffers')} className={`cursor-pointer flex items-center  font-bold text-sm py-3 px-4 w-full text-left ${
-                              activeTab === 'activeOffers' ? 'border-b-2 border-orange-500' : 'bg-white hover:bg-yellow-50 text-gray-900'
-                         }`}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" className=" mr-4" viewBox="0 0 512 512"><path d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z"/></svg>
-                              My offers                            
-                         </a>
+                         <li onClick={() => setActiveTab('orders')} className={`flex transition duration-200  items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'orders' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                              }`}>    
+                            <span className="text-xl">📦</span>
+                            <span className="text-lg">Orders</span>         
                          </li>
 
-                         <li>
-                         <a onClick={() => setActiveTab('wallet')} className={`cursor-pointer flex items-center font-bold text-sm py-3 px-4 w-full text-left ${
-                              activeTab === 'wallet' ? 'border-b-2 border-orange-500' : 'bg-white hover:bg-yellow-50 text-gray-900'
-                         }`}>
-                         <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" className=" mr-4" viewBox="0 0 512 512"><path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V192c0-35.3-28.7-64-64-64H80c-8.8 0-16-7.2-16-16s7.2-16 16-16H448c17.7 0 32-14.3 32-32s-14.3-32-32-32H64zM416 272a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg> 
-                              Wallet
-                         </a>
+                         <li onClick={() => setActiveTab('history')} className={`flex transition duration-200 items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'history' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                              }`}>    
+                            <span className="text-xl">🕰️</span>
+                            <span className="text-lg">History</span>         
                          </li>
 
-                         <li>
-                         <a onClick={() => setActiveTab('orders')} className={`cursor-pointer flex items-center  font-bold text-sm py-3 px-4 w-full text-left ${
-                              activeTab === 'orders' ? 'border-b-2 border-orange-500' : 'bg-white hover:bg-yellow-50 text-gray-900'
-                         }`}>
-                         <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" className=" mr-4" viewBox="0 0 512 512"><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg> 
-                              Orders
-                         </a>
+                         <li onClick={() => setActiveTab('activeOffers')} className={`flex transition duration-200 items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'activeOffers' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                              }`}>    
+                            <span className="text-xl">🟢</span>
+                            <span className="text-lg">Active offers</span>         
                          </li>
-                         <li>
-                         <a onClick={() => setActiveTab('history')} className={`cursor-pointer flex items-center  font-bold text-sm py-3 px-4 w-full text-left ${
-                              activeTab === 'history' ? 'border-b-2 border-orange-500' : 'bg-white hover:bg-yellow-50 text-gray-900'
-                         }`}>
-                         <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" className=" mr-4" viewBox="0 0 512 512"><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg> 
-                              History
-                         </a>
+
+                         <li onClick={() => setActiveTab('wallet')} className={`flex transition duration-200 items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'wallet' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                              }`}>    
+                            <span className="text-xl">💳</span>
+                            <span className="text-lg">Wallet</span>         
                          </li>
-                         </ul>
-                    </div>
-                    </div>                  
-               </div>
-              </aside>
-      
-            <main className="ml-60 pt-16 max-h-screen overflow-auto">
-              <div className="px-6 py-8">
-                <div className="w-5/6 mx-auto">
-                  <div className="bg-white rounded-3xl p-8 mb-5">
-                    {renderContent()}
-                  </div>
-                </div>
-              </div>
-            </main>
+                      </ul>                
+              </div>  
+
+              <div className="flex-1 p-8">
+                  {renderContent()}
+              </div>          
           </div>
         );
       };

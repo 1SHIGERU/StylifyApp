@@ -300,7 +300,7 @@ if(!user.isAdmin) return <ErrorPage/>
 
   return (
     <div className="flex h-screen pt-16">
-      <div className="text-gray-500 w-1/5 p-6 ">
+      <div className="text-gray-500 w-1/5 p-6 shadow-md ">
             <h2 class="lg:text-3xl mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
                 Admin panel
             </h2>
@@ -308,8 +308,8 @@ if(!user.isAdmin) return <ErrorPage/>
           {menuItems.map((item, index) => (
             <li
               key={index}
-              className={`flex items-center gap-4 cursor-pointer p-2 ${
-                activeSection === item.name ? "text-gray-800 border-r-2 border-orange-500 font-bold" : ""
+              className={`flex transition duration-200 items-center gap-4 cursor-pointer p-2 ${
+                activeSection === item.name ? "text-gray-800 border-r-2 border-orange-500 font-bold" : "hover:scale-105"
               }`}
               onClick={() => setActiveSection(item.name)}
             >
@@ -367,8 +367,9 @@ const UserCard = ({ userID, username, firstName,familyName , avatarURL, desc, is
       toast.error("Failed to update user ban status.", { position: "top-center" });
     }
   };
-  
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
+
     return (
     <div key={userID} className="flex space-x-4 py-4 border-b border-gray-200 w-5/5">
        <img
