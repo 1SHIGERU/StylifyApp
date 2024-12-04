@@ -205,11 +205,11 @@ export const Market = () => {
       };
 
       const hardcodedMin = 0;
-      const hardcodedMax = 500;
+      const hardcodedMax = 9999;
 
       const [filters, setFilters] = useState({
         minPrice: 0,
-        maxPrice: 500,
+        maxPrice: 9999,
         category: '',
         size: { clothing: [], shoes: [] },
         gender: '',
@@ -476,7 +476,7 @@ export const Market = () => {
                       </svg>
                       <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium ">Price</p>
                     </div>
-                    <div className="flex w-64 items-center h-16 mt-8">
+                    <div className="flex w-full items-center h-16 mt-8">
                       <MultiRangeSlider
                         min={hardcodedMin}              
                         max={hardcodedMax}                 

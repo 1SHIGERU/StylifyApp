@@ -592,8 +592,8 @@ export function CustomDragDrop({
                     </div>      
                     <input 
                       type="number" 
-                      placeholder={price}
-                      maxLength={5} 
+                      placeholder={price}  
+                      maxLength='5'
                       className="bg-gray-200 w-1/5 text-sm px-4 py-3.5 rounded-md outline-[#8B4513]"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
