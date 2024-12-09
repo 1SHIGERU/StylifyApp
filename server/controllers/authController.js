@@ -1,6 +1,13 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
+const Joi = require('@hapi/joi');
+
+const login_schema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(3).required()
+});
+
 
 const register = async (req, res) => {
   const errors = validationResult(req);
@@ -31,9 +38,11 @@ const register = async (req, res) => {
 
 
 const login = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+
+  const { error } = login_schema.validate(req.body);
+  
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
   }
 
   const { email, password } = req.body;

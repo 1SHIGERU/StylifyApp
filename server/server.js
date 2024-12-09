@@ -49,3 +49,5 @@ require('./models/Chat');
 require('./models/Reviews');
 require('./models/ContactMessage');
 
+module.exports = app;
+

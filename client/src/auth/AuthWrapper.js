@@ -157,6 +157,7 @@ export const AuthWrapper = () => {
       isBanned: false,
     });
     navigate("/");
+    toast.success('Logged out successfully!', { position: 'top-center' });
   };
 
   useEffect(() => {
