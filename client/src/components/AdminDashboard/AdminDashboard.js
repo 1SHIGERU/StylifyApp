@@ -14,6 +14,7 @@ import {
     LineElement,
     Title,
   } from "chart.js";
+import { set } from "date-fns";
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -30,7 +31,7 @@ const AdminDashboard = () => {
 
   const countActiveOffers = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}offers/countOffers/1`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}offers/countOffers`);
       setActiveOffers(res.data.count);
     } catch (err) {
       console.error(err.message);
@@ -99,7 +100,6 @@ const AdminDashboard = () => {
   const getContactMessages = async () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}chat/getContactMessages`);
-      console.log(res.data);
       setContactMessages(res.data);
     } catch (err) {
       console.error(err.message);

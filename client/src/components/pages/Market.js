@@ -1,4 +1,4 @@
-import React, { useEffect,  useState } from 'react'
+import React, { useEffect,  useState, useRef } from 'react'
 import MarketJpg from '../../assets/market.jpg'
 import axios from "axios";
 import Avatar from '../../assets/avatar.jpg';
@@ -15,8 +15,10 @@ import MultiRangeSlider from "multi-range-slider-react";
 import { useLocation } from 'react-router-dom';
 
 
+
 export const Market = () => {
 
+  const marketRef = useRef(null);
   const location = useLocation();
   const category2 = location.state?.category;
   const queryParams = new URLSearchParams(location.search);
@@ -27,6 +29,12 @@ export const Market = () => {
   const { user } = AuthData();
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [ownerData, setOwnerData] = useState(null);
+
+  const scrollToSection = (ref) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleBuyNow = () => {
     navigate('/payment', { state: { product: selectedProduct } });
@@ -181,6 +189,16 @@ export const Market = () => {
       const closeModal = () => {
         setSelectedProduct(null);
         setModalIsOpen(false);
+      };
+
+      const deleteOffer = async (offerID) => {
+        try {
+          await axios.delete(`${process.env.REACT_APP_API_URL}offers/${offerID}`);
+          fetchProducts();
+          closeModal();
+        } catch (error) {
+          console.error('Error deleting offer:', error);
+        }
       };
 
       const goToAccount = () => {
@@ -370,17 +388,22 @@ export const Market = () => {
 
     return (
       <div className='overflow-x-hidden'> 
-        <div className='flex w-full min-h-screen justify-center items-center pt-16'>
-            <div className='w-1/3 justify-center items-center p-32 md:p-16'>
-                  <h2 class="lg:text-7xl text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
-                   Welcome on the market!
-                  </h2>
-                <p className='text-2xl text-brown-500 mt-4'> Find your dream clothes here!</p>
-            </div>
-            <div className='w-2/3 justify-center items-center'>
-                <img src={MarketJpg} alt='market' className='rounded-full ml-72' />
-            </div>
-        </div>
+          <div className='flex w-full min-h-screen justify-center items-center '>
+              <div className='w-1/3 justify-center items-center px-16'>
+                    <h2 class="lg:text-7xl text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+                    Welcome on the market!
+                    </h2>
+                  <p className='text-2xl text-brown-500 mt-4'> Find your dream clothes here!</p>
+              </div>
+              <div className='w-2/3 justify-center items-center'>
+                  <img src={MarketJpg} alt='market' className='rounded-full ml-72' />
+              </div>
+          </div>
+          <div onClick={() => scrollToSection(marketRef)} className='flex justify-center cursor-pointer items-center'>
+            <svg class="w-10 h-10 text-orange-500 mt-[-100px] animate-ping" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4"/>
+            </svg>
+          </div>
         <div className='flex justify-center items-center mt-12'>
             <div className='w-4/5 p-4'>
               <div class="2xl:container 2xl:mx-auto">
@@ -423,7 +446,7 @@ export const Market = () => {
                       </div>
                     )}
                   </div>  
-                  <div class="relative text-gray-600">
+                  <div ref={marketRef} class="relative text-gray-600">
                     <input onChange={(e) => handleFilterChange('name', e.target.value)} value={filters.name} type="search" maxLength={20} name="serch" placeholder="Search" class="bg-gray-100 shadow-xl w-96 h-12 px-5 pr-10 rounded-full text-sm focus:outline-gray-600"/>
                     <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
                       <svg onClick={()=> applyFilters()} class="w-6 h-6 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -549,7 +572,7 @@ export const Market = () => {
                   </div>
                   <hr class="bg-gray-200 lg:w-6/12 w-full md:my-10 my-8" />
                   <div>
-                    <div class="flex space-x-2 text-gray-800  ">
+                    <div class="flex space-x-2 text-gray-800">
                       <svg class="w-[28px] h-[28px] text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-width="1" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                       </svg>
@@ -855,6 +878,13 @@ export const Market = () => {
                       <button onClick={goToAccount} className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
                         <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
                            TO MANAGE OFFER, CLICK HERE
+                        </i>
+                      </button>
+                    )}
+                    {user.isAuthenticated && user.isAdmin && (
+                      <button onClick={() => deleteOffer(selectedProduct.offerID)} className="flex bg-red-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                        <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
+                          DELETE OFFER
                         </i>
                       </button>
                     )}

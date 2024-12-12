@@ -14,8 +14,6 @@ exports.createOffer = async (req, res) => {
 
   const { ownerID, title, description, price, category, gender, colors, size, currency  } = req.body;
 
-  console.log(gender, colors, size);
-
   try {
     const newOffer = await Offer.create({
       ownerID,
@@ -162,6 +160,20 @@ exports.getOffersByUserId = async (req, res) => {
       },
     });
     res.json(offers);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+exports.countActiveOffers = async (req, res) => {
+  try {
+    const count = await Offer.count({
+      where: {
+        isActive: true,
+      },
+    });
+    res.json({ count });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

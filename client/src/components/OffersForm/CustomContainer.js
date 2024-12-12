@@ -238,6 +238,15 @@ export function CustomDragDrop({
       return;
     }
 
+    if(price === "e" || price === "E") {
+      toast.error('Price must be a number');
+      return;
+    }
+
+    if(price.length > 5) {
+      toast.error("Enter a valid price");
+      return;
+    }
 
     if(price <= 0) {
       toast.error('Price must be greater than 0');
