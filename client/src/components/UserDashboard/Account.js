@@ -193,9 +193,9 @@ export const Account = () => {
                   <div class="flex mt-8 items-center">
                     <img src={user.avatar || Avatar} alt="avatar" class="w-32 h-32 rounded-full" />
                     <div className='flex space-y-4 flex-col ml-4'>
-                      <h1 class="ml-4 text-2xl font-bold">{user.username}</h1>
+                      <h1 class="ml-4 dark:text-[#F6C177] text-2xl font-bold">{user.username}</h1>
                       <hr class="text-orange-600" />
-                      <h2 className='ml-4 text-xl text-gray-800'> {user.description} </h2>
+                      <h2 className='ml-4 text-xl dark:text-gray-300 text-gray-800'> {user.description} </h2>
                     </div>
                     <button
                       onClick={handleEditClick}
@@ -211,36 +211,36 @@ export const Account = () => {
                   <hr class="my-10" />
                   <div class="grid grid-cols-2 gap-x-20">
                     <div className='border-r-2 border-gray-200 pr-16'>
-                      <h2 class="text-2xl font-bold mb-4">Stats</h2>
+                      <h2 class="text-2xl dark:text-[#F6C177] font-bold mb-4">Stats</h2>
                       <div class="grid grid-cols-2 gap-4">
                         <div class="col-span-2">
-                          <div class="bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-                            <div class="font-bold text-xl text-gray-800 leading-none">Good morning, <br />{user.username}</div>
+                          <div class="shadow-xl p-6 dark:bg-[#252526] rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+                            <div class="font-bold dark:text-gray-300 text-xl text-gray-800 leading-none">Good morning, <br />{user.username}</div>
                             <div class="mt-5">                        
-                              <button onClick={() => setActiveTab('activeOffers')} type="button" class="inline-flex items-center justify-center py-2 bg-white text-gray-800 text-sm font-semibold transition duration-200 hover:border-b-2 hover:border-orange-500">
-                                Active offers: <span className='text-orange-600 ml-2'> {activeOffers} </span>
+                              <button onClick={() => setActiveTab('activeOffers')} type="button" class="inline-flex dark:text-gray-300 items-center justify-center py-2 text-gray-800 text-sm font-semibold transition duration-200 hover:border-b-2 hover:dark:border-[#F6C177] hover:border-orange-500">
+                                Active offers: <span className='text-orange-600 dark:text-[#F6C177] ml-2'> {activeOffers} </span>
                               </button>
                             </div>
                           </div>
                         </div>
-                        <div class="bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-                          <div class="font-bold text-2xl text-orange-500 leading-none">{transactionCounts.soldCount}</div>
-                          <div class="mt-2">Items sold</div>
+                        <div class="shadow-xl p-6 dark:bg-[#252526] rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+                          <div class="font-bold text-2xl dark:text-[#F6C177] text-orange-500 leading-none">{transactionCounts.soldCount}</div>
+                          <div class="mt-2 dark:text-gray-300">Items sold</div>
                         </div>
-                        <div class="bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-                          <div class="font-bold text-2xl text-orange-500 leading-none">{transactionCounts.boughtCount}</div>
-                          <div class="mt-2">Items bought</div>
+                        <div class="shadow-xl p-6 dark:bg-[#252526] rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+                          <div class="font-bold text-2xl dark:text-[#F6C177] text-orange-500 leading-none">{transactionCounts.boughtCount}</div>
+                          <div class="mt-2 dark:text-gray-300">Items bought</div>
                         </div>
                         <div class="col-span-2"> 
-                          <div class="bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">    
-                            <div class="font-bold text-xl mb-4 text-gray-800 leading-none">Financial balance: <span className='text-orange-500'>{bilans} zł </span></div> 
+                          <div class="shadow-xl p-6 dark:bg-[#252526] rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">    
+                            <div class="font-bold text-xl mb-4 dark:text-gray-300 text-gray-800 leading-none">Financial balance: <span className='dark:text-[#F6C177] text-orange-500'>{bilans} zł </span></div> 
                               <div className='flex'>                    
                                    <div className='w-1/2'>
-                                        <h1 className='font-bold'>Earned:</h1>
+                                        <h1 className='font-bold dark:text-gray-300'>Earned:</h1>
                                         <h2 className='text-green-500'>+{transactionSums.soldSum}zł</h2>
                                    </div>
                                    <div className='w-1/2'>
-                                        <h1 className='font-bold'>Spent:</h1>
+                                        <h1 className='font-bold dark:text-gray-300'>Spent:</h1>
                                         <h2 className='text-red-500'>-{transactionSums.boughtSum}zł</h2>
                                    </div>
                               </div>  
@@ -249,37 +249,37 @@ export const Account = () => {
                       </div>
                     </div>
                     
-                    <div class="bg-white">
-                    <div class="flex justify-center py-10 items-center bg-white">
-                    <form class="bg-white">
-                          <h1 class="text-gray-800 font-bold text-3xl mb-1">Shipping details</h1>
-                          <p class="text-md font-normal text-gray-600 mb-7">Seller is gonna need it</p>
-                      <div class="flex items-center w-96 border-2 py-2 px-3 rounded-2xl mb-4 focus-within:border-orange-500">
+                    <div class="">
+                    <div class="flex justify-center py-10 items-center">
+                    <form class="">
+                          <h1 class="text-gray-800 dark:text-[#F6C177] font-bold text-3xl mb-1">Shipping details</h1>
+                          <p class="text-md font-normal dark:text-gray-300 text-gray-600 mb-7">Seller is gonna need it</p>
+                      <div class="flex items-center dark:text-gray-300 w-96 border-2 py-2 px-3 rounded-2xl mb-4 focus-within:border-orange-500">
                         <div class="pr-2">
                           🏡
                         </div>
-                        <input onChange={(e) => setStreet(e.target.value)} value={street} required minLength={3} maxLength={50} class="pl-2 border-none focus:outline-none w-full" type="text" name="street" id="street" placeholder="Street" />
+                        <input onChange={(e) => setStreet(e.target.value)} value={street} required minLength={3} maxLength={50} class="pl-2 border-none bg-transparent focus:outline-none w-full" type="text" name="street" id="street" placeholder="Street" />
                       </div>
 
-                      <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4 focus-within:border-orange-500">
+                      <div class="flex items-center dark:text-gray-300 border-2 py-2 px-3 rounded-2xl mb-4 focus-within:border-orange-500">
                         <div class="pr-2">
                           🏙️
                         </div>
-                        <input onChange={(e) => setCity(e.target.value)} value={city} pattern="[A-Za-z\s]+" minLength={2} maxLength={50} class="pl-2 border-none focus:outline-none w-full" type="text" name="city" id="city" placeholder="City" />
+                        <input onChange={(e) => setCity(e.target.value)} value={city} pattern="[A-Za-z\s]+" minLength={2} maxLength={50} class="pl-2 border-none bg-transparent bg-transparent focus:outline-none w-full" type="text" name="city" id="city" placeholder="City" />
                       </div>
 
-                      <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4 focus-within:border-orange-500">
+                      <div class="flex items-center dark:text-gray-300 border-2 py-2 px-3 rounded-2xl mb-4 focus-within:border-orange-500">
                         <div class="pr-2">
                           📯
                         </div>
-                        <input onChange={(e) => setPostcode(e.target.value)} value={postcode} title="Please enter a valid postcode (e.g., 12-345)"  required pattern="[0-9]{2}-[0-9]{3}" class="pl-2 border-none focus:outline-none w-full" type="text" name="postcode" id="postcode" placeholder="Postcode" />
+                        <input onChange={(e) => setPostcode(e.target.value)} value={postcode} title="Please enter a valid postcode (e.g., 12-345)"  required pattern="[0-9]{2}-[0-9]{3}" class="pl-2 border-none bg-transparent focus:outline-none w-full" type="text" name="postcode" id="postcode" placeholder="Postcode" />
                       </div>
 
-                      <div class="flex items-center border-2 py-2 px-3 rounded-2xl focus-within:border-orange-500">
+                      <div class="flex items-center dark:text-gray-300 border-2 py-2 px-3 rounded-2xl focus-within:border-orange-500">
                         <div class="pr-2 text-gray-700">
                           🌍
                         </div>
-                        <input onChange={(e) => setCountry(e.target.value)} value={country} pattern="[A-Za-z\s]+" minlength="2" maxlength="50" required class="pl-2 border-none focus:outline-none w-full" type="text" name="country" id="country" placeholder="Country" />
+                        <input onChange={(e) => setCountry(e.target.value)} value={country} pattern="[A-Za-z\s]+" minlength="2" maxlength="50" required class="pl-2 border-none bg-transparent focus:outline-none w-full" type="text" name="country" id="country" placeholder="Country" />
                       </div>
                           <button onClick={handleUploadAddress} class="relative mx-auto mt-4 flex h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
                             <span class="relative z-10">Save address</span>
@@ -289,8 +289,8 @@ export const Account = () => {
                   </div>
                 </div>
                 {isModalOpen && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
-                    <div className="grid sm:grid-cols-2 items-center gap-16 p-8 mx-auto max-w-4xl bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md text-[#333] font-[sans-serif]">
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-55">
+                    <div className="grid sm:grid-cols-2 items-center gap-16 p-8 mx-auto  max-w-4xl dark:bg-[#2d2d30] bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md text-[#333] font-[sans-serif]">
                       <div>                                    
                         <input
                           type="file"
@@ -304,10 +304,10 @@ export const Account = () => {
                           className="mb-4 w-32 h-32 cursor-pointer rounded-full border-2 border-orange-500"
                           onClick={handleImageClick} 
                         />
-                        <h1 className="text-3xl font-extrabold">{username}</h1>
+                        <h1 className="text-3xl dark:text-[#F6C177] font-extrabold">{username}</h1>
                         <p className="text-sm text-gray-400 mt-3">{description}</p>
                         <div className="mt-12">
-                          <h2 className="text-lg font-extrabold">Email</h2>
+                          <h2 className="text-lg dark:text-[#F6C177] font-extrabold">Email</h2>
                           <ul className="mt-3">
                             <li className="flex items-center">
                               <div className="bg-[#e6e6e6cf] h-10 w-10 rounded-full flex items-center justify-center shrink-0">
@@ -364,10 +364,10 @@ export const Account = () => {
                 )}
 
                 {isPasswordModalOpen && (
-                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
-                    <div className="items-center p-8 mx-auto max-w-md bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md text-[#333] font-[sans-serif]">
+                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="items-center p-8 mx-auto max-w-md bg-white dark:bg-[#2d2d30]  shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md text-[#333] font-[sans-serif]">
                     <p className='text-right cursor-pointer text-red-700' onClick={() => setIsPasswordModalOpen(false)}>X</p>
-                    <h2 className='text-2xl text-brown-700 font-bold text-center mb-4'>Change your password</h2>
+                    <h2 className='text-2xl dark:text-[#F6C177] text-brown-700 font-bold text-center mb-4'>Change your password</h2>
                     <form className="ml-auto space-y-4" onSubmit={changePassword}>
                         <input
                           required
@@ -375,7 +375,7 @@ export const Account = () => {
                           type="password"
                           placeholder="Your acctual password"
                           onChange={(e) => setOldPassword(e.target.value)} 
-                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
+                          className="w-full dark:text-gray-300 rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
                         />
                         <input
                           required
@@ -383,7 +383,7 @@ export const Account = () => {
                           type="password"
                           placeholder="New password"
                           onChange={(e) => setNewPassword(e.target.value)} 
-                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
+                          className="w-full dark:text-gray-300 rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
                         />
                         <input
                           required
@@ -391,7 +391,7 @@ export const Account = () => {
                           type="password"
                           placeholder="Repeat new password"
                           onChange={(e) => setNewPasswordRepeat(e.target.value)} 
-                          className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
+                          className="w-full dark:text-gray-300 rounded-md py-2.5 px-4 border text-sm outline-[#FFA500]"
                         /> 
                         <button
                           type="submit"
@@ -429,49 +429,49 @@ export const Account = () => {
         , [activeTab]);
 
         return (
-          <div className="flex h-screen pt-16">
-              <div className="text-gray-500 w-1/5 p-6 shadow-md ">                     
-                      <h2 class="lg:text-3xl mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+          <div className="flex min-h-screen pt-16">
+              <div className="text-gray-500 dark:bg-[#2d2d30] w-1/5 p-6 shadow-md dark:shadow-[9px_0px_16px_1px_#F6C177]">                     
+                      <h2 class="lg:text-3xl dark:text-[#F6C177] mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
                         User Dashboard
                       </h2>           
                       <ul class="space-y-6">
-                         <li onClick={() => setActiveTab('account')} className={`flex transition duration-200 items-center gap-4 cursor-pointer p-2 ${
-                              activeTab === 'account' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                         <li onClick={() => setActiveTab('account')} className={`flex transition dark:text-[#F6C177] duration-200 items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'account' ? 'text-gray-800 border-r-2 border-orange-500 dark:border-[#F6C177] font-bold' : 'hover:scale-105'
                               }`}>    
                             <span className="text-xl">🏠</span>
                             <span className="text-lg">General</span>         
                          </li>
 
-                         <li onClick={() => setActiveTab('favourites')} className={`flex transition duration-200  items-center gap-4 cursor-pointer p-2 ${
-                              activeTab === 'favourites' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                         <li onClick={() => setActiveTab('favourites')} className={`flex transition dark:text-[#F6C177] duration-200  items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'favourites' ? 'text-gray-800 border-r-2 border-orange-500 dark:border-[#F6C177] font-bold' : 'hover:scale-105'
                               }`}>    
                             <span className="text-xl">🤍</span>
                             <span className="text-lg">Favourites</span>         
                          </li>
 
-                         <li onClick={() => setActiveTab('orders')} className={`flex transition duration-200  items-center gap-4 cursor-pointer p-2 ${
-                              activeTab === 'orders' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                         <li onClick={() => setActiveTab('orders')} className={`flex transition dark:text-[#F6C177] duration-200  items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'orders' ? 'text-gray-800 border-r-2 border-orange-500 dark:border-[#F6C177] font-bold' : 'hover:scale-105'
                               }`}>    
                             <span className="text-xl">📦</span>
                             <span className="text-lg">Orders</span>         
                          </li>
 
-                         <li onClick={() => setActiveTab('history')} className={`flex transition duration-200 items-center gap-4 cursor-pointer p-2 ${
-                              activeTab === 'history' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                         <li onClick={() => setActiveTab('history')} className={`flex transition dark:text-[#F6C177] duration-200 items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'history' ? 'text-gray-800 border-r-2 border-orange-500 dark:border-[#F6C177] font-bold' : 'hover:scale-105'
                               }`}>    
                             <span className="text-xl">🕰️</span>
                             <span className="text-lg">History</span>         
                          </li>
 
-                         <li onClick={() => setActiveTab('activeOffers')} className={`flex transition duration-200 items-center gap-4 cursor-pointer p-2 ${
-                              activeTab === 'activeOffers' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                         <li onClick={() => setActiveTab('activeOffers')} className={`flex transition dark:text-[#F6C177] duration-200 items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'activeOffers' ? 'text-gray-800 border-r-2 border-orange-500 dark:border-[#F6C177] font-bold' : 'hover:scale-105'
                               }`}>    
                             <span className="text-xl">🟢</span>
                             <span className="text-lg">Active offers</span>         
                          </li>
 
-                         <li onClick={() => setActiveTab('wallet')} className={`flex transition duration-200 items-center gap-4 cursor-pointer p-2 ${
-                              activeTab === 'wallet' ? 'text-gray-800 border-r-2 border-orange-500 font-bold' : 'hover:scale-105'
+                         <li onClick={() => setActiveTab('wallet')} className={`flex transition dark:text-[#F6C177] duration-200 items-center gap-4 cursor-pointer p-2 ${
+                              activeTab === 'wallet' ? 'text-gray-800 border-r-2 border-orange-500 dark:border-[#F6C177] font-bold' : 'hover:scale-105'
                               }`}>    
                             <span className="text-xl">💳</span>
                             <span className="text-lg">Wallet</span>         
@@ -479,7 +479,7 @@ export const Account = () => {
                       </ul>                
               </div>  
 
-              <div className="flex-1 p-8">
+              <div className="flex-1 p-8 dark:bg-[#1e1e1e]">
                   {renderContent()}
               </div>          
           </div>

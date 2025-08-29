@@ -202,13 +202,13 @@ const ActiveOffers = () => {
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
             <div className="relative w-3/4 my-6 mx-auto max-w-4xl">
-              <div className="border-0 rounded-lg shadow-lg relative p-6 flex flex-col w-full bg-white outline-none focus:outline-none">
+              <div className="border-0 dark:shadow-[0px_0px_15px_-6px_#F6C177] rounded-lg shadow-lg relative p-6 flex flex-col w-full dark:bg-[#1E1E1E] bg-white outline-none focus:outline-none">
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">
+                  <h3 className="text-3xl dark:text-[#F6C177] font-semibold">
                     Offer details
                   </h3>
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-50 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    className="p-1 ml-auto bg-transparent dark:text-[#F6C177] border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={closeModal}
                   >
                     <IoIosCloseCircleOutline />
@@ -233,8 +233,8 @@ const ActiveOffers = () => {
                       <FaRegArrowAltCircleRight size={30} />
                     </div>
                   </div>
-                  <div className="w-1/2 p-6 ml-8 overflow-y-auto max-h-96">
-                    <h2 className="company text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
+                  <div className="w-1/2 p-6 ml-8 dark:text-gray-300 no-scrollbar overflow-y-auto max-h-96">
+                    <h2 className="company dark:text-[#F6C177] text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
                       {selectedProduct.category}
                     </h2>
                     <h3 className="product mt-4 capitalize text-very-dark-blue font-bold text-4xl py-2 border-b border-gray-200">
@@ -292,11 +292,11 @@ const ActiveOffers = () => {
       {editOffer && (
         <>
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="relative bg-white rounded-lg ml-96 mt-20 shadow-[rgba(0,_0,_0,_0.4)_0px_30px_90px] p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold">Edit Offer</h3>
+          <div className="relative dark:bg-[#2d2d30] bg-white rounded-lg ml-96 mt-20 shadow-[rgba(0,_0,_0,_0.4)_0px_30px_90px] p-6 w-full max-w-md">
+            <h3 className="text-lg dark:text-[#F6C177] font-semibold">Edit Offer</h3>
             <form className="mt-4">
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Title</label>
+                <label className="block dark:text-[#F6C177] text-sm font-medium text-gray-700">Title</label>
                 <input
                   type="text"
                   name="title"
@@ -306,7 +306,7 @@ const ActiveOffers = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Description</label>
+                <label className="block text-sm dark:text-[#F6C177] font-medium text-gray-700">Description</label>
                 <textarea
                   name="description"
                   value={editFormData.description}
@@ -315,7 +315,7 @@ const ActiveOffers = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Price</label>
+                <label className="block text-sm dark:text-[#F6C177] font-medium text-gray-700">Price</label>
                 <input
                   type="number"
                   name="price"

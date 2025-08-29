@@ -174,9 +174,9 @@ const AdminDashboard = () => {
             <Card title="Items sold" value={itemsSold} />
             <Card title="In total" value={"$"+totallyEarned} />
           </div>
-          <div className="flex">
-          <div className="flex flex-col w-96 h-96 bg-white shadow-md p-16 rounded-xl justify-center items-center mt-8 duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-          <h2 class="lg:text-xl mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+          <div className="flex ">
+          <div className="flex flex-col w-96 h-96 dark:bg-[#2d2d30] shadow-md p-16 rounded-xl justify-center items-center mt-8 duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+          <h2 class="lg:text-xl mb-8 dark:text-[#F6C177] text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
                 Active offers by category
             </h2>
             {chartData && chartData.labels.length > 0 ? (
@@ -185,8 +185,8 @@ const AdminDashboard = () => {
                 <p>Loading chart...</p>
             )}
           </div>
-          <div className="ml-16 flex flex-col w-96 h-96 bg-white shadow-md p-6 rounded-xl justify-center items-center mt-8 duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-            <h2 class="lg:text-xl mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+          <div className="ml-16 flex flex-col w-96 h-96 dark:bg-[#2d2d30]  shadow-md p-6 rounded-xl justify-center items-center mt-8 duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+            <h2 class="lg:text-xl dark:text-[#F6C177] mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
                 Accounts registered per month
             </h2>
             {userChartData && userChartData.labels.length > 0 ? (
@@ -274,9 +274,9 @@ const AdminDashboard = () => {
         );
       case "Analytics":
         return (
-          <div className="p-4 bg-white shadow-md rounded-lg">
-            <h2 className="text-xl font-bold mb-4">Analytics</h2>
-            <p className="text-gray-600">View detailed analytics for your app performance.</p>
+          <div className="p-4 shadow-md rounded-lg">
+            <h2 className="text-xl dark:text-[#F6C177] font-bold mb-4">Analytics</h2>
+            <p className="text-gray-500">View detailed analytics for your app performance.</p>
           </div>
         );
       default:
@@ -300,16 +300,16 @@ if(!user.isAdmin) return <ErrorPage/>
 
   return (
     <div className="flex h-screen pt-16">
-      <div className="text-gray-500 w-1/5 p-6 shadow-md ">
-            <h2 class="lg:text-3xl mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+      <div className="text-gray-500 dark:bg-[#2d2d30] w-1/5 p-6 shadow-md ">
+            <h2 class="lg:text-3xl dark:text-[#F6C177] mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
                 Admin panel
             </h2>
         <ul className="space-y-6">
           {menuItems.map((item, index) => (
             <li
               key={index}
-              className={`flex transition duration-200 items-center gap-4 cursor-pointer p-2 ${
-                activeSection === item.name ? "text-gray-800 border-r-2 border-orange-500 font-bold" : "hover:scale-105"
+              className={`flex transition duration-200 dark:text-[#F6C177] items-center gap-4 cursor-pointer p-2 ${
+                activeSection === item.name ? "text-gray-800 border-r-2 dark:border-[#F6C177] border-orange-500 font-bold" : "hover:scale-105"
               }`}
               onClick={() => setActiveSection(item.name)}
             >
@@ -320,8 +320,8 @@ if(!user.isAdmin) return <ErrorPage/>
         </ul>
       </div>
 
-      <div className="flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-6">{activeSection}</h1>
+      <div className="flex-1 p-8 dark:bg-[#252526]">
+        <h1 className="text-3xl dark:text-[#F6C177]  font-bold mb-6">{activeSection}</h1>
         {renderCards()}
       </div>
     </div>
@@ -330,10 +330,10 @@ if(!user.isAdmin) return <ErrorPage/>
 
 const Card = ({ title, value, growth, color }) => {
   return (
-    <div className="bg-white shadow-md p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-      <h2 className="text-lg font-semibold text-gray-600">{title}</h2>
+    <div className="shadow-md dark:bg-[#2d2d30] p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+      <h2 className="text-lg dark:text-gray-300 font-semibold text-gray-600">{title}</h2>
       <div className="flex items-center justify-between mt-4">
-        <span className="text-3xl font-bold">{value}</span>
+        <span className="text-3xl font-bold dark:text-[#F6C177]">{value}</span>
         <span
           className={`text-sm font-medium ${
             color === "green" ? "text-green-500" : "text-red-500"}`}>
@@ -376,10 +376,10 @@ const UserCard = ({ userID, username, firstName,familyName , avatarURL, desc, is
         onClick={() => navigate(`/user/${userID}`)}
         src={avatarURL || Avatar}
         alt="profile"
-        className={`w-20 h-20 rounded-full object-cover cursor-pointer ${isBanned ? 'border-2 border-red-500' : 'border-none'}`}/>
+        className={`w-20 h-20  rounded-full object-cover cursor-pointer ${isBanned ? 'border-2 border-red-500' : 'border-none'}`}/>
             <div className="flex-1">
                 <div className="flex items-center space-x-16">
-                    <span className="font-semibold text-xl">{username}</span>                          
+                    <span className="font-semibold dark:text-[#F6C177] text-xl">{username}</span>                          
                     <div className="flex text-gray-500 space-x-1">
                        {firstName} {familyName}
                     </div>

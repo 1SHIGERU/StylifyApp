@@ -387,13 +387,13 @@ export const Market = () => {
       }
 
     return (
-      <div className='overflow-x-hidden'> 
+      <div className='overflow-x-hidden dark:bg-[#1E1E1E]'> 
           <div className='flex w-full min-h-screen justify-center items-center '>
               <div className='w-1/3 justify-center items-center px-16'>
-                    <h2 class="lg:text-7xl text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+                    <h2 class="lg:text-7xl dark:text-[#F6C177] text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
                     Welcome on the market!
                     </h2>
-                  <p className='text-2xl text-brown-500 mt-4'> Find your dream clothes here!</p>
+                  <p className='text-2xl dark:text-gray-300 text-brown-500 mt-4'> Find your dream clothes here!</p>
               </div>
               <div className='w-2/3 justify-center items-center'>
                   <img src={MarketJpg} alt='market' className='rounded-full ml-72' />
@@ -465,8 +465,8 @@ export const Market = () => {
                   <p class="text-xl leading-5 text-gray-600 font-medium"></p>
                 </div>
                 {filtersVisible && (
-                <div id="filterSection" class="block relative md:py-10 lg:px-20 md:px-6 py-9 px-4 bg-gray-100 w-full">
-                  <div onClick={toggleFilters} class="cursor-pointer text-gray-800 absolute right-0 top-0 md:py-10 lg:px-20 md:px-6 py-9 px-4">
+                <div id="filterSection" class="block rounded-md relative md:py-10 lg:px-20 md:px-6 py-9 px-4 dark:bg-[#121212] bg-gray-100 w-full">
+                  <div onClick={toggleFilters} class="cursor-pointer text-gray-800 dark:text-[#F6C177] absolute right-0 top-0 md:py-10 lg:px-20 md:px-6 py-9 px-4">
                     <svg class="lg:w-6 lg:h-6 w-4 h-4" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M25 1L1 25" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
                       <path d="M1 1L25 25" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
@@ -474,32 +474,32 @@ export const Market = () => {
                   </div>
                   <div>
                     <div class="flex space-x-2 text-gray-800 ">
-                      <svg class="w-[33px] h-[33px] text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <svg class="w-[33px] h-[33px] text-gray-800 dark:text-[#F6C177]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-width="1" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
                         <path stroke="currentColor" stroke-width="1" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                       </svg>
-                      <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium">Colors</p>
+                      <p class="lg:text-2xl dark:text-[#F6C177] text-xl lg:leading-6 leading-5 font-medium">Colors</p>
                     </div>
                     <div className="md:flex md:space-x-4 mt-8 grid grid-cols-3 gap-y-8 flex-wrap">
                       {colors.map(({ name, colorCode }) => (
                         <div key={name} className={`flex space-x-1 items-center cursor-pointer ${filters.colors.includes(name) ? "" : ""}`} onClick={() => handleColorToggle(name)}>
                           <div style={{ backgroundColor: colorCode }} className={`w-4 h-4 rounded-md shadow ${filters.colors.includes(name)? "ring-2": ""} `}></div>
-                          <p className={`text-base leading-4 font-normal ${filters.colors.includes(name)? `font-bold text-black`: "text-gray-600"}`}>
+                          <p className={`text-base leading-4 font-normal ${filters.colors.includes(name)? `font-bold dark:text-[#F6C177] text-black`: "text-gray-600 dark:text-gray-300"}`}>
                             {name}
                           </p>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <hr class="bg-gray-200 lg:w-6/12 w-full md:my-10 my-8" />
+                  <hr class="bg-gray-200 w-full md:my-10 my-8" />
                   <div>
-                    <div class="flex space-x-1 text-gray-800 ">
-                      <svg class="w-[28px] h-[28px] text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <div class="flex space-x-1 text-gray-800">
+                      <svg class="w-[28px] h-[28px] text-gray-800 dark:text-[#F6C177]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 17.345a4.76 4.76 0 0 0 2.558 1.618c2.274.589 4.512-.446 4.999-2.31.487-1.866-1.273-3.9-3.546-4.49-2.273-.59-4.034-2.623-3.547-4.488.486-1.865 2.724-2.899 4.998-2.31.982.236 1.87.793 2.538 1.592m-3.879 12.171V21m0-18v2.2"/>
                       </svg>
-                      <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium ">Price</p>
+                      <p class="lg:text-2xl dark:text-[#F6C177] text-xl lg:leading-6 leading-5 font-medium ">Price</p>
                     </div>
-                    <div className="flex w-full items-center h-16 mt-8">
+                    <div className="flex dark:text-[#F6C177] w-full items-center h-16 mt-8">
                       <MultiRangeSlider
                         min={hardcodedMin}              
                         max={hardcodedMax}                 
@@ -507,17 +507,17 @@ export const Market = () => {
                         maxValue={sliderMaxValue}
                         style={{ width: "100%", margin: "0 auto", boxShadow: "none", border: "none" }}
                         ruler={false}
-                        barInnerColor="#ffa500"
-                        thumbLeftColor="#ffa500"
-                        thumbRightColor="#ffa500"
+                        barInnerColor="#F6C177"
+                        thumbLeftColor="#F6C177"
+                        thumbRightColor="#F6C177"
                         onInput={handleSliderChange}           
                         onChange={handleSliderRelease}           
                       />
                     </div>
                   </div>
-                  <hr class="bg-gray-200 lg:w-6/12 w-full md:my-10 my-8" />
+                  <hr class="bg-gray-200 w-full md:my-10 my-8" />
                   <div>
-                    <div class="flex space-x-2 text-gray-800">
+                    <div class="flex space-x-2 text-gray-800 dark:text-[#F6C177]">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 5H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M12 7L14 5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -527,10 +527,10 @@ export const Market = () => {
                         <path d="M21 12L19 10L17 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M12 10H5C3.89543 10 3 10.8954 3 12V19C3 20.1046 3.89543 21 5 21H12C13.1046 21 14 20.1046 14 19V12C14 10.8954 13.1046 10 12 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                       </svg>
-                      <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium ">Size</p>
+                      <p class="lg:text-2xl dark:text-[#F6C177] text-xl lg:leading-6 leading-5 font-medium ">Size</p>
                     </div>
                     <div className="md:flex md:space-x-4 mt-8 grid grid-cols-3 gap-y-8 flex-wrap">
-                      <p className='text-gray-800 text-md font-bold '>Clothing</p>
+                      <p className='text-gray-800 dark:text-[#F6C177] text-md font-bold '>Clothing</p>
                       {clothingSizes.map((size) => (
                         <div
                           key={size}
@@ -540,7 +540,7 @@ export const Market = () => {
                           <div
                             className={`w-6 h-6 rounded-full flex justify-center items-center shadow ${
                               filters.size.clothing && filters.size.clothing.includes(size)
-                                ? "bg-orange-500 text-white"
+                                ? "bg-orange-500 dark:bg-[#F6C177] text-white"
                                 : "bg-gray-200 text-gray-700"
                             }`}
                           >
@@ -550,7 +550,7 @@ export const Market = () => {
                       ))}
                     </div>
                     <div className="md:flex md:space-x-4 mt-8 grid grid-cols-3 gap-y-8 flex-wrap">
-                      <p className='text-gray-800 text-md font-bold '>Shoes</p>
+                      <p className='text-gray-800 dark:text-[#F6C177] text-md font-bold '>Shoes</p>
                       {shoeSizes.map((size) => (
                         <div
                           key={size}
@@ -560,7 +560,7 @@ export const Market = () => {
                           <div
                             className={`w-6 h-6 rounded-full flex justify-center items-center shadow ${
                               filters.size.shoes && filters.size.shoes.includes(size)
-                                ? "bg-orange-500 text-white"
+                                ? "bg-orange-500 dark:bg-[#F6C177] text-white"
                                 : "bg-gray-200 text-gray-700"
                             }`}
                           >
@@ -573,31 +573,31 @@ export const Market = () => {
                   <hr class="bg-gray-200 lg:w-6/12 w-full md:my-10 my-8" />
                   <div>
                     <div class="flex space-x-2 text-gray-800">
-                      <svg class="w-[28px] h-[28px] text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <svg class="w-[28px] h-[28px] text-gray-800 dark:text-[#F6C177]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-width="1" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                       </svg>
-                      <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium ">Gender</p>
+                      <p class="lg:text-2xl text-xl dark:text-[#F6C177] lg:leading-6 leading-5 font-medium ">Gender</p>
                     </div>
                     <div class="flex mt-4 space-x-8">
                       <div class="flex justify-center items-center">
                       <div className="mt-4">
                           <button
                             className={`px-4 py-2 rounded-lg focus:outline-none mr-4 
-                            ${selectedGender === 'Men' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+                            ${selectedGender === 'Men' ? 'dark:bg-[#F6C177] bg-[#D47C24] text-white' : 'bg-gray-200'}`}
                             onClick={() => handleGenderSelect('Men')}
                           >
                             Men
                           </button>
                           <button
                             className={`px-4 py-2 rounded-lg focus:outline-none mr-4
-                            ${selectedGender === 'Women' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+                            ${selectedGender === 'Women' ? 'dark:bg-[#F6C177] bg-[#D47C24] text-white' : 'bg-gray-200'}`}
                             onClick={() => handleGenderSelect('Women')}
                           >
                             Women
                           </button>
                           <button
                             className={`px-4 py-2 rounded-lg focus:outline-none
-                            ${selectedGender === 'Unisex' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+                            ${selectedGender === 'Unisex' ? 'dark:bg-[#F6C177] bg-[#D47C24] text-white' : 'bg-gray-200'}`}
                             onClick={() => handleGenderSelect('Unisex')}
                           >
                             Unisex
@@ -609,10 +609,10 @@ export const Market = () => {
                   <hr class="bg-gray-300 lg:w-6/12 w-full md:my-10 my-8" />
                   <div>
                     <div class="flex space-x-2 text-gray-800  ">
-                      <svg class="w-[28px] h-[28px] text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <svg class="w-[28px] h-[28px] text-gray-800 dark:text-[#F6C177]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="1" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
                       </svg>
-                      <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium ">Category</p>
+                      <p class="lg:text-2xl dark:text-[#F6C177] text-xl lg:leading-6 leading-5 font-medium ">Category</p>
                     </div>
                     <div class="flex mt-4 space-x-8">
                       <div class="flex justify-center items-center">
@@ -725,12 +725,12 @@ export const Market = () => {
 
         {products.length === 0 ? (
           <div className="w-full h-300 flex flex-col items-center justify-center">
-            <h2 className="lg:text-7xl text-[#8B4513] text-5xl font-extrabold leading-tight">
+            <h2 className="lg:text-7xl text-[#8B4513] dark:text-[#F6C177] text-5xl font-extrabold leading-tight">
               <span className="block">no</span>
               <span className="block">offers</span>
               <span className="block">available</span>
               <span className="block">at the moment</span>
-              <span className='text-2xl text-gray-700'>Try to reset your filters!</span>
+              <span className='text-2xl dark:text-gray-300 text-gray-700'>Try to reset your filters!</span>
             </h2>
             
           </div>
@@ -741,7 +741,7 @@ export const Market = () => {
               <div
                 key={product.offerID}
                 onClick={() => openModal(product)}
-                className="w-72  hover:cursor-pointer bg-white shadow-md rounded-xl duration-200 hover:scale-105 hover:shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
+                className="w-72  hover:cursor-pointer bg-white shadow-md rounded-xl duration-200 hover:scale-105 hover:shadow-[#F6C177] hover:shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
                 <img
                   src={product.OfferImages[0]?.imageUrl}
                   alt="Product"
@@ -791,13 +791,13 @@ export const Market = () => {
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-3/4 my-6 mx-auto max-w-4xl">
-              <div className="border-0 rounded-lg shadow-lg relative p-6 flex flex-col w-full bg-white outline-none focus:outline-none">
+              <div className="border-0 dark:shadow-[0px_0px_15px_-6px_#F6C177] rounded-lg shadow-lg relative p-6 flex flex-col w-full dark:bg-[#1E1E1E] bg-white outline-none focus:outline-none">
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">
+                  <h3 className="text-3xl dark:text-[#F6C177] font-semibold">
                     Offer details
                   </h3>
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-50 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    className="p-1 ml-auto bg-transparent dark:text-[#F6C177] border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={closeModal}
                   >
                     <IoIosCloseCircleOutline />
@@ -822,15 +822,15 @@ export const Market = () => {
                       <FaRegArrowAltCircleRight size={30} />
                     </div>
                   </div>
-                  <div className="w-1/2 p-6 ml-8 no-scrollbar overflow-y-auto max-h-96">
+                  <div className="w-1/2 p-6 ml-8 dark:text-gray-300 no-scrollbar overflow-y-auto max-h-96">
                     <div className="w-full flex justify-between items-center">
-                      <h2 className="company text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
+                      <h2 className="company dark:text-[#F6C177] text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
                         {selectedProduct.category}
                       </h2>
                       <Link to={`/user/${selectedProduct.ownerID}`}>
                         <div title={`${selectedProduct.owner.isBanned ? 'Użytkownik zbanowany' : ''}`} className="flex items-center space-x-2 cursor-pointer">
                           <img src={selectedProduct.owner.avatarURL || Avatar} alt="avatar" className={`w-10 h-10 rounded-full${selectedProduct.owner.isBanned ? ' border-2 border-red-500' : ''}`} />
-                          <div className="text-black text-md">{selectedProduct.owner.username}</div>
+                          <div className="text-md">{selectedProduct.owner.username}</div>
                         </div>
                       </Link>
                     </div>         
@@ -868,14 +868,14 @@ export const Market = () => {
                       </div>
                     </div>
                     {user.isAuthenticated && user.userID !== selectedProduct.ownerID && (    
-                      <button onClick={handleBuyNow} className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                      <button onClick={handleBuyNow} className="flex dark:bg-[#F6C177] bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
                         <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
                           <FaCartShopping className="pr-4 w-8 h-8" /> BUY NOW!
                         </i>
                       </button>
                     )}
                     {user.isAuthenticated && user.userID === selectedProduct.ownerID && (
-                      <button onClick={goToAccount} className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                      <button onClick={goToAccount} className="flex dark:bg-[#F6C177] bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
                         <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
                            TO MANAGE OFFER, CLICK HERE
                         </i>

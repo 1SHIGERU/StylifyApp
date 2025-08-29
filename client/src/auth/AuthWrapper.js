@@ -3,8 +3,9 @@ import { RenderMenu, RenderRoutes } from "../components/structure/RenderNavigati
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Image from "../assets/wardrobe.jpeg"
+import Image from "../assets/wardrobe.jpg"
 import { toast } from "react-toastify";
+import WelcomeModal from "../components/WelcomeModal";
 
 const AuthContext = createContext();
 export const AuthData = () => useContext(AuthContext);
@@ -20,16 +21,26 @@ export const AuthWrapper = () => {
     isAdmin: false,
     isAuthenticated: false,
     description: "",
-    isBanned: false,
+    isBanned: false
   });
 
   const [isMobile, setIsMobile] = useState(false);
+
+  
+  const getIPAddress = async () => {
+    try {
+        const res = await axios.get('https://geolocation-db.com/json/');
+        localStorage.setItem('language_code', res.data.country_code);
+    } catch (error) {
+         console.error('Error fetching IP address:', error);
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1000);
     };
-
+    getIPAddress();
     handleResize();
     window.addEventListener('resize', handleResize);
 
@@ -144,6 +155,7 @@ export const AuthWrapper = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('activeTab');
+    localStorage.removeItem('language_code');
     setUser({
       username: "",
       email: "",
@@ -254,6 +266,7 @@ export const AuthWrapper = () => {
       <>
         <Header />
         <RenderRoutes />
+        <WelcomeModal/>
         
       </>
     </AuthContext.Provider>

@@ -1,6 +1,6 @@
 import {React,useState} from 'react';
 import {DragComponent} from '../OffersForm/DragComponent';
-import Wardrobe from '../../assets/wardrobe.jpeg';
+import Wardrobe from '../../assets/wardrobe.jpg';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
@@ -87,7 +87,7 @@ export const AddOffer = () => {
     return (
         <>
             <div className='flex min-h-screen'>
-                <div className='flex justify-center w-2/3'>
+                <div className='flex dark:bg-[#1E1E1E] justify-center w-2/3'>
                     <DragComponent onSubmit={handleFormSubmit} />
                     
                 </div>

@@ -305,7 +305,7 @@ export function CustomDragDrop({
               onChange={(e) => handleDrop(e, "inputFile")}
             />
             <span
-              className="text-[#4070f4] cursor-pointer"
+              className="text-[#4070f4] dark:text-[#F6C177] cursor-pointer"
               onClick={() => {
                 fileRef.current.click();
               }}
@@ -359,10 +359,10 @@ export function CustomDragDrop({
 
       <div className="mt-16">
           <div class="flex space-x-2 text-gray-800 ">
-            <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 text-gray-800 dark:text-[#F6C177]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 9H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h6m0-6v6m0-6 5.419-3.87A1 1 0 0 1 18 5.942v12.114a1 1 0 0 1-1.581.814L11 15m7 0a3 3 0 0 0 0-6M6 15h3v5H6v-5Z"/>
             </svg>
-            <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium mb-2">Title</p>
+            <p class="lg:text-2xl dark:text-[#F6C177] text-xl lg:leading-6 leading-5 font-medium mb-2">Title</p>
           </div>
         <input 
           name="title" 
@@ -377,10 +377,10 @@ export function CustomDragDrop({
       </div>  
       <div className="mt-8">
           <div class="flex space-x-2 text-gray-800 ">
-            <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 text-gray-800 dark:text-[#F6C177]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-5-4v4h4V3h-4Z"/>
             </svg>
-            <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium mb-2">Description</p>
+            <p class="lg:text-2xl dark:text-[#F6C177] text-xl lg:leading-6 leading-5 font-medium mb-2">Description</p>
           </div>      
         <textarea 
           placeholder="description (max 300 characters)" 
@@ -391,14 +391,14 @@ export function CustomDragDrop({
         />
       </div>
       <div class="flex space-x-2 text-gray-800 mt-8">
-        <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <svg class="w-6 h-6 text-gray-800 dark:text-[#F6C177]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
         </svg>
-          <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium mb-2">Category</p>
+          <p class="lg:text-2xl text-xl dark:text-[#F6C177] lg:leading-6 leading-5 font-medium mb-2">Category</p>
       </div>
       <div className="relative group w-32">
         <button className="outline-none focus:outline-none bg-gray-200 border py-1 px-2 rounded-md flex items-center">
-            <span className="p-2 flex-1">{selectedCategory}</span>
+            <span className="p-2  flex-1">{selectedCategory}</span>
             <span>
             <svg
                 className="fill-current h-4 w-4 transform group-hover:-rotate-180 transition duration-150 ease-in-out"
@@ -490,11 +490,11 @@ export function CustomDragDrop({
     </div>
     <div className="mt-8 group inline-block">
           <div class="flex space-x-2 text-gray-800 ">
-            <svg class="w-[33px] h-[33px] text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <svg class="w-[33px] h-[33px] text-gray-800 dark:text-[#F6C177]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" stroke-width="1" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
               <path stroke="currentColor" stroke-width="1" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
             </svg>
-            <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium">Colors</p>
+            <p class="lg:text-2xl dark:text-[#F6C177] text-xl lg:leading-6 leading-5 font-medium">Colors</p>
           </div>   
         {[
           'Red', 'Green', 'Blue', 'Yellow', 'Black', 'White', 
@@ -512,35 +512,35 @@ export function CustomDragDrop({
     </div>
     <div className="mt-8">
           <div class="flex space-x-2 text-gray-800 ">
-            <svg class="w-6 h-6 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 text-gray-800 dark:text-[#F6C177]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
             </svg>
-            <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium mb-2">Gender</p>
+            <p class="lg:text-2xl dark:text-[#F6C177] text-xl lg:leading-6 leading-5 font-medium mb-2">Gender</p>
           </div>
           <button
             className={`px-4 py-2 rounded-lg focus:outline-none mr-4 
-            ${selectedGender === 'Men' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+            ${selectedGender === 'Men' ? 'bg-orange-500 dark:bg-[#F6C177] text-white' : 'bg-gray-200'}`}
             onClick={() => handleGenderSelect('Men')}
           >
             Men
           </button>
           <button
             className={`px-4 py-2 rounded-lg focus:outline-none mr-4
-            ${selectedGender === 'Women' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+            ${selectedGender === 'Women' ? 'bg-orange-500 dark:bg-[#F6C177] text-white' : 'bg-gray-200'}`}
             onClick={() => handleGenderSelect('Women')}
           >
             Women
           </button>
           <button
             className={`px-4 py-2 rounded-lg focus:outline-none
-            ${selectedGender === 'Unisex' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+            ${selectedGender === 'Unisex' ? 'bg-orange-500 dark:bg-[#F6C177] text-white' : 'bg-gray-200'}`}
             onClick={() => handleGenderSelect('Unisex')}
           >
             Unisex
           </button>
     </div>
     <div className="mt-8">
-    <div class="flex space-x-2 text-gray-800 ">
+    <div class="flex space-x-2 text-gray-800 dark:text-[#F6C177]">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 5H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M12 7L14 5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -550,7 +550,7 @@ export function CustomDragDrop({
                         <path d="M21 12L19 10L17 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M12 10H5C3.89543 10 3 10.8954 3 12V19C3 20.1046 3.89543 21 5 21H12C13.1046 21 14 20.1046 14 19V12C14 10.8954 13.1046 10 12 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
-            <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium">Size</p>
+            <p class="lg:text-2xl text-xl lg:leading-6 dark:text-[#F6C177] leading-5 font-medium">Size</p>
           </div>
                     <div className="md:flex md:space-x-4 mt-4 grid grid-cols-3 gap-y-8 flex-wrap">
                       {clothingSizes.map((size) => (
@@ -562,7 +562,7 @@ export function CustomDragDrop({
                           <div
                             className={`w-6 h-6 transition duration-100 hover:scale-[120%] rounded-full flex justify-center items-center shadow ${
                               filters.size.clothing && filters.size.clothing.includes(size)
-                                ? "bg-orange-500 text-white"
+                                ? "bg-orange-500 dark:bg-[#F6C177] text-white"
                                 : "bg-gray-200 text-gray-700"
                             }`}
                           >
@@ -582,7 +582,7 @@ export function CustomDragDrop({
                           <div
                             className={`w-6 h-6 rounded-full transition duration-100 hover:scale-[120%] flex justify-center items-center shadow ${
                               filters.size.shoes && filters.size.shoes.includes(size)
-                                ? "bg-orange-500 text-white"
+                                ? "bg-orange-500 dark:bg-[#F6C177] text-white"
                                 : "bg-gray-200 text-gray-700"
                             }`}
                           >
@@ -593,11 +593,11 @@ export function CustomDragDrop({
                     </div>
                 </div>
                 <div className="mt-8 group">
-                    <div class="flex space-x-2 text-gray-800 ">
+                    <div class="flex space-x-2 text-gray-800 dark:text-[#F6C177]">
                       <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 17.345a4.76 4.76 0 0 0 2.558 1.618c2.274.589 4.512-.446 4.999-2.31.487-1.866-1.273-3.9-3.546-4.49-2.273-.59-4.034-2.623-3.547-4.488.486-1.865 2.724-2.899 4.998-2.31.982.236 1.87.793 2.538 1.592m-3.879 12.171V21m0-18v2.2"/>
                       </svg>
-                      <p class="lg:text-2xl text-xl lg:leading-6 leading-5 font-medium mb-2">Price</p>
+                      <p class="lg:text-2xl dark:text-[#F6C177] text-xl lg:leading-6 leading-5 font-medium mb-2">Price</p>
                     </div>      
                     <input 
                       type="number" 
@@ -609,27 +609,29 @@ export function CustomDragDrop({
                     />
                     <button
                         className={`px-4 ml-8 py-2 rounded-lg focus:outline-none mr-4 
-                        ${selectedCurrency === 'USD' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+                        ${selectedCurrency === 'USD' ? 'bg-orange-500 dark:bg-[#F6C177] text-white' : 'bg-gray-200'}`}
                         onClick={() => setSelectedCurrency('USD')}
                       >
                         USD
                       </button>
                       <button
                         className={`px-4 py-2 rounded-lg focus:outline-none mr-4
-                        ${selectedCurrency === 'EUR' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+                        ${selectedCurrency === 'EUR' ? 'bg-orange-500 dark:bg-[#F6C177] text-white' : 'bg-gray-200'}`}
                         onClick={() => setSelectedCurrency('EUR')}
                       >
                         EUR
                       </button>
                       <button
                         className={`px-4 py-2 rounded-lg focus:outline-none
-                        ${selectedCurrency === 'PLN' ? 'bg-[#D47C24] text-white' : 'bg-gray-200'}`}
+                        ${selectedCurrency === 'PLN' ? 'bg-orange-500 dark:bg-[#F6C177] text-white' : 'bg-gray-200'}`}
                         onClick={() => setSelectedCurrency('PLN')}
                       >
                         PLN
                       </button>
                 </div>
-                <button onClick={handleSubmit} type="submit" className="bg-[#D47C24] text-white text-lg px-4 py-2 rounded-xl mt-8 mb-4">List an item!</button>
+                <button onClick={handleSubmit} className="flex mt-8 rounded-md relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-200 text-gray-700 shadow-2xl transition-all before:content-[''] dark:before:bg-[#F6C177] before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                    <span class="relative z-10">Add to market</span>
+                </button>
      </>
   );
 }

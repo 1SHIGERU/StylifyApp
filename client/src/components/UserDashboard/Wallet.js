@@ -1,5 +1,4 @@
 import React, {useState,useEffect} from 'react';
-import img from '../../assets/wardrobe.jpeg';
 import axios from 'axios';
 import { AuthData } from '../../auth/AuthWrapper';
 
@@ -50,12 +49,12 @@ const Wallet = () => {
 
   return (
     <div className=''>
-      <h1 className='text-4xl font-bold mb-4'>Wallet</h1>
+      <h1 className='text-4xl font-bold mb-4 dark:text-[#F6C177]'>Wallet</h1>
       <hr />
       <section class="py-10 sm:py-16 lg:py-24">
         <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
             <div class="max-w-2xl mx-auto text-left sm:text-center">
-                <h2 class="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">Withdraw what you've earned!</h2>
+                <h2 class="text-3xl font-bold leading-tight text-black sm:text-4xl dark:text-[#F6C177] lg:text-5xl">Withdraw what you've earned!</h2>
                 
             </div>
 
@@ -65,8 +64,8 @@ const Wallet = () => {
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                     </svg>
                     <div class="ml-4">
-                        <h3 class="text-xl font-semibold text-black">Your balance:</h3>
-                        <p class="mt-1.5 text-base text-gray-600"> <span className='font-bold text-xl'>{balance} </span>USD</p>
+                        <h3 class="text-xl dark:text-[#F6C177] font-semibold text-black">Your balance:</h3>
+                        <p class="mt-1.5 text-base dark:text-gray-300 text-gray-600"> <span className='font-bold text-xl'>{balance} </span>USD</p>
                     </div>
                 </div>
 
@@ -75,8 +74,8 @@ const Wallet = () => {
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                     </svg>
                     <div class="ml-4">
-                        <h3 class="text-xl font-semibold text-black">You've sold</h3>
-                        <p class="mt-1.5 text-base text-gray-600">{transactionCounts.soldCount} items</p>
+                        <h3 class="text-xl dark:text-[#F6C177] font-semibold text-black">You've sold</h3>
+                        <p class="mt-1.5 text-base dark:text-gray-300 text-gray-600">{transactionCounts.soldCount} items</p>
                     </div>
                 </div>
 
@@ -85,8 +84,8 @@ const Wallet = () => {
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                     </svg>
                     <div class="ml-4">
-                        <h3 class="text-xl font-semibold text-black">You've bought</h3>
-                        <p class="mt-1.5 text-base text-gray-600">{transactionCounts.boughtCount} items</p>
+                        <h3 class="text-xl dark:text-[#F6C177] font-semibold text-black">You've bought</h3>
+                        <p class="mt-1.5 text-base dark:text-gray-300 text-gray-600">{transactionCounts.boughtCount} items</p>
                     </div>
                 </div>
             </div>

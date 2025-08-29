@@ -16,6 +16,7 @@
     "@azure/ai-form-recognizer": "^5.0.0",
     "@azure/cognitiveservices-computervision": "^8.2.0",
     "@azure/ms-rest-js": "^2.7.0",
+    "bcrypt": "^5.1.1",
     "cloudinary": "^2.2.0",
     "color-name-list": "^10.28.0",
     "cors": "^2.8.5",

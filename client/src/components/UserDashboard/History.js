@@ -54,8 +54,8 @@ const History = () => {
 
       return (
         <div className="flex">
-          <aside className="w-1/4 p-6 bg-white pt-16">
-            <h2 className="text-2xl font-bold mb-6">Orders history</h2>
+          <aside className="w-1/4 p-6 pt-16">
+            <h2 className="text-2xl font-bold mb-6 dark:text-[#F6C177]">Orders history</h2>
             <ul>
               <li className="mb-4">
                 <a onClick={() => setView('bought')} className={`flex text-lg px-4 transition cursor-pointer duration-200 text-gray-600 ${view === 'bought' ? 'text-orange-500 font-bold border-r-2 border-orange-500' : 'hover:scale-105'}`}>Bought</a>
@@ -70,12 +70,12 @@ const History = () => {
           <main className="w-3/4 p-6">
             {view === 'sold' && (
              <>
-              <h1 className="text-3xl text-gray-700 font-bold mb-4">These items have been delivered</h1>
+              <h1 className="text-3xl text-gray-700 font-bold mb-4 dark:text-[#F6C177]">These items have been delivered</h1>
              </>
             )}
             {view === 'bought' && (
              <>
-              <h1 className="text-3xl text-gray-700 font-bold mb-4">You picked up these items</h1>
+              <h1 className="text-3xl text-gray-700 font-bold mb-4 dark:text-[#F6C177]">You picked up these items</h1>
              </>
             )}
     

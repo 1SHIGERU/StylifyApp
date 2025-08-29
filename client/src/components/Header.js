@@ -4,6 +4,7 @@ import { AuthData } from '../auth/AuthWrapper';
 import Avatar from '../assets/avatar.jpg';
 import { MdLogout } from "react-icons/md";
 import Notification from './Notification';
+import Settings from './Settings';
 import axios from 'axios';
 
 const Header = () => {
@@ -32,18 +33,19 @@ const Header = () => {
   
 
   return (
-    <header class="fixed w-full shadow-lg px-24 py-4 z-50 bg-white shadow-[rgba(0,_0,_0,_0.1)_0px_60px_40px_-7px]  ">
+    <header class="fixed w-full shadow-lg px-24 py-4 z-50 bg-white dark:shadow-[0px_10px_21px_-15px_#F6C177]  dark:bg-[#121212] shadow-[rgba(0,_0,_0,_0.1)_0px_60px_40px_-7px]  ">
       <nav class="flex justify-between">
         <div class="w-[130px] md:w-[200px] flex items-center">
-          <Link to='/'><h1 className='text-3xl'> Stylify </h1> </Link>
+          <Link to='/'><h1 className='text-3xl dark:text-[#F6C177]'> Stylify </h1> </Link>
         </div>
         <div class="flex items-center gap-3">
-          <div class="navLinks duration-500 absolute md:static md:w-auto w-full md:h-auto h-[85vh] bg-white flex md:items-center gap-[1.5vw] top-[100%] left-[-100%] px-5 md:py-0 py-5 ">
+          <div class="navLinks duration-500 absolute md:static md:w-auto w-full md:h-auto h-[85vh] dark:text-[#EAEAEA] flex md:items-center gap-[1.5vw] top-[100%] left-[-100%] px-5 md:py-0 py-5 ">
             <ul class="flex md:flex-row flex-col md:items-center md:gap-[2vw] gap-8">
-            <Link to='/'><li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24] after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Home</li></Link>
-            <Link to='/market'><li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Market</li></Link>
-            <Link to='/contact'> <li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Contact us</li></Link>
-            {user.isAuthenticated ? <Link to='/addOffer'><li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Add offer</li></Link> : null}
+            <Link to='/'><li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24] after:dark:bg-[#F6C177] after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Home</li></Link>
+            <Link to='/market'><li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24] after:dark:bg-[#F6C177]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Market</li></Link>
+            <Link to='/contact'> <li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24] after:dark:bg-[#F6C177] after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Contact us</li></Link>
+            {user.isAuthenticated ? <Link to='/addOffer'><li class="relative max-w-fit pr-3 md:pr-0 py-1 after:bg-[#D47C24] after:dark:bg-[#F6C177]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">Add offer</li></Link> : null}
+            <Settings />
             {user.isAuthenticated ?<div className='cursor-pointer '> <Notification/></div> : null}
             {user.isAuthenticated ? 
             <Link to='/chat'> 
@@ -52,7 +54,7 @@ const Header = () => {
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
               </span>) : null}
-                <svg className={`w-6 h-6 cursor-pointer text-gray-800 ${howMuchUnreadMessages > 0 ? 'mb-2' : ''}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <svg className={`w-6 h-6 cursor-pointer text-gray-800 dark:text-[#EAEAEA] ${howMuchUnreadMessages > 0 ? 'mb-2' : ''}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z"/>
                 </svg>
               </div>
@@ -61,7 +63,7 @@ const Header = () => {
             null}
             </ul>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex dark:text-[#EAEAEA] items-center gap-2">
             {user.isAuthenticated ? 
             <>
               {user.isAdmin ? 
@@ -91,7 +93,7 @@ const Header = () => {
             </>
             :
             <>
-              <Link to='/login'><button type="button" class="transition-all duration-300 hover:border-[#D47C24] hover:text-[#D47C24] hover:bg-clip-text bg-[#D47C24] border-solid border-2 border-white font-bold text-white px-5 py-2 rounded-full ">Sign in</button></Link>
+              <Link to='/login'><button type="button" class="transition-all duration-300 hover:dark:text-[#F6C177] hover:dark:border-[#F6C177] hover:border-[#D47C24] hover:text-[#D47C24] hover:bg-clip-text bg-[#D47C24] dark:bg-[#F6C177] border-solid border-2 border-white font-bold text-white px-5 py-2 rounded-full ">Sign in</button></Link>
             </>
             }
           </div>

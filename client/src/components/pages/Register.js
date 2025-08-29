@@ -9,7 +9,6 @@ export const Register = () => {
     const navigate = useNavigate();
     const { register1 } = AuthData();
     const [ formData, setFormData ] = useReducer((formData, newItem) => { return ( {...formData, ...newItem} )}, {userName: "", email: "", password: "", firstName: "", familyName: ""})
-    const [ errorMessage, setErrorMessage ] = useState("");
 
     const {
          register,
@@ -52,22 +51,22 @@ export const Register = () => {
     return (
         <>
         <>
-                    <div className="font-[sans-serif] pt-24">
+                    <div className="font-[sans-serif] pt-24 dark:bg-[#252526]">
                          <div className="min-h-screen flex fle-col items-center justify-center py-6 px-4">
                               <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">
                               <div className="max-md:text-center">
-                                   <h2 className="lg:text-7xl text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+                                   <h2 className="lg:text-7xl text-[#8B4513] dark:text-[#F6C177] text-4xl font-extrabold lg:leading-[55px]">
                                         Hi there
                                    </h2>
-                                   <p className="text-xl mt-6">Create your account!</p>
-                                   <p className="text-sm mt-10">Already have an account?
-                                        <a onClick={() => navigate("/login")} className="text-[#8B4513] font-semibold hover:underline ml-1 cursor-pointer">
+                                   <p className="text-xl dark:text-gray-300 mt-6">Create your account!</p>
+                                   <p className="text-sm mt-10 dark:text-gray-300">Already have an account?
+                                        <a onClick={() => navigate("/login")} className="text-[#8B4513] dark:text-[#F6C177] font-semibold hover:underline ml-1 cursor-pointer">
                                              Log in!
                                         </a>
                                    </p>
                               </div>
                               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-md md:ml-auto max-md:mx-auto w-full">
-                                   <h3 className="text-3xl font-extrabold mb-8 max-md:text-center">
+                                   <h3 className="text-3xl dark:text-[#F6C177] font-extrabold mb-8 max-md:text-center">
                                         Register
                                    </h3>
                                    <div>
@@ -110,7 +109,7 @@ export const Register = () => {
                                         </error>
                                    </div>
                                    <div className="!mt-10">
-                                        <button type="submit" className="transition duration-250 w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-[#8B4513] border-2 border-[#8B4513] hover:bg-[#8B4513] hover:text-white focus:outline-none">
+                                        <button type="submit" className="transition dark:border-[#F6C177] dark:text-[#F6C177] hover:dark:bg-[#F6C177] hover:dark:text-gray-100  duration-250 w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-[#8B4513] border-2 border-[#8B4513] hover:bg-[#8B4513] hover:text-white focus:outline-none">
                                              Create account
                                         </button>
                                    </div>

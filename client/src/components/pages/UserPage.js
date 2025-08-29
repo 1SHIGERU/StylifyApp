@@ -196,16 +196,16 @@ export const UserPage = () => {
                     y="0"
                 >
                     <polygon
-                    className="text-blueGray-200 fill-current"
+                    className="text-blueGray-200 dark:text-[#252526] fill-current"
                     points="2560 0 2560 100 0 100"
                     ></polygon>
                 </svg>
                 </div>
             </section>
 
-            <section className="relative py-16 bg-blueGray-200">
+            <section className="relative py-16 bg-blueGray-200 dark:bg-[#252526]">
                 <div className="container mx-auto px-4">
-                <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+                <div className="relative flex flex-col min-w-0 break-words dark:bg-[#1e1e1e] bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
                     <div className="px-6">
                     <div className="flex flex-wrap justify-center">
                         <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
@@ -279,7 +279,7 @@ export const UserPage = () => {
                             </>
                         )}
                                 
-                        <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
+                        <h3 className="text-4xl dark:text-[#F6C177] font-semibold leading-normal mb-2 text-blueGray-700">
                             {userData.username}
                         </h3>
                         {userData.isBanned && (
@@ -355,13 +355,13 @@ export const UserPage = () => {
                             <>
                             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
                                 <div className="relative w-3/4 my-6 mx-auto max-w-4xl">
-                                <div className="border-0 rounded-lg shadow-lg relative p-6 flex flex-col w-full bg-white outline-none focus:outline-none">
+                                <div className="border-0 dark:shadow-[0px_0px_15px_-6px_#F6C177] rounded-lg shadow-lg relative p-6 flex flex-col w-full dark:bg-[#1E1E1E] bg-white outline-none focus:outline-none">
                                     <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                                    <h3 className="text-3xl font-semibold">
+                                    <h3 className="text-3xl dark:text-[#F6C177] font-semibold">
                                         Offer details
                                     </h3>
                                     <button
-                                        className="p-1 ml-auto bg-transparent border-0 text-black opacity-50 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                        className="p-1 ml-auto bg-transparent dark:text-[#F6C177] border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                                         onClick={closeModal}
                                     >
                                         <IoIosCloseCircleOutline />
@@ -386,9 +386,9 @@ export const UserPage = () => {
                                         <FaRegArrowAltCircleRight size={30} />
                                         </div>
                                     </div>
-                                    <div className="w-1/2 p-6 ml-8 no-scrollbar overflow-y-auto max-h-96">
+                                    <div className="w-1/2 p-6 ml-8 dark:text-gray-300 no-scrollbar overflow-y-auto max-h-96">
                                         <div className="w-full flex justify-between items-center">
-                                        <h2 className="company text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
+                                        <h2 className="company dark:text-[#F6C177] text-orange-600 uppercase font-bold text-sm sm:text-md tracking-wider py-2">
                                             {selectedProduct.category}
                                         </h2>           
                                         </div>         
@@ -424,14 +424,14 @@ export const UserPage = () => {
                                         </div>
                                         </div>
                                         {user.isAuthenticated && user.userID !== selectedProduct.ownerID && (    
-                                        <button onClick={handleBuyNow} className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                                        <button onClick={handleBuyNow} className="flex dark:bg-[#F6C177] bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
                                             <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
                                             <FaCartShopping className="pr-4 w-8 h-8" /> BUY NOW!
                                             </i>
                                         </button>
                                         )}
                                         {user.isAuthenticated && user.userID === selectedProduct.ownerID && (
-                                        <button onClick={goToAccount} className="flex bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
+                                        <button onClick={goToAccount} className="flex dark:bg-[#F6C177] bg-orange-500 mt-6 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-dark transition duration-300">
                                             <i className="flex cursor-pointer text-white text-xl leading-0 pr-3">
                                             TO MANAGE OFFER, CLICK HERE
                                             </i>

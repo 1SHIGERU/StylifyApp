@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const Joi = require('@hapi/joi');
 
@@ -27,8 +28,11 @@ const register = async (req, res) => {
     if (user1) {
       return res.status(405).json({ msg: 'The user with specified username address already exists' });
     }
+    
+    const salt = await bcrypt.genSalt(10); 
+    const hashedPassword = await bcrypt.hash(password, salt); 
 
-    user = await User.create({ username, email, password, firstName, familyName });
+    user = await User.create({ username, email, password: hashedPassword, firstName, familyName });
     res.status(201).json(user);
   } catch (err) {
     console.error(err.message);
@@ -53,7 +57,7 @@ const login = async (req, res) => {
       return res.status(404).json({ msg: 'Such an account not found' });
     }
 
-    const isMatch = password === user.password;
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ msg: 'Invalid Credentials' });
     }

@@ -26,7 +26,6 @@ export const Home = () => {
               }
             }
           };
-      
           fetchAddress();
         }, [user]);
 
@@ -38,23 +37,23 @@ export const Home = () => {
 
 return (
      <>
-     <div className="pt-18 min-h-screen flex justify-center items-center">
+     <div className="pt-18 min-h-screen flex justify-center items-center dark:bg-[#1E1E1E]">
           <div style={{ '--image-url': `url(${Image})` }} className="w-1/2 min-h-screen bg-[image:var(--image-url)]"></div>
           <div className="w-1/2 justify-center items-center p-32">
-               <h1 className="text-4xl font-bold">
-               An <span className='text-[#D47C24] '>interesting</span> fact about clothing is that the average person regularly uses only about 20-30% of their wardrobe, while 70-80% remains <span className='text-[#D47C24] '> rarely </span>worn in the closet.</h1>
-               <p className="text-xl mt-4">Stylify is here to help you make the most of your wardrobe. We provide you with the latest fashion trends and help you create the perfect outfit for any occasion.</p>
+               <h1 className="text-4xl font-bold dark:text-[#EAEAEA]">
+               An <span className='text-[#D47C24] dark:text-[#F6C177] '>interesting</span> fact about clothing is that the average person regularly uses only about 20-30% of their wardrobe, while 70-80% remains <span className='text-[#D47C24] dark:text-[#F6C177] '> rarely </span>worn in the closet.</h1>
+               <p className="text-xl mt-4 dark:text-[#EAEAEA]">Stylify is here to help you make the most of your wardrobe. We provide you with the latest fashion trends and help you create the perfect outfit for any occasion.</p>
                
                {user.isAuthenticated ? 
                     <div className='flex flex-row'>
                          <Link to="/addOffer"> 
-                              <button className="flex relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                              <button className="flex relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:content-[''] dark:before:bg-[#F6C177] before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
                                    <span class="relative z-10">Add an offer</span>
                               </button>
                          </Link>
                          
                          <Link to="/market">
-                              <button className="flex ml-8 relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                              <button className="flex relative mt-4 h-[50px] ml-16 w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:content-[''] dark:before:bg-[#F6C177] before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
                                    <span class="relative z-10">Go to market</span>
                               </button>
                          </Link>
@@ -62,13 +61,13 @@ return (
                     :
                     <div className='flex flex-row'>
                          <Link to="/login">
-                              <button className="flex relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                              <button className="flex relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:content-[''] dark:before:bg-[#F6C177] before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
                                    <span class="relative z-10">Get started</span>
                               </button>
                          </Link>
 
                          <Link to="/market">
-                              <button className="flex ml-8 relative mt-4 h-[50px] w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
+                              <button className="flex relative mt-4 h-[50px] ml-16 w-40 items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:content-[''] dark:before:bg-[#F6C177] before:absolute before:h-0 before:w-0 before:rounded-full before:bg-orange-600 before:duration-500 before:ease-out hover:shadow-orange-600 hover:before:h-56 hover:before:w-56">
                                    <span class="relative z-10">Go to market</span>
                               </button>
                          </Link>
@@ -77,11 +76,11 @@ return (
                
           </div>
      </div>
-     <div class="flex justify-center items-center mt-12">       
+     <div class="flex justify-center items-center pt-12 dark:bg-[#1E1E1E]">       
           <div class="2xl:mx-auto 2xl:container py-12 px-4 sm:px-6 xl:px-20 2xl:px-0 w-full">
           <div class="flex flex-col jusitfy-center items-center space-y-10">
                <div class="flex flex-col justify-center items-center ">
-               <h1 class="text-3xl xl:text-4xl font-semibold leading-7 xl:leading-9 text-gray-800">Shop By Category</h1>
+               <h1 class="text-3xl xl:text-4xl font-semibold leading-7 xl:leading-9 dark:text-[#F6C177] text-gray-800">Shop By Category</h1>
                </div>
                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-x-4 md:gap-x-8 w-full">
                <div class="group flex justify-center items-center h-full w-full">
@@ -90,18 +89,18 @@ return (
 
                <div class="flex flex-col space-y-4 md:space-y-8 mt-4 md:mt-0">
                     <div class="group relative flex justify-center items-center h-full w-full overflow-hidden">
-                         <img class="object-center object-cover h-full w-full transition-transform duration-250 group-hover:scale-110" src="https://i.ibb.co/SXZvYHs/irene-kredenets-DDqx-X0-7v-KE-unsplash-1.png" alt="shoe-image" />
+                         <img class="object-center object-cover h-full w-full transition-transform duration-250 group-hover:scale-110" src="https://cdn.pixabay.com/photo/2016/07/07/04/07/shoes-1501837_640.jpg" alt="shoe-image" />
                          <button onClick={() => handleCategoryClick('Shoes')} class="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-250 text-white bg-black bg-opacity-50 px-4 py-2">Shoes</button>
                     </div>
 
                     <div class="group relative flex justify-center items-center h-full w-full overflow-hidden">
-                         <img class="object-center object-cover h-full w-full transition-transform duration-250 group-hover:scale-110" src="https://i.ibb.co/Hd1pVxW/louis-mornaud-Ju-6-TPKXd-Bs-unsplash-1-2.png" alt="watch-image" />
+                         <img class="object-center object-cover h-full w-full transition-transform duration-250 group-hover:scale-110" src="https://plus.unsplash.com/premium_photo-1728334386136-2428c3196dc0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aGFuZHdhdGNofGVufDB8fDB8fHww" alt="watch-image" />
                          <button onClick={() => handleCategoryClick('Watches')} class="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-250 text-white bg-black bg-opacity-50 px-4 py-2">Watches</button>
                     </div>
                </div>
 
                <div class=" group relative justify-center items-center h-full w-full hidden lg:flex overflow-hidden">
-                    <img class="object-center object-cover h-full w-full hover:scale-[120%] transition duration-250" src="https://i.pinimg.com/originals/2f/f7/7d/2ff77d149b32f6ac6b6664f9181ca803.png" alt="girl-image" />
+                    <img class="object-center object-cover h-full w-full hover:scale-[120%] transition duration-250" src="https://cdn.pixabay.com/photo/2023/05/06/01/34/t-shirt-7973404_1280.jpg" alt="girl-image" />
                     <button onClick={() => handleCategoryClick('T-shirts')} class="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-250 text-white bg-black bg-opacity-50 px-4 py-2">T-shirts</button>
                </div>
                <div class=" group flex justify-center items-center h-full w-full mt-4 md:hidden overflow-hidden md:mt-8 lg:hidden">
@@ -116,11 +115,11 @@ return (
                </div>
           </div>
           </div>
-          </div>
-          <section class="py-10 bg-white sm:py-16 lg:py-24">
+     </div>
+          <section class="py-10 bg-white dark:bg-[#1E1E1E] sm:py-16 lg:py-24">
                <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div class="max-w-2xl mx-auto text-center">
-                         <h2 class="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">How does it work?</h2>
+                         <h2 class="text-3xl font-bold dark:text-[#F6C177] leading-tight text-black sm:text-4xl lg:text-5xl">How does it work?</h2>
                          <p class="max-w-lg mx-auto mt-4 text-base leading-relaxed text-gray-600"></p>
                     </div>
 
@@ -135,49 +134,32 @@ return (
                                    <span class="text-xl font-semibold text-gray-700"> 1 </span>
                                    </div>
                                    <a onClick={() => navigate("/register")}>
-                                        <h3 class="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">List an item!</h3>
+                                        <h3 class="mt-6 text-xl dark:text-[#F6C177] font-semibold leading-tight text-black md:mt-10">List an item!</h3>
                                    </a>
-                                   <p class="mt-4 text-base text-gray-600">To list an item, you must have a user account</p>
+                                   <p class="mt-4 text-base text-gray-600 dark:text-gray-300">To list an item, you must have a user account</p>
                               </div>
 
                               <div>
                                    <div class="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
                                    <span class="text-xl font-semibold text-gray-700"> 2 </span>
                                    </div>
-                                   <h3 class="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">Sell and send!</h3>
-                                   <p class="mt-4 text-base text-gray-600">When someone buys your item, send it as soon as possible!</p>
+                                   <h3 class="mt-6 text-xl dark:text-[#F6C177] font-semibold leading-tight text-black md:mt-10">Sell and send!</h3>
+                                   <p class="mt-4 text-base text-gray-600 dark:text-gray-300">When someone buys your item, send it as soon as possible!</p>
                               </div>
 
                               <div>
                                    <div class="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
                                    <span class="text-xl font-semibold text-gray-700"> 3 </span>
                                    </div>
-                                   <h3 class="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">Paycheck time!</h3>
-                                   <p class="mt-4 text-base text-gray-600">When the buyer receives your order, the entire amount goes to your account!</p>
+                                   <h3 class="mt-6 text-xl dark:text-[#F6C177] font-semibold leading-tight text-black md:mt-10">Paycheck time!</h3>
+                                   <p class="mt-4 text-base text-gray-600 dark:text-gray-300">When the buyer receives your order, the entire amount goes to your account!</p>
                               </div>
                          </div>
                     </div>
                </div>
           </section>
 
-          <div class="2xl:mx-auto 2xl:container mx-4 py-16">
-               <div class="w-full relative flex items-center justify-center">
-                    <img src="https://i.ibb.co/4sYZ8gC/img-2.png" alt="dining" class="w-full h-full absolute z-0 hidden xl:block" />
-                    <img src="https://i.ibb.co/bbS3J9C/pexels-max-vakhtbovych-6301182-1.png" alt="dining" class="w-full h-full absolute z-0 hidden sm:block xl:hidden" />
-                    <img src="https://i.ibb.co/JKkzGDs/pexels-max-vakhtbovych-6301182-1.png" alt="dining" class="w-full h-full absolute z-0 sm:hidden" />
-                         <div class="bg-[#D47C24] bg-opacity-80 md:my-16 lg:py-16 py-10 w-full md:mx-24 md:px-12 px-4 flex flex-col items-center justify-center relative z-40">
-                              <h1 class="text-4xl font-semibold leading-9 text-white text-center">Don’t miss out!</h1>
-                              <p class="text-base leading-normal text-center text-white mt-6">
-                                   Subscribe to your newsletter to stay in the loop. Our newsletter is sent once in <br />
-                                   a week on every friday so subscribe to get latest news and updates.
-                              </p>
-                              <div class="sm:border border-white flex-col sm:flex-row flex items-center lg:w-5/12 w-full mt-12 space-y-4 sm:space-y-0">
-                                   <input class="border border-white sm:border-transparent text-base w-full font-medium leading-none text-white p-4 focus:outline-none bg-transparent placeholder-white" placeholder="Email Address" />
-                                   <button class="focus:outline-none focus:ring-offset-2 focus:ring border border-white sm:border-transparent w-full sm:w-auto bg-white py-4 px-6 hover:bg-opacity-75">Subscribe</button>
-                              </div>
-                         </div>
-               </div>
-          </div>
+         
      </>
      
 );

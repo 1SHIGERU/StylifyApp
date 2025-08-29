@@ -96,17 +96,17 @@ const Favourites = () => {
 
     return (
       <>
-        <h1 className='text-4xl font-bold mb-4'>Favourites</h1>
-        <h1 className='text-xl font-bold mb-2 text-orange-700'>{products.length} offers</h1>
+        <h1 className='text-4xl font-bold mb-4 dark:text-[#F6C177]'>Favourites</h1>
+        <h1 className='text-xl font-bold mb-2 text-orange-700 dark:text-[#F6C177]'>{products.length} offers</h1>
         <hr />
  
           {products.length === 0 
           ? 
           <>
-            <div className="flex h-64 flex-col bg-white">
+            <div className="flex h-64 flex-col">
                 <div className="flex flex-1 items-center justify-center">
                     <div className="mx-auto max-w-xl px-4 py-8 text-center">
-                         <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                         <h1 className="text-2xl font-bold dark:text-[#F6C177] tracking-tight text-gray-900 sm:text-4xl">
                             You don't have any favourite offers.
                          </h1>
                          <p className="mt-4 text-gray-500">
