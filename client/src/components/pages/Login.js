@@ -6,7 +6,7 @@ import { AuthData } from "../../auth/AuthWrapper"
 export const Login = () => {
 
      const { login } = AuthData();
-     const [ formData, setFormData ] = useReducer((formData, newItem) => { return ( {...formData, ...newItem} )}, {email: "", password: ""})
+     const [ formData, setFormData ] = useReducer((formData, newItem) => { return ( {...formData, ...newItem} )}, {emailOrUsername: "", password: ""})
      const [ errorMessage, setErrorMessage ] = useState("");
      const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ export const Login = () => {
    
      const doLogin = async () => {
           try {            
-               await login(formData.email, formData.password)
+               await login(formData.emailOrUsername, formData.password)
           } catch (error) {
                console.log(error)               
           }         
@@ -46,7 +46,7 @@ export const Login = () => {
                          log in
                          </h3>
                          <div>
-                              <input name="email" type="email" required class="bg-gray-200 w-full text-sm px-4 py-3.5 rounded-md outline-[#8B4513]" placeholder="email" value={formData.email} onChange={handleChange} />
+                              <input name="emailOrUsername" type="text" required class="bg-gray-200 w-full text-sm px-4 py-3.5 rounded-md outline-[#8B4513]" placeholder="email lub login" value={formData.emailOrUsername} onChange={handleChange} />
                          </div>
                          <div>
                               <input name="password" type="password" required class="bg-gray-200 w-full text-sm px-4 py-3.5 rounded-md outline-[#8B4513]" placeholder="password" value={formData.password} onChange={handleChange} />

@@ -47,10 +47,10 @@ export const AuthWrapper = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const login = async (email1, password1) => {
+  const login = async (emailOrUsername, password1) => {
     try {
       const { data } = await axios.post(`${process.env.REACT_APP_API_URL}api/auth/login/`, {
-        email: email1,
+        emailOrUsername: emailOrUsername,
         password: password1,
       });
 

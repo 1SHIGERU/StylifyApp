@@ -4,8 +4,9 @@ const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const Joi = require('@hapi/joi');
 
+const { Op } = require('sequelize');
 const login_schema = Joi.object({
-  email: Joi.string().email().required(),
+  emailOrUsername: Joi.string().required(),
   password: Joi.string().min(3).required()
 });
 
@@ -42,17 +43,21 @@ const register = async (req, res) => {
 
 
 const login = async (req, res) => {
-
   const { error } = login_schema.validate(req.body);
-  
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
 
-  const { email, password } = req.body;
+  const { emailOrUsername, password } = req.body;
   try {
-    let user = await User.findOne({ where: { email } });
-    
+    let user = await User.findOne({
+      where: {
+        [Op.or]: [
+          { email: emailOrUsername },
+          { username: emailOrUsername }
+        ]
+      }
+    });
     if (!user) {
       return res.status(404).json({ msg: 'Such an account not found' });
     }
@@ -72,7 +77,6 @@ const login = async (req, res) => {
     const refreshToken = jwt.sign(payload, 'refreshTokenSecret', { expiresIn: '7d' });
 
     res.json({ accessToken, refreshToken })
-    
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

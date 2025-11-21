@@ -11,6 +11,7 @@ import  Payment  from "../pages/Payment"
 import PaymentSucces from "../PaymentSucces"
 import { UserPage } from "../pages/UserPage"
 import { Chat } from "../pages/Chat"
+import { NewChat } from "../pages/NewChat"
 import AdminDashboard from "../AdminDashboard/AdminDashboard"
 
 export const nav = [
@@ -20,7 +21,6 @@ export const nav = [
      { path:     "/register", name: "Register",    element: <Register />,   isMenu: false,    isPrivate: false  },
      { path:     "/contact",  name: "Contact",     element: <Contact />,    isMenu: true,     isPrivate: false  },
      { path:     "/account",  name: "Account",     element: <Account />,    isMenu: true,     isPrivate: true   },
-     { path:     "/*",        name: "404Error",    element: <ErrorPage />,  isMenu: false,    isPrivate: false  },
      { path:     "/addOffer", name: "AddOffer",    element: <AddOffer />,   isMenu: false,    isPrivate: true   },
      { path:     "/market",   name: "Market",      element: <Market />,     isMenu: true,     isPrivate: false  },
      { path:     "/payment",  name: "Payment",     element: <Payment />,    isMenu: false,    isPrivate: true   },
@@ -28,5 +28,7 @@ export const nav = [
      { path:     "/payment/cancel",  name: "PaymentCancel",     element: <PaymentSucces />,    isMenu: false,    isPrivate: true   },
      { path:     "/user/:id", name: "PaymentError",     element: <UserPage />,    isMenu: false,    isPrivate: false   },
      { path:     "/chat"    , name: "Chat",        element: <Chat />,       isMenu: true,     isPrivate: true   },
-     { path:     "/adminDashboard", name: "AdminDashboard", element: <AdminDashboard />, isMenu: true, isPrivate: true }
+     { path:     "/newChat" , name: "NewChat",     element: <NewChat />,    isMenu: true,     isPrivate: false   },
+     { path:     "/adminDashboard", name: "AdminDashboard", element: <AdminDashboard />, isMenu: true, isPrivate: true },
+     { path:     "/*",        name: "404Error",    element: <ErrorPage />,  isMenu: false,    isPrivate: false  }
 ]

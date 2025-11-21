@@ -14,6 +14,22 @@ services:
       - postgres
     restart: always
 
+  frontend: # <-- TWÓJ SERWIS FRONTENDOWY
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    # --- DODAJ TE DWIE LINIE PONIŻEJ ---
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    # ------------------------------------
+    depends_on:
+      - node
+    restart: always
+
   postgres:
     image: postgres
     volumes:
