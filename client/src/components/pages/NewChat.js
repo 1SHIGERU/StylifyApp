@@ -3,6 +3,7 @@ import axios from 'axios';
 import Img from '../../assets/avatar.jpg';
 import { AuthData } from '../../auth/AuthWrapper';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export const NewChat = () => {
 
@@ -21,6 +22,8 @@ export const NewChat = () => {
   const [partnerOffersCount, setPartnerOffersCount] = useState(null);
   const [loadingPartnerInfo, setLoadingPartnerInfo] = useState(false);
   const [errorPartnerInfo, setErrorPartnerInfo] = useState(null);
+  // Modal blokady wiadomości
+  const [blockModal, setBlockModal] = useState({ show: false, message: '' });
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}chat/user/${user.userID}`)
@@ -69,25 +72,54 @@ export const NewChat = () => {
       User: {
         avatarURL: user.avatar,
         username: user.username
-      }
+      },
+      _optimistic: true // oznacz jako tymczasową
     };
     
     setMessages((prevMessages) => [...prevMessages, optimisticMessage]);
+    const messageTextCopy = newMessage; // zapisz przed czyszczeniem
     setNewMessage('');
 
     axios.post(`${process.env.REACT_APP_API_URL}chat/add-message`, messageData)
       .then((response) => {
-        // Aktualizuj ostatnią wiadomość danymi z serwera
+        const data = response.data;
+
+        // Sprawdź czy wiadomość została zablokowana
+        if (data.blocked === true || data.action === 'block') {
+          // Usuń optymistyczną wiadomość
+          setMessages((prevMessages) => prevMessages.filter(m => !m._optimistic));
+          // Pokaż modal z informacją o blokadzie
+          setBlockModal({
+            show: true,
+            message: data.uiMessage || 'Twoja wiadomość została zablokowana z powodu naruszenia regulaminu (dane kontaktowe).'
+          });
+          // Przywróć treść wiadomości w polu input, aby użytkownik mógł edytować
+          setNewMessage(messageTextCopy);
+          return;
+        }
+
+        // Sprawdź czy to ostrzeżenie (warn)
+        if (data.action === 'warn') {
+          toast.warning(data.uiMessage || 'Wiadomość może zawierać podejrzane treści.', { position: 'top-center' });
+        }
+
+        // Aktualizuj ostatnią wiadomość danymi z serwera (usuwamy flag _optimistic)
         setMessages((prevMessages) => {
-          const updatedMessages = [...prevMessages];
-          updatedMessages[updatedMessages.length - 1] = response.data;
-          return updatedMessages;
+          const filtered = prevMessages.filter(m => !m._optimistic);
+          // Dodaj prawdziwą wiadomość z serwera (jeśli przyszła)
+          if (data.id || data.messageID) {
+            return [...filtered, { ...data, _optimistic: false }];
+          }
+          return filtered;
         });
       })
       .catch((error) => {
         console.error('Error sending message:', error);
+        toast.error('Nie udało się wysłać wiadomości. Spróbuj ponownie.', { position: 'top-center' });
         // W razie błędu usuń optymistyczną wiadomość
-        setMessages((prevMessages) => prevMessages.slice(0, -1));
+        setMessages((prevMessages) => prevMessages.filter(m => !m._optimistic));
+        // Przywróć treść w input
+        setNewMessage(messageTextCopy);
       });
   };
 
@@ -403,6 +435,42 @@ export const NewChat = () => {
         </div>
       </div>
     </div>
+
+    {/* Modal blokady wiadomości */}
+    {blockModal.show && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setBlockModal({ show: false, message: '' })}>
+        <div className="bg-white dark:bg-[#242526] rounded-lg shadow-xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+              <span className="text-red-600 dark:text-red-400 text-2xl">⚠</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Wiadomość zablokowana</h3>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                {blockModal.message}
+              </p>
+              <div className="bg-gray-100 dark:bg-[#18191a] rounded p-3 text-xs text-gray-600 dark:text-gray-400">
+                <strong>Regulamin Stylify:</strong> Wymiana danych kontaktowych (e-mail, telefon, konta bankowe) w celu ominięcia systemu płatności jest zabroniona i może skutkować zablokowaniem konta.
+              </div>
+            </div>
+          </div>
+          <div className="mt-6 flex justify-end gap-3">
+            <button
+              onClick={() => navigate('/contact')}
+              className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition"
+            >
+              Zgłoś błąd
+            </button>
+            <button
+              onClick={() => setBlockModal({ show: false, message: '' })}
+              className="px-4 py-2 rounded-md bg-[#D47C24] text-white text-sm font-medium hover:bg-[#bf6e1f] transition"
+            >
+              Rozumiem
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
     
     </>
   );

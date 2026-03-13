@@ -15,7 +15,7 @@ router.get('/:id', chatController.getMessagesByChatID);
 router.get('/user/:id', chatController.getUserChats);
 router.post('/setAsRead', chatController.setAsRead);
 router.get('/checkUnread/:id', chatController.checkUnreadMessages);
-
+router.get('/:chatID/messages', chatController.getChatMessages);
 
 
 router.delete('/deleteContactMessage/:id', chatController.deleteContactMessage);

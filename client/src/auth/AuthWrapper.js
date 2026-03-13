@@ -6,6 +6,7 @@ import axios from "axios";
 import Image from "../assets/wardrobe.jpg"
 import { toast } from "react-toastify";
 import WelcomeModal from "../components/WelcomeModal";
+import Footer from "../components/Footer";
 
 const AuthContext = createContext();
 export const AuthData = () => useContext(AuthContext);
@@ -267,7 +268,7 @@ export const AuthWrapper = () => {
         <Header />
         <RenderRoutes />
         <WelcomeModal/>
-        
+        <Footer/>
       </>
     </AuthContext.Provider>
   );

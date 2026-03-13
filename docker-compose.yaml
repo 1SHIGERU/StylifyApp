@@ -12,9 +12,9 @@ services:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - postgres
+      - ml-service
     restart: always
-
-  frontend: # <-- TWÓJ SERWIS FRONTENDOWY
+  frontend:
     build:
       context: ./client
     ports:
@@ -22,14 +22,11 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
-    # --- DODAJ TE DWIE LINIE PONIŻEJ ---
     environment:
       - CHOKIDAR_USEPOLLING=true
-    # ------------------------------------
     depends_on:
       - node
     restart: always
-
   postgres:
     image: postgres
     volumes:
@@ -39,5 +36,16 @@ services:
       POSTGRES_USER: leoniddas7
       POSTGRES_DB: postgres
 
+  ml-service:
+    build:
+      context: ./ml-service
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ml-service:/app
+      - ml_models_cache:/root/.cache/huggingface
+    restart: always
+
 volumes:
   postgres_data:
+  ml_models_cache:

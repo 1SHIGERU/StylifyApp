@@ -1,0 +1,2 @@
+flagID,messageID,chatID,senderID,messageContent,label,detector,confidence,reason,createdAt
+1,6,1,2,"Zadzwoń +48 600700800, załatwimy poza aplikacją",personal_data_request,rules_v1,0.6,"contains_phone, suspicious_phrase:zadzwoń",1763903852173

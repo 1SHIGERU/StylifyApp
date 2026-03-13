@@ -9,6 +9,7 @@ const transactionsRouter = require('./transactions');
 const notificationRouter = require('./notifications')
 const chatRouter = require('./chat')
 const reviewsRouter = require('./reviews');
+const moderationRouter = require('./moderation');
 
 router.use(express.json());
 
@@ -21,5 +22,6 @@ router.use('/offerImages', offerImagesRouter);
 router.use('/transactions', transactionsRouter);
 router.use('/notifications', notificationRouter);
 router.use('/chat', chatRouter);
+router.use('/moderation', moderationRouter);
 
 module.exports = router;

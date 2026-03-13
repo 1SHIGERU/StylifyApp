@@ -33,6 +33,30 @@ const Message = sequelize.define('Message', {
     type: DataTypes.BOOLEAN,
     defaultValue: false, 
   },
+  
+   // NEW fields:
+
+   blocked: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  flagged: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  flaggedReason: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  flaggedLabel: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  flagConfidence: {
+    type: DataTypes.FLOAT,
+    allowNull: true,
+  },
+
 }, {
   timestamps: true,
 });

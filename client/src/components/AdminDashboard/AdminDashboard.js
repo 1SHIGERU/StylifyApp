@@ -1,3 +1,4 @@
+// AdminDashboard.js
 import React, { useEffect, useState } from "react";
 import { AuthData } from "../../auth/AuthWrapper";
 import { ErrorPage } from "../pages/ErrorPage";
@@ -28,6 +29,13 @@ const AdminDashboard = () => {
   const [totallyEarned, setTotallyEarned] = useState(0);
   const [usersList, setUsersList] = useState([]);
 
+  // Moderation states
+  const [moderationFlags, setModerationFlags] = useState([]);
+  const [loadingFlags, setLoadingFlags] = useState(false);
+  const [selectedFlag, setSelectedFlag] = useState(null);
+  const [chatContextMessages, setChatContextMessages] = useState([]);
+  const [showContextModal, setShowContextModal] = useState(false);
+  const [moderationPolling, setModerationPolling] = useState(null);
 
   const countActiveOffers = async () => {
     try {
@@ -111,6 +119,7 @@ const AdminDashboard = () => {
     { name: "Users", icon: "👤" },
     { name: "Messages", icon: "✉️" },
     { name: "Analytics", icon: "📊" },
+    { name: "Moderation", icon: "🛡️" }, // new moderation tab
   ];
 
   const [chartData, setChartData] = useState({
@@ -163,6 +172,67 @@ const AdminDashboard = () => {
     }
   }
 
+  // ---------- Moderation functions ----------
+
+  // Fetch pending flags for moderation
+  const fetchModerationFlags = async () => {
+    try {
+      setLoadingFlags(true);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}moderation/flags?status=pending&limit=50`);
+      // Expecting array of flags with nested Message object
+      setModerationFlags(res.data || []);
+      setLoadingFlags(false);
+    } catch (err) {
+      console.error("Failed to fetch moderation flags:", err?.response?.data || err.message);
+      setLoadingFlags(false);
+    }
+  };
+
+  // Mark a flag as tp|fp|ban
+  const markFlag = async (flagId, decision, note = "") => {
+    try {
+      await axios.post(`${process.env.REACT_APP_API_URL}moderation/flags/${flagId}/mark`, {
+        decision, moderatorID: user.userID || 1, note
+      });
+      toast.success("Saved moderator decision", { position: "top-center" });
+      // refresh list
+      fetchModerationFlags();
+    } catch (err) {
+      console.error("Failed to mark flag:", err?.response?.data || err.message);
+      toast.error("Failed to save decision", { position: "top-center" });
+    }
+  };
+
+  // Override/unblock a specific flag/message
+  const overrideFlag = async (flagId, action = 'unblock', note = '') => {
+    try {
+      await axios.post(`${process.env.REACT_APP_API_URL}moderation/flags/${flagId}/override`, {
+        action, moderatorID: user.userID || 1, note
+      });
+      toast.success("Override applied", { position: "top-center" });
+      fetchModerationFlags();
+    } catch (err) {
+      console.error("Override failed:", err?.response?.data || err.message);
+      toast.error("Override failed", { position: "top-center" });
+    }
+  };
+
+  // Show chat context (last N messages) for a given flag
+  const openContextForFlag = async (flag) => {
+    try {
+      setSelectedFlag(flag);
+      const chatID = flag.Message?.chatID || flag.chatID;
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}chat/${chatID}/messages?limit=20`);
+      setChatContextMessages(res.data || []);
+      setShowContextModal(true);
+    } catch (err) {
+      console.error("Failed to fetch chat context:", err?.response?.data || err.message);
+      toast.error("Failed to fetch chat context", { position: "top-center" });
+    }
+  };
+
+  // ---------- end moderation functions ----------
+
   const renderCards = () => {
     switch (activeSection) {
       case "Dashboard":
@@ -176,7 +246,7 @@ const AdminDashboard = () => {
           </div>
           <div className="flex ">
           <div className="flex flex-col w-96 h-96 dark:bg-[#2d2d30] shadow-md p-16 rounded-xl justify-center items-center mt-8 duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-          <h2 class="lg:text-xl mb-8 dark:text-[#F6C177] text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+          <h2 className="lg:text-xl mb-8 dark:text-[#F6C177] text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
                 Active offers by category
             </h2>
             {chartData && chartData.labels.length > 0 ? (
@@ -186,7 +256,7 @@ const AdminDashboard = () => {
             )}
           </div>
           <div className="ml-16 flex flex-col w-96 h-96 dark:bg-[#2d2d30]  shadow-md p-6 rounded-xl justify-center items-center mt-8 duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-            <h2 class="lg:text-xl dark:text-[#F6C177] mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+            <h2 className="lg:text-xl dark:text-[#F6C177] mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
                 Accounts registered per month
             </h2>
             {userChartData && userChartData.labels.length > 0 ? (
@@ -241,27 +311,27 @@ const AdminDashboard = () => {
         );
       case "Messages":
         return (
-          <section class="">
+          <section className="">
             {contactMessages.length === 0 && (
               <p className="text-gray-600">No messages to display.</p>
             )}
-            <div class="px-4 mx-auto overflow-scroll no-scrollbar  max-w-7xl sm:px-6 lg:px-8">    
-                <div class="grid mb-8 grid-cols-1 gap-6 px-4 mt-12 sm:px-0 xl:mt-20 xl:grid-cols-4 sm:grid-cols-2">        
+            <div className="px-4 mx-auto overflow-scroll no-scrollbar  max-w-7xl sm:px-6 lg:px-8">    
+                <div className="grid mb-8 grid-cols-1 gap-6 px-4 mt-12 sm:px-0 xl:mt-20 xl:grid-cols-4 sm:grid-cols-2">        
                   {contactMessages.map((item) => (
-                      <div key={item.contactMessageID} class="overflow-hidden bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.3)]">
+                      <div key={item.contactMessageID} className="overflow-hidden bg-white shadow-xl p-6 rounded-lg duration-300 hover:scale-105 hover:shadow-[0_3px_10px_rgb(0,0,0,0.3)]">
                       <p onClick={() => handleMessageDelete(item.contactMessageID)} className="block right-0 top-0 text-red-500 hover:cursor-pointer">X</p>
-                          <div class="px-2 py-6">     
-                              <div class="flex items-center justify-between">
-                                  <img class="flex-shrink-0 object-cover w-10 h-10 rounded-full" src={Avatar} alt="" />
-                                  <div class="min-w-0 ml-3 mr-auto">
-                                      <p class="text-base font-semibold text-black truncate">{item.fullName}</p>{item.phoneNumber}
-                                      <p class="text-sm text-gray-600 truncate">{item.companyName}</p>
+                          <div className="px-2 py-6">     
+                              <div className="flex items-center justify-between">
+                                  <img className="flex-shrink-0 object-cover w-10 h-10 rounded-full" src={Avatar} alt="" />
+                                  <div className="min-w-0 ml-3 mr-auto">
+                                      <p className="text-base font-semibold text-black truncate">{item.fullName}</p>{item.phoneNumber}
+                                      <p className="text-sm text-gray-600 truncate">{item.companyName}</p>
                                   </div>
                               </div>
-                              <blockquote class="mt-5">
-                                  <p class="text-base text-gray-800">
+                              <blockquote className="mt-5">
+                                  <p className="text-base text-gray-800">
                                       {item.message}
-                                      <span class="block text-orange-500 mt-4">{new Date(item.createdAt).toLocaleDateString()}</span>
+                                      <span className="block text-orange-500 mt-4">{new Date(item.createdAt).toLocaleDateString()}</span>
                                   </p>
                               </blockquote>
                           </div>
@@ -279,6 +349,114 @@ const AdminDashboard = () => {
             <p className="text-gray-500">View detailed analytics for your app performance.</p>
           </div>
         );
+
+      // ---------- Moderation UI ----------
+      case "Moderation":
+        return (
+          <div className="p-4">
+            <h2 className="text-lg dark:text-[#F6C177] font-semibold mb-4">Moderation queue</h2>
+
+            <div className="mb-4">
+              <button
+                onClick={() => fetchModerationFlags()}
+                className="px-4 py-2 bg-[#8B4513] text-white rounded-md mr-2"
+              >
+                Refresh
+              </button>
+              <button
+                onClick={() => { setModerationFlags([]); fetchModerationFlags(); }}
+                className="px-4 py-2 border rounded-md"
+              >
+                Clear & fetch
+              </button>
+            </div>
+
+            {loadingFlags ? (
+              <p>Loading...</p>
+            ) : moderationFlags.length === 0 ? (
+              <p>No pending flags.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white dark:bg-[#2d2d30] rounded-md">
+                  <thead>
+                    <tr>
+                      <th className="px-4 py-2 text-left">When</th>
+                      <th className="px-4 py-2 text-left">Label</th>
+                      <th className="px-4 py-2 text-left">Confidence</th>
+                      <th className="px-4 py-2 text-left">Snippet</th>
+                      <th className="px-4 py-2 text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {moderationFlags.map((f) => (
+                      <tr key={f.id} className="border-t">
+                        <td className="px-4 py-2">{new Date(f.createdAt).toLocaleString()}</td>
+                        <td className="px-4 py-2">{f.label}</td>
+                        <td className="px-4 py-2">{(f.confidence || 0).toFixed(2)}</td>
+                        <td className="px-4 py-2 max-w-xl truncate">{f.Message?.messageContent?.slice(0,100)}</td>
+                        <td className="px-4 py-2">
+                          <div className="flex gap-2">
+                            <button onClick={() => openContextForFlag(f)} className="px-3 py-1 bg-gray-200 rounded">Show</button>
+                            <button onClick={() => markFlag(f.id, 'tp')} className="px-3 py-1 bg-green-500 text-white rounded">TP</button>
+                            <button onClick={() => markFlag(f.id, 'fp')} className="px-3 py-1 bg-yellow-500 text-white rounded">FP</button>
+                            <button onClick={() => markFlag(f.id, 'ban')} className="px-3 py-1 bg-red-600 text-white rounded">Ban</button>
+                            <button onClick={() => overrideFlag(f.id, 'unblock')} className="px-3 py-1 border rounded">Unblock</button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Context Modal */}
+            {showContextModal && selectedFlag && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white dark:bg-[#1f1f1f] w-11/12 max-w-4xl p-6 rounded-md shadow-lg">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold">Flag context — {selectedFlag.label}</h3>
+                    <div className="flex gap-2">
+                      <button onClick={() => { setShowContextModal(false); setSelectedFlag(null); }} className="px-3 py-1 border rounded">Close</button>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <p className="text-sm text-gray-500">Flag reason: {selectedFlag.reason} — detector: {selectedFlag.detector}</p>
+                    <p className="text-sm text-gray-500">Flag confidence: {(selectedFlag.confidence || 0).toFixed(2)}</p>
+                  </div>
+
+                  <div className="h-96 overflow-auto border rounded p-3 bg-gray-50 dark:bg-[#111111]">
+                    <h4 className="font-semibold mb-2">Chat context (last messages)</h4>
+                    {chatContextMessages.length === 0 ? (
+                      <p>No context available.</p>
+                    ) : (
+                      chatContextMessages.map(m => (
+                        <div key={m.messageID} className={`mb-3 ${m.flagged ? 'border-l-4 border-red-500 pl-2' : 'pl-2'}`}>
+                          <div className="flex items-center justify-between">
+                            <strong>{m.senderID === selectedFlag.Message?.senderID ? 'Sender' : 'Other'}</strong>
+                            <span className="text-xs text-gray-400">{new Date(m.createdAt).toLocaleString()}</span>
+                          </div>
+                          <p className="whitespace-pre-wrap">{m.messageContent}</p>
+                          {m.flagged && <span className="text-xs text-red-500">FLAGGED: {m.flaggedLabel}</span>}
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  <div className="mt-4 flex gap-2">
+                    <button onClick={() => { markFlag(selectedFlag.id, 'tp'); setShowContextModal(false); }} className="px-4 py-2 bg-green-600 text-white rounded">Confirm (TP)</button>
+                    <button onClick={() => { markFlag(selectedFlag.id, 'fp'); setShowContextModal(false); }} className="px-4 py-2 bg-yellow-500 text-white rounded">False positive (FP)</button>
+                    <button onClick={() => { markFlag(selectedFlag.id, 'ban'); setShowContextModal(false); }} className="px-4 py-2 bg-red-600 text-white rounded">Ban user</button>
+                    <button onClick={() => { overrideFlag(selectedFlag.id, 'unblock'); setShowContextModal(false); }} className="px-4 py-2 border rounded">Unblock</button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+        );
+
       default:
         return <p>No section selected</p>;
     }
@@ -293,15 +471,32 @@ const AdminDashboard = () => {
     getUserChartData();
     getContactMessages();
 
-}
-, []);
+    // start periodic moderation polling when Moderation tab is active
+    if (activeSection === "Moderation") {
+      fetchModerationFlags();
+      const iv = setInterval(fetchModerationFlags, 8000);
+      setModerationPolling(iv);
+    } else {
+      if (moderationPolling) {
+        clearInterval(moderationPolling);
+        setModerationPolling(null);
+      }
+    }
+
+    return () => {
+      if (moderationPolling) {
+        clearInterval(moderationPolling);
+      }
+    };
+  }
+, [activeSection]);
 
 if(!user.isAdmin) return <ErrorPage/>
 
   return (
     <div className="flex h-screen pt-16">
       <div className="text-gray-500 dark:bg-[#2d2d30] w-1/5 p-6 shadow-md ">
-            <h2 class="lg:text-3xl dark:text-[#F6C177] mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
+            <h2 className="lg:text-3xl dark:text-[#F6C177] mb-8 text-[#8B4513] text-4xl font-extrabold lg:leading-[55px]">
                 Admin panel
             </h2>
         <ul className="space-y-6">
@@ -386,25 +581,25 @@ const UserCard = ({ userID, username, firstName,familyName , avatarURL, desc, is
                 </div>
                 <p className="text-gray-700">{desc}</p>
                 {isBanned && (
-                  <a onClick={() => handleUserBanStatus(userID, "unban")} class="mt-4 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-green-500 rounded-full shadow-md group">
-                     <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-green-500 group-hover:translate-x-0 ease">
-                     <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"/>
+                  <a onClick={() => handleUserBanStatus(userID, "unban")} className="mt-4 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-green-500 rounded-full shadow-md group">
+                     <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-green-500 group-hover:translate-x-0 ease">
+                     <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"/>
                       </svg>
                      </span>
-                   <span class="absolute flex items-center justify-center w-full h-full text-green-500 transition-all duration-300 transform group-hover:translate-x-full ease">UNBAN</span>
-                   <span class="relative invisible">UNBAN</span>
+                   <span className="absolute flex items-center justify-center w-full h-full text-green-500 transition-all duration-300 transform group-hover:translate-x-full ease">UNBAN</span>
+                   <span className="relative invisible">UNBAN</span>
                  </a>
                 )}
                 {!isBanned && (
-                  <a onClick={() => handleUserBanStatus(userID, "ban")} class="mt-4 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-red-500 rounded-full shadow-md group">
-                      <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-red-500 group-hover:translate-x-0 ease">
-                        <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                  <a onClick={() => handleUserBanStatus(userID, "ban")} className="mt-4 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-red-500 rounded-full shadow-md group">
+                      <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-red-500 group-hover:translate-x-0 ease">
+                        <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                         </svg>
                       </span>
-                    <span class="absolute flex items-center justify-center w-full h-full text-red-500 transition-all duration-300 transform group-hover:translate-x-full ease">BAN</span>
-                    <span class="relative invisible">BAN</span>
+                    <span className="absolute flex items-center justify-center w-full h-full text-red-500 transition-all duration-300 transform group-hover:translate-x-full ease">BAN</span>
+                    <span className="relative invisible">BAN</span>
                   </a>
                 )}
         
