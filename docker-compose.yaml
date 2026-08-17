@@ -10,6 +10,7 @@ services:
       - "13000:5000"
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - ENABLE_LOAD_TEST_ENDPOINT=${ENABLE_LOAD_TEST_ENDPOINT:-false}
     depends_on:
       - postgres
       - ml-service

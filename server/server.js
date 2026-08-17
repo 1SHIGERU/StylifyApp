@@ -48,6 +48,7 @@ require('./models/Message');
 require('./models/Chat');
 require('./models/Reviews');
 require('./models/ContactMessage');
+require('./models/ConversationTurn');
 
 module.exports = app;
 

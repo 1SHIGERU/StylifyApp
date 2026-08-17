@@ -1,14 +1,84 @@
 {
-    "sqltools.connections": [
-        {
-            "previewLimit": 50,
-            "server": "stylify.postgres.database.azure.com",
-            "port": 5432,
-            "askForPassword": true,
-            "driver": "PostgreSQL",
-            "name": "stylify.postgres.database.azure.com",
-            "database": "postgres",
-            "username": "leoniddas7"
-        }
-    ]
+  "latex-workshop.latex.tools": [
+    {
+      "name": "pdflatex",
+      "command": "pdflatex",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "%DOC%"
+      ],
+      "cwd": "%DIR%"
+    },
+    {
+      "name": "bibtex",
+      "command": "bibtex",
+      "args": [
+        "%DOCFILE%"
+      ],
+      "cwd": "%DIR%"
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "pdflatex -> bibtex -> pdflatex x2 (szablon Politechniki Śląskiej)",
+      "tools": [
+        "pdflatex",
+        "bibtex",
+        "pdflatex",
+        "pdflatex"
+      ]
+    },
+    {
+      "name": "pdflatex (szybki, bez bibliografii)",
+      "tools": [
+        "pdflatex"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipe.default": "first",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.watch.files.ignore": [
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/config/settings.tex",
+    "**/config/titlepage.tex"
+  ],
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.latex.outDir": "%DIR%",
+  "latex-workshop.latex.clean.subfolder.enabled": false,
+  "// === LTeX - polski słownik ===": "",
+  "ltex.language": "pl-PL",
+  "// === Python ===": "",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "// === Edytor ===": "",
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "editor.rulers": [
+    100
+  ],
+  "// === Wyklucz pliki tymczasowe LaTeX z eksploratora ===": "",
+  "files.exclude": {
+    "**/*.aux": true,
+    "**/*.bbl": true,
+    "**/*.blg": true,
+    "**/*.fdb_latexmk": true,
+    "**/*.fls": true,
+    "**/*.log": true,
+    "**/*.out": true,
+    "**/*.synctex.gz": true,
+    "**/*.toc": true,
+    "**/*.lof": true,
+    "**/*.lot": true,
+    "**/*.run.xml": true,
+    "**/*-blx.bib": true
+  }
 }

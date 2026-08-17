@@ -23,7 +23,9 @@ export const NewChat = () => {
   const [loadingPartnerInfo, setLoadingPartnerInfo] = useState(false);
   const [errorPartnerInfo, setErrorPartnerInfo] = useState(null);
   // Modal blokady wiadomości
-  const [blockModal, setBlockModal] = useState({ show: false, message: '' });
+  const [blockModal, setBlockModal] = useState({ show: false, message: '', devInfo: null });
+  const [warnPanel, setWarnPanel] = useState(null); // { message, devInfo }
+  const [devExpanded, setDevExpanded] = useState(false);
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}chat/user/${user.userID}`)
@@ -65,8 +67,11 @@ export const NewChat = () => {
       messageContent: newMessage,
     };
 
+    const optimisticMessageId = `temp-${Date.now()}`;
+
     // Optymistyczna aktualizacja UI - dodaj wiadomość od razu
     const optimisticMessage = {
+      messageID: optimisticMessageId,
       senderID: user.userID,
       messageContent: newMessage,
       User: {
@@ -75,7 +80,7 @@ export const NewChat = () => {
       },
       _optimistic: true // oznacz jako tymczasową
     };
-    
+
     setMessages((prevMessages) => [...prevMessages, optimisticMessage]);
     const messageTextCopy = newMessage; // zapisz przed czyszczeniem
     setNewMessage('');
@@ -86,14 +91,13 @@ export const NewChat = () => {
 
         // Sprawdź czy wiadomość została zablokowana
         if (data.blocked === true || data.action === 'block') {
-          // Usuń optymistyczną wiadomość
-          setMessages((prevMessages) => prevMessages.filter(m => !m._optimistic));
-          // Pokaż modal z informacją o blokadzie
+          setMessages((prevMessages) => prevMessages.filter(m => m.messageID !== optimisticMessageId));
           setBlockModal({
             show: true,
-            message: data.uiMessage || 'Twoja wiadomość została zablokowana z powodu naruszenia regulaminu (dane kontaktowe).'
+            message: data.uiMessage || 'Twoja wiadomość została zablokowana z powodu naruszenia regulaminu.',
+            devInfo: data.devInfo || null,
           });
-          // Przywróć treść wiadomości w polu input, aby użytkownik mógł edytować
+          setDevExpanded(false);
           setNewMessage(messageTextCopy);
           return;
         }
@@ -101,23 +105,29 @@ export const NewChat = () => {
         // Sprawdź czy to ostrzeżenie (warn)
         if (data.action === 'warn') {
           toast.warning(data.uiMessage || 'Wiadomość może zawierać podejrzane treści.', { position: 'top-center' });
+          setWarnPanel({ message: data.uiMessage, devInfo: data.devInfo || null });
         }
 
-        // Aktualizuj ostatnią wiadomość danymi z serwera (usuwamy flag _optimistic)
+        // Zachowaj treść, nadawcę i avatar z lokalnego wpisu; z backendu bierzemy tylko identyfikator.
         setMessages((prevMessages) => {
-          const filtered = prevMessages.filter(m => !m._optimistic);
-          // Dodaj prawdziwą wiadomość z serwera (jeśli przyszła)
-          if (data.id || data.messageID) {
-            return [...filtered, { ...data, _optimistic: false }];
-          }
-          return filtered;
+          return prevMessages.map((message) => {
+            if (message.messageID !== optimisticMessageId) {
+              return message;
+            }
+
+            return {
+              ...message,
+              messageID: data.id || data.messageID || message.messageID,
+              _optimistic: false,
+            };
+          });
         });
       })
       .catch((error) => {
         console.error('Error sending message:', error);
         toast.error('Nie udało się wysłać wiadomości. Spróbuj ponownie.', { position: 'top-center' });
         // W razie błędu usuń optymistyczną wiadomość
-        setMessages((prevMessages) => prevMessages.filter(m => !m._optimistic));
+        setMessages((prevMessages) => prevMessages.filter(m => m.messageID !== optimisticMessageId));
         // Przywróć treść w input
         setNewMessage(messageTextCopy);
       });
@@ -129,7 +139,7 @@ export const NewChat = () => {
         await axios.post(`${process.env.REACT_APP_API_URL}chat/setAsRead/`,
           { chatID: activeChatID, userID: user.userID }
         );
-        
+
       } catch (error) {
         console.error('Błąd przy oznaczaniu wiadomości jako przeczytane:', error);
       }
@@ -147,7 +157,7 @@ export const NewChat = () => {
 
   // Znalezienie aktywnego partnera rozmowy
   const activeChat = chats.find(chat => chat.chatID === activeChatID);
-  const activeChatPartner = activeChat 
+  const activeChatPartner = activeChat
     ? (activeChat.user1ID === user.userID ? activeChat.User2 : activeChat.User1)
     : null;
 
@@ -162,7 +172,7 @@ export const NewChat = () => {
       try {
         const base = process.env.REACT_APP_API_URL;
         console.log('Fetching partner info for userID:', activeChatPartner.userID);
-        
+
         const [userRes, offersRes, countRes] = await Promise.all([
           axios.get(`${base}users/user/${activeChatPartner.userID}`),
           axios.get(`${base}offers/userID/${activeChatPartner.userID}`),
@@ -192,7 +202,7 @@ export const NewChat = () => {
   console.log('Partner offers count:', partnerOffersCount);
 
   return (
-    <>   
+    <>
       <div className="flex pt-20 h-screen bg-gray-100 dark:bg-[#18191a] text-gray-900 dark:text-white">
       {/* (zarezerwowane miejsce dla panelu informacyjnego po prawej) */}
 
@@ -254,8 +264,12 @@ export const NewChat = () => {
         <div className="flex-1 p-4 overflow-y-auto flex flex-col space-y-3">
           {messages.length > 0 ? (
             messages.map((message, index) => (
-              <div key={index} className={`flex ${message.senderID === user.userID ? 'justify-end' : 'justify-start'}`}>
-                {message.senderID !== user.userID && (
+              (() => {
+                const isOwnMessage = String(message.senderID) === String(user.userID);
+
+                return (
+                  <div key={message.messageID || index} className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
+                    {!isOwnMessage && (
                   <div className="w-9 h-9 rounded-full flex items-center justify-center mr-2">
                     <img
                       src={message.User?.avatarURL || Img}
@@ -263,20 +277,22 @@ export const NewChat = () => {
                       className="w-8 h-8 rounded-full"
                     />
                   </div>
-                )}
-                <div className={`${message.senderID === user.userID ? 'bg-orange-400 text-white' : 'bg-gray-200 dark:bg-[#3a3b3c] text-gray-900 dark:text-gray-200'} rounded-2xl ${message.senderID === user.userID ? 'rounded-br-none' : 'rounded-bl-none'} px-4 py-2 max-w-xs`}>
-                  {message.messageContent}
-                </div>
-                {message.senderID === user.userID && (
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-                    <img
-                      src={user?.avatar || Img}
-                      alt="My Avatar"
-                      className="w-8 h-8 rounded-full"
-                    />
+                    )}
+                    <div className={`${isOwnMessage ? 'bg-orange-400 text-white' : 'bg-gray-200 dark:bg-[#3a3b3c] text-gray-900 dark:text-gray-200'} rounded-2xl ${isOwnMessage ? 'rounded-br-none' : 'rounded-bl-none'} px-4 py-2 max-w-xs`}>
+                      {message.messageContent}
+                    </div>
+                    {isOwnMessage && (
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center ml-2">
+                        <img
+                          src={user?.avatar || Img}
+                          alt="My Avatar"
+                          className="w-8 h-8 rounded-full"
+                        />
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                );
+              })()
             ))
           ) : (
             <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
@@ -296,7 +312,7 @@ export const NewChat = () => {
               placeholder="Aa"
               className="flex-1 bg-gray-200 dark:bg-[#3a3b3c] text-gray-900 dark:text-white p-2 rounded-full outline-none"
             />
-            <button 
+            <button
               onClick={sendMessage}
               className="ml-3 text-blue-500 text-xl hover:text-blue-600">
               ➤
@@ -366,8 +382,8 @@ export const NewChat = () => {
                   </p>
                   <p className="text-gray-600 dark:text-gray-400">
                     <span className="font-medium">Ilość aktywnych aukcji:</span> {
-                      partnerOffersCount?.count !== undefined && partnerOffersCount?.count !== null 
-                        ? partnerOffersCount.count 
+                      partnerOffersCount?.count !== undefined && partnerOffersCount?.count !== null
+                        ? partnerOffersCount.count
                         : '—'
                     }
                   </p>
@@ -394,10 +410,10 @@ export const NewChat = () => {
                 <div className="grid grid-cols-3 gap-2">
                   {partnerOffers.map((offer) => {
                     // Poprawiona ścieżka do obrazka z backendu
-                    const image = offer.OfferImages && offer.OfferImages.length > 0 
-                      ? offer.OfferImages[0].imageUrl 
+                    const image = offer.OfferImages && offer.OfferImages.length > 0
+                      ? offer.OfferImages[0].imageUrl
                       : Img;
-                    
+
                     return (
                       <button
                         key={offer.offerID}
@@ -438,8 +454,8 @@ export const NewChat = () => {
 
     {/* Modal blokady wiadomości */}
     {blockModal.show && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setBlockModal({ show: false, message: '' })}>
-        <div className="bg-white dark:bg-[#242526] rounded-lg shadow-xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setBlockModal({ show: false, message: '', devInfo: null })}>
+        <div className="bg-white dark:bg-[#242526] rounded-lg shadow-xl p-6 max-w-lg w-full mx-4" onClick={(e) => e.stopPropagation()}>
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
               <span className="text-red-600 dark:text-red-400 text-2xl">⚠</span>
@@ -454,6 +470,79 @@ export const NewChat = () => {
               </div>
             </div>
           </div>
+
+          {/* DEV PANEL */}
+          {blockModal.devInfo && (
+            <div className="mt-4 border border-yellow-400 dark:border-yellow-600 rounded-md overflow-hidden">
+              <button
+                className="w-full flex items-center justify-between px-3 py-2 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300 text-xs font-mono font-semibold"
+                onClick={() => setDevExpanded(v => !v)}
+              >
+                <span>🔬 DEV — pipeline: {blockModal.devInfo.fallback ? 'rules_v1_fallback' : blockModal.devInfo.pipeline || 'hybrid_B_C'}</span>
+                <span>{devExpanded ? '▲' : '▼'}</span>
+              </button>
+              {devExpanded && (
+                <div className="px-3 py-2 bg-yellow-50/50 dark:bg-yellow-900/10 font-mono text-xs text-gray-800 dark:text-gray-200 space-y-2">
+                  {/* Turn context */}
+                  {blockModal.devInfo.turn && (
+                    <div>
+                      <span className="text-gray-500 dark:text-gray-400">Turn:</span>{' '}
+                      <span className="font-semibold">{blockModal.devInfo.turn.messageCount}</span> msg(s) →{' '}
+                      <span className="italic text-gray-600 dark:text-gray-400">"{blockModal.devInfo.turn.preview}"</span>
+                    </div>
+                  )}
+
+                  {/* Presidio (B) */}
+                  <div>
+                    <span className={`font-bold ${blockModal.devInfo.presidioFired ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
+                      [B] Presidio: {blockModal.devInfo.presidio?.action?.toUpperCase() || 'N/A'}
+                    </span>
+                    {blockModal.devInfo.presidio?.label && (
+                      <span className="ml-1 text-gray-500">({blockModal.devInfo.presidio.label}, conf={blockModal.devInfo.presidio.confidence})</span>
+                    )}
+                    {blockModal.devInfo.presidio?.entities?.length > 0 && (
+                      <ul className="mt-1 ml-3 space-y-0.5">
+                        {blockModal.devInfo.presidio.entities.map((e, i) => (
+                          <li key={i} className="text-gray-600 dark:text-gray-400">
+                            → <span className="text-orange-600 dark:text-orange-400">{e.type}</span>{' '}
+                            <span className="text-gray-500">"{e.value}"</span>{' '}
+                            <span className="text-gray-400">(conf={e.confidence})</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+
+                  {/* HerBERT (C) */}
+                  <div>
+                    {blockModal.devInfo.herbert ? (
+                      <>
+                        {!blockModal.devInfo.herbert.available ? (
+                          <span className="text-gray-400">[C] HerBERT: not deployed (brak modelu)</span>
+                        ) : (
+                          <>
+                            <span className={`font-bold ${blockModal.devInfo.herbertFired ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
+                              [C] HerBERT: {blockModal.devInfo.herbert.action?.toUpperCase()}
+                            </span>
+                            <span className="ml-1 text-gray-500">
+                              ({blockModal.devInfo.herbert.label}, conf={blockModal.devInfo.herbert.confidence})
+                            </span>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-gray-400">[C] HerBERT: skipped (B blocked)</span>
+                    )}
+                  </div>
+
+                  {blockModal.devInfo.fallback && (
+                    <div className="text-red-500 font-semibold">⚠ ML service offline — użyto rules_v1 (fallback)</div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="mt-6 flex justify-end gap-3">
             <button
               onClick={() => navigate('/contact')}
@@ -462,7 +551,7 @@ export const NewChat = () => {
               Zgłoś błąd
             </button>
             <button
-              onClick={() => setBlockModal({ show: false, message: '' })}
+              onClick={() => setBlockModal({ show: false, message: '', devInfo: null })}
               className="px-4 py-2 rounded-md bg-[#D47C24] text-white text-sm font-medium hover:bg-[#bf6e1f] transition"
             >
               Rozumiem
@@ -471,7 +560,40 @@ export const NewChat = () => {
         </div>
       </div>
     )}
-    
+
+    {/* Warn dev panel — dismissible banner */}
+    {warnPanel && warnPanel.devInfo && (
+      <div className="fixed bottom-4 right-4 z-40 max-w-sm w-full">
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-400 dark:border-yellow-600 rounded-md shadow-lg overflow-hidden">
+          <div className="flex items-center justify-between px-3 py-2">
+            <span className="text-xs font-mono font-semibold text-yellow-800 dark:text-yellow-300">
+              🔬 DEV — warn: {warnPanel.devInfo.pipeline || (warnPanel.devInfo.fallback ? 'rules_v1_fallback' : 'hybrid_B_C')}
+            </span>
+            <button onClick={() => setWarnPanel(null)} className="text-yellow-600 hover:text-yellow-900 dark:hover:text-yellow-200 text-xs ml-2">✕</button>
+          </div>
+          <div className="px-3 pb-2 font-mono text-xs text-gray-700 dark:text-gray-300 space-y-1">
+            {warnPanel.devInfo.turn && (
+              <div><span className="text-gray-500">Turn:</span> {warnPanel.devInfo.turn.messageCount} msg → "<span className="italic">{warnPanel.devInfo.turn.preview}</span>"</div>
+            )}
+            {warnPanel.devInfo.presidio && (
+              <div>
+                <span className={warnPanel.devInfo.presidioFired ? 'text-red-500' : 'text-green-600'}>[B] {warnPanel.devInfo.presidio.action?.toUpperCase()}</span>
+                <span className="text-gray-400 ml-1">conf={warnPanel.devInfo.presidio.confidence}</span>
+              </div>
+            )}
+            {warnPanel.devInfo.herbert && warnPanel.devInfo.herbert.available !== false && (
+              <div>
+                <span className={warnPanel.devInfo.herbertFired ? 'text-red-500' : 'text-green-600'}>
+                  [C] {warnPanel.devInfo.herbert.action?.toUpperCase()} ({warnPanel.devInfo.herbert.label})
+                </span>
+                <span className="text-gray-400 ml-1">conf={warnPanel.devInfo.herbert.confidence}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+
     </>
   );
 };
