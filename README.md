@@ -1,238 +1,143 @@
-# Stylify
+# Stylify - hybrid ML moderation for a C2C marketplace
 
-Stylify is a full-stack fashion marketplace with a production-style ML moderation system for detecting risky user messages in real time.
+> A production-style Polish-language Trust & Safety system that detects payment fraud, platform-bypass attempts, PII sharing, and toxic content in marketplace chat.
 
-The project is built around a realistic ML engineering problem: users can try to bypass platform payments, share contact details, send payment scams, or post toxic content in chat. Stylify handles this with a hybrid inference pipeline combining deterministic PII/risk detection, a fine-tuned Polish transformer classifier, conversation-turn reconstruction, fallback logic, timing instrumentation, and a moderation review flow.
+Stylify is a full-stack C2C fashion marketplace whose core ML Engineering component is a real-time moderation pipeline. Instead of treating moderation as an isolated notebook model, the project deploys a fine-tuned transformer alongside deterministic PII detection, integrates both into the message-delivery path, reconstructs conversational context, records decisions for review, and degrades safely when the ML service is unavailable.
 
-## Why This Project Matters
+The system was designed and evaluated as part of my MSc thesis, *Detection of Fraud Attempts and Payment System Evasion in User Communication within C2C Applications Using Text Analysis and Machine Learning* (2026).
 
-This is not only a marketplace CRUD app. The core engineering work is the integration of an ML safety system into a real product surface:
+## Why this is an ML Engineering project
 
-- A separate Python/FastAPI ML microservice deployed next to a Node.js/Express API.
-- A hybrid moderation pipeline: Presidio + custom Polish regex recognizers first, HerBERT second.
-- Conversation-turn analysis, not only single-message classification.
-- A balanced labeled dataset stored as JSONL for four moderation classes.
-- Runtime decisioning: allow, warn, or block.
-- Graceful fallback when the ML service is unavailable.
-- Timing instrumentation for measuring Presidio, HerBERT, and the full hybrid pipeline.
-- Persistent moderation artifacts for audit and human review.
+- **Hybrid inference architecture:** Microsoft Presidio and domain-specific Polish recognizers handle high-confidence structural signals; a fine-tuned HerBERT classifier handles ambiguous, semantic cases.
+- **Latency-aware routing:** obvious abuse is resolved before transformer inference. In the thesis evaluation, Presidio handled 68.3% of test messages.
+- **Context-aware classification:** consecutive messages from one sender are joined into a conversation turn, which exposes attacks split across multiple messages.
+- **Application integration:** FastAPI inference is called from the Node.js chat API before message delivery; decisions result in `allow`, `warn`, or `block` UX.
+- **Operational safeguards:** decisions, confidence, reason, detector, and conversation-turn metadata are persisted for moderation review. A deterministic server-side fallback is used when the ML service cannot be reached.
+- **Measured, not just trained:** the repository includes a timing endpoint and benchmark script for Presidio, HerBERT, and the end-to-end hybrid path.
 
-## ML Moderation Pipeline
+## Results
 
-Stylify implements a cascaded moderation design.
+Evaluation was performed on a held-out, balanced synthetic test set of 120 Polish marketplace-chat messages. The split was not used for training or hyperparameter selection.
+
+| Approach | Macro precision | Macro recall | Macro F1 | Accuracy |
+| --- | ---: | ---: | ---: | ---: |
+| A - rule-based baseline | 0.454 | 0.420 | 0.333 | 0.433 |
+| B - Presidio + custom regex | 0.967 | 0.955 | 0.958 | 0.958 |
+| C - fine-tuned HerBERT | 0.982 | 0.985 | 0.983 | 0.983 |
+| D - hybrid Presidio + HerBERT | **0.991** | **0.992** | **0.991** | **0.992** |
+
+The hybrid pipeline made one false-positive prediction in 120 test messages. On the same benchmark, the average component latencies were **8.38 ms** for Presidio and **43.48 ms** for HerBERT. These are thesis results on synthetic data, not a claim of production performance; validation on real, independently annotated traffic remains future work.
+
+## System design
 
 ```mermaid
 flowchart LR
-    A["User sends chat message"] --> B["Node.js API rebuilds current conversation turn"]
-    B --> C["Module B: Presidio + custom Polish recognizers"]
-    C -->|Risk detected| D["Return allow / warn / block"]
-    C -->|No risk detected| E["Module C: fine-tuned HerBERT classifier"]
-    E --> D
-    D --> F["Persist message, flag, moderation metadata, and timing info"]
+    U["Chat message"] --> T["Build current conversation turn"]
+    T --> P["Presidio + Polish domain recognizers"]
+    P -->|"Risk found"| D["allow / warn / block"]
+    P -->|"No risk found"| H["Fine-tuned HerBERT"]
+    H --> D
+    D --> A["Persist message, turn, flag and metadata"]
+    A --> M["Moderator review workflow"]
 ```
 
-### Module B: Presidio + Custom Recognizers
+The Node.js API first calls the Presidio stage on the complete current turn. If it returns a risk decision, the message does not incur transformer latency. Otherwise the service classifies both the newest message and the full turn with HerBERT, then selects the stricter decision. Calling the model at both granularities avoids hiding a late malicious message in an otherwise benign turn.
 
-The first stage is optimized for high-precision detection of explicit policy violations:
+If the ML service times out or fails, the API uses its deterministic `rules_v1` fallback and marks the result accordingly. This keeps the message flow available rather than making a remote ML dependency a single point of failure.
 
-- Polish phone numbers
-- email addresses
-- Polish IBAN numbers
-- credit card and CVV patterns
-- BLIK requests
-- advance payment requests
-- phishing links
-- social media handles
-- platform-bypass phrases
-- toxic phrase patterns
+## Moderation taxonomy
 
-Implementation:
+| Model label | Examples of signals |
+| --- | --- |
+| `bypass` | phone/email sharing, social-media handles, attempts to move a transaction outside Stylify |
+| `fraud` | Polish IBANs, BLIK/payment-code requests, advance-payment requests, phishing links |
+| `toxic` | abuse, threats, insults, and aggressive language |
+| `benign` | normal marketplace communication |
 
-- [ml-service/presidio_detector.py](ml-service/presidio_detector.py)
-- [ml-service/main.py](ml-service/main.py)
-
-The detector maps low-level entities into moderation labels:
-
-- `personal_data_request`
-- `payment_scam`
-- `platform_bypass`
-- `toxic_content`
-- `benign`
-
-### Module C: Fine-Tuned HerBERT Classifier
-
-The second stage handles messages that are not caught by the deterministic detector. It uses a local HerBERT sequence classification model with four classes:
-
-- `benign`
-- `bypass`
-- `fraud`
-- `toxic`
-
-The FastAPI service loads model artifacts from:
-
-```text
-ml-service/models/herbert-finetuned/
-```
-
-and exposes:
-
-```text
-POST /classify/herbert
-```
-
-The model returns:
-
-- top label
-- confidence
-- full label distribution
-- action: `allow`, `warn`, or `block`
-
-### Module D: Hybrid B + C Pipeline
-
-The production pipeline is orchestrated by the Node.js API:
-
-1. Reconstruct the current conversation turn.
-2. Send the turn text to `/classify/presidio`.
-3. If Presidio detects risk, return the decision immediately.
-4. If Presidio allows the message, call `/classify/herbert`.
-5. Compare classification on the latest message and full turn.
-6. Pick the stricter result.
-7. Save flags and moderation metadata.
-8. If the ML service fails, fall back to deterministic server-side rules.
-
-Implementation:
-
-- [server/controllers/chatController.js](server/controllers/chatController.js)
-- [server/utils/turns.js](server/utils/turns.js)
-- [server/models/ConversationTurn.js](server/models/ConversationTurn.js)
-- [server/models/MessageFlag.js](server/models/MessageFlag.js)
+The Presidio stage contains custom Polish recognizers for phone numbers, emails, IBANs, payment-card/CVV and BLIK patterns, advance-payment language, phishing links, social-media handles, platform-bypass phrases, and toxic expressions. HerBERT provides semantic classification where static patterns are insufficient, particularly for toxic messages without explicit profanity.
 
 ## Dataset
 
-The repository includes processed JSONL datasets for the moderation task:
+The repository includes a 1,200-example JSONL dataset tailored to Polish C2C chat. It is intentionally balanced across `benign`, `bypass`, `fraud`, and `toxic` classes.
+
+| File | Purpose | Examples |
+| --- | --- | ---: |
+| `ml-service/dataset/processed/train.jsonl` | training | 960 |
+| `ml-service/dataset/processed/val.jsonl` | validation | 120 |
+| `ml-service/dataset/processed/test.jsonl` | held-out evaluation | 120 |
+| `ml-service/dataset/processed/dataset.jsonl` | full dataset | 1,200 |
+
+The initial data is synthetic and template-generated to avoid collecting private user conversations before launch. The moderation data model supports a human-in-the-loop workflow: flagged messages and their turn context can be reviewed and annotated, creating a path toward a real-data retraining set.
+
+## Tech stack
+
+| Area | Technologies |
+| --- | --- |
+| ML serving | Python, FastAPI, Hugging Face Transformers, PyTorch |
+| NLP | Fine-tuned HerBERT, Microsoft Presidio, spaCy Polish pipeline, custom regex recognizers |
+| Backend | Node.js, Express, Sequelize, PostgreSQL, JWT |
+| Frontend | React, React Router, Tailwind CSS, Chart.js |
+| Integrations | Stripe, Cloudinary |
+| Infrastructure | Docker and Docker Compose |
+
+## Repository structure
 
 ```text
-ml-service/dataset/processed/
+Stylify/
+├── client/                       # React marketplace UI
+├── server/                       # Express API, persistence, chat and moderation orchestration
+│   ├── controllers/chatController.js
+│   ├── utils/turns.js            # conversation-turn reconstruction
+│   ├── utils/rules.js            # deterministic fallback
+│   └── tests/pipeline_timing_test.js
+├── ml-service/                   # FastAPI inference service
+│   ├── main.py                   # Presidio, HerBERT and health endpoints
+│   ├── presidio_detector.py      # Polish/domain-specific recognizers
+│   └── dataset/processed/        # JSONL training, validation and test splits
+└── docker-compose.yaml
 ```
 
-Current dataset distribution:
+## Run locally
 
-| Split | benign | bypass | fraud | toxic | Total |
-|---|---:|---:|---:|---:|---:|
-| train | 233 | 251 | 230 | 246 | 960 |
-| test | 33 | 26 | 33 | 28 | 120 |
-| full dataset | 300 | 300 | 300 | 300 | 1200 |
+### Prerequisites
 
-The labels are designed around marketplace abuse scenarios:
+- Docker and Docker Compose, or Node.js 16+, Python 3.11+, and PostgreSQL
+- A fine-tuned checkpoint at `ml-service/models/herbert-finetuned/`
 
-- `benign`: normal marketplace communication
-- `bypass`: attempts to move the transaction outside the platform
-- `fraud`: payment scams, suspicious payment behavior, phishing-like requests
-- `toxic`: threats, insults, abusive content
+The model directory is excluded from Git because model artifacts are large. Without a local checkpoint, `POST /classify/herbert` responds with `available: false`; to reproduce the full hybrid system, supply the checkpoint first.
 
-## Latency Measurement
+### Environment configuration
 
-The Node.js API exposes an optional timing endpoint for measuring the real hybrid pipeline from the application layer.
+Create `server/.env` locally. Do not commit credentials.
 
-It reports:
+```dotenv
+PORT=5000
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=stylify
+DB_USER=your_postgres_user
+DB_PASSWORD=your_postgres_password
+ML_SERVICE_URL=http://localhost:8000
+```
 
-- Presidio time
-- HerBERT time
-- total hybrid pipeline time
-- hybrid path completed after Presidio only
-- hybrid path completed through Presidio + HerBERT
+For a Compose deployment, use the service names `postgres` and `ml-service` for the database host and ML service URL respectively. Configure the frontend's API base in `client/.env`:
 
-The endpoint is disabled by default and must be explicitly enabled:
+```dotenv
+REACT_APP_API_URL=http://localhost:13000/
+```
+
+### Start the services
+
+Run the ML service:
 
 ```powershell
-$env:ENABLE_LOAD_TEST_ENDPOINT="true"
-docker compose up -d --force-recreate node
+cd ml-service
+pip install -r requirements.txt
+python -m spacy download pl_core_news_sm
+uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-Run the timing script:
-
-```powershell
-cd server
-$env:ITERATIONS="20"
-npm.cmd run test:timing
-```
-
-Implementation:
-
-- [server/tests/pipeline_timing_test.js](server/tests/pipeline_timing_test.js)
-
-## System Architecture
-
-```mermaid
-flowchart TB
-    UI["React marketplace UI"] --> API["Node.js / Express API"]
-    API --> DB["PostgreSQL"]
-    API --> ML["Python FastAPI ML service"]
-    ML --> P["Presidio + spaCy + custom recognizers"]
-    ML --> H["Fine-tuned HerBERT classifier"]
-    API --> MOD["Moderation dashboard and audit trail"]
-```
-
-## Tech Stack
-
-### Machine Learning
-
-- Python
-- FastAPI
-- Hugging Face Transformers
-- PyTorch
-- HerBERT sequence classification
-- Microsoft Presidio
-- spaCy Polish NLP pipeline
-- Custom regex/entity recognizers
-- JSONL datasets
-
-### Backend
-
-- Node.js
-- Express
-- PostgreSQL
-- Sequelize
-- JWT authentication
-- Stripe integration
-- Cloudinary integration
-
-### Frontend
-
-- React
-- React Router
-- Tailwind CSS
-- Chart.js
-- React Toastify
-
-### Infrastructure
-
-- Docker
-- Docker Compose
-- Separate containers for frontend, backend, database, and ML service
-
-## Product Features
-
-- Fashion marketplace with offers and product images
-- User accounts and authentication
-- User-to-user chat
-- ML-powered chat moderation
-- Message blocking and warning UX
-- Moderation dashboard
-- Flag persistence and review state
-- Transactions and payment flow
-- Reviews and seller ratings
-- Notifications
-
-## Local Development
-
-Start the full stack:
-
-```powershell
-docker compose up -d --build
-```
-
-Backend only:
+In a second terminal, start the API:
 
 ```powershell
 cd server
@@ -240,7 +145,7 @@ npm install
 npm start
 ```
 
-Frontend only:
+In a third terminal, start the UI:
 
 ```powershell
 cd client
@@ -248,67 +153,62 @@ npm install
 npm start
 ```
 
-ML service only:
+Container definitions are provided in `docker-compose.yaml` for the frontend, API, PostgreSQL, and ML service. Ensure the application environment variables and model checkpoint are available to the containers before running `docker compose up --build`.
+
+## API surface
+
+### ML service
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `GET` | `/health` | service health and HerBERT availability |
+| `POST` | `/classify/presidio` | PII/domain-recognizer moderation |
+| `POST` | `/classify/herbert` | fine-tuned transformer inference |
+| `POST` | `/classify` | legacy multilingual toxicity-classification endpoint |
+
+### Moderation flow in the application API
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `POST` | `/chat/add-message` | build turn, moderate, persist and return UI action |
+| `GET` | `/moderation/flags` | retrieve moderation flags |
+| `POST` | `/moderation/flags/:flagId/mark` | record a moderator decision |
+| `POST` | `/moderation/flags/:flagId/override` | unblock an overridden result |
+
+## Measure the pipeline
+
+The timing route is deliberately disabled by default. Enable it only in the environment where the API process starts:
 
 ```powershell
-cd ml-service
-pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 8000
+$env:ENABLE_LOAD_TEST_ENDPOINT = "true"
+cd server
+npm start
 ```
 
-## Key API Endpoints
+Then, in a separate terminal:
 
-ML service:
-
-```text
-GET  /health
-POST /classify/presidio
-POST /classify/herbert
-POST /classify
+```powershell
+cd server
+$env:BASE_URL = "http://localhost:5000"
+$env:ITERATIONS = "20"
+npm run test:timing
 ```
 
-Node.js moderation path:
+The script calls `POST /chat/classify`, warms up the services, and reports average, p95, and p99 times for Presidio, HerBERT, and the hybrid path. Adjust `BASE_URL` for Docker or another deployment.
 
-```text
-POST /chat/add-message
-POST /chat/classify
-GET  /moderation/flags
-POST /moderation/flags/:flagId/mark
-POST /moderation/flags/:flagId/override
-```
+## Design decisions and next steps
 
-`POST /chat/classify` is intended for timing experiments and is available only when:
+The project intentionally combines a transparent, fast rules/PII layer with a semantic model rather than relying on a single classifier. This is especially useful for a marketplace domain: structural identifiers need deterministic handling, while conversational intent and indirect toxicity benefit from a transformer.
 
-```text
-ENABLE_LOAD_TEST_ENDPOINT=true
-```
+Current limitations are important:
 
-## ML Engineering Highlights
+- evaluation uses synthetic, single-author-labelled data, so real-world generalisation must be measured separately;
+- the present system targets Polish-language text only;
+- attackers can evade static patterns through obfuscation such as spacing or leetspeak;
+- rule and model updates are not yet automated.
 
-This project demonstrates practical ML engineering skills beyond model training:
+Planned work includes real-data annotation with moderator feedback, normalization and fuzzy matching for obfuscation, versioned model artifacts, experiment tracking, and continuous evaluation/retraining.
 
-- Designing a cascaded inference pipeline to reduce unnecessary transformer calls.
-- Combining high-precision deterministic detectors with a semantic neural classifier.
-- Serving ML through a dedicated FastAPI microservice.
-- Integrating inference into a latency-sensitive chat workflow.
-- Building observability into the pipeline through timing metadata.
-- Preserving moderation decisions for auditability and human review.
-- Handling model/service failure through deterministic fallback logic.
-- Modeling conversation turns to detect fragmented policy violations.
+## Resume-ready summary
 
-## Repository Structure
-
-```text
-Stylify/
-  client/                 React frontend
-  server/                 Node.js API, chat, moderation, payments, persistence
-  ml-service/             FastAPI ML service
-    dataset/processed/    JSONL moderation datasets
-    main.py               ML inference API
-    presidio_detector.py  Presidio + custom Polish recognizers
-  docker-compose.yaml     Multi-container local environment
-```
-
-## Suggested Resume Framing
-
-> Built a production-style ML moderation system for a marketplace chat, combining Presidio, custom Polish entity recognizers, and a fine-tuned HerBERT classifier in a cascaded FastAPI microservice. Integrated the model with a Node.js application, conversation-turn reconstruction, fallback logic, moderation audit trail, and latency measurement for Presidio, HerBERT, and the full hybrid pipeline.
+> Built and evaluated a real-time Polish Trust & Safety pipeline for a C2C marketplace. Combined Microsoft Presidio and custom PII/fraud recognizers with a fine-tuned HerBERT classifier in a FastAPI microservice, orchestrated from Node.js with conversation-turn reconstruction, failure fallback, moderator audit records, and latency instrumentation. Achieved macro-F1 0.991 on a held-out 120-example synthetic test split.
