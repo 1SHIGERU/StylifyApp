@@ -10,6 +10,7 @@ router.get('/getContactMessages', chatController.getContactMessages);
 {/* Chat */}
 
 router.post('/create', chatController.createChat);
+router.post('/classify', chatController.classifyForPerformanceTest);
 router.post('/add-message', chatController.sendMessage);
 router.get('/:id', chatController.getMessagesByChatID);
 router.get('/user/:id', chatController.getUserChats);

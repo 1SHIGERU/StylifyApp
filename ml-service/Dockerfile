@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Polski model spacy dla Presidio (podejście B)
+RUN python -m spacy download pl_core_news_sm
+
 # Kopiowanie kodu
 COPY . .
 

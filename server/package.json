@@ -7,7 +7,8 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "build": "npm i",
-    "test": "jest"
+    "test": "jest",
+    "test:timing": "node tests/pipeline_timing_test.js"
   },
   "keywords": [],
   "author": "",
