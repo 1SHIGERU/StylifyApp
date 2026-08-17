@@ -1,0 +1,120 @@
+{"text": "Czy cena obejmuje wysyłkę?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Przelej mi coś na zaliczkę, dowolną kwotę", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Nie próbuj mnie ignorować", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Ostateczna cena to 83? Czy jest margines?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Wy wschodni to wszyscy tacy sami", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Jak kupię dwie sztuki to masz 3779 zł za obie?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Wszystko OK, czekam na paczkę", "label": "benign", "source": "synthetic_v1"}
+{"text": "Podaj kod blik, 789275 to przykład jak wygląda", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Napisz na ig @joanna.pawel ok?", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Typowe dla waszego sortu — kradniecie wszyscy", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Czy to oryginał czy podróbka?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Dane do przelewu: PL3069495888794705516940974993", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Słuchaj, nie gadaj głupot debilu", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Przy szybkiej sprzedaży schodzisz do 4591 zł?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Numer: 781 396 181", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Jak kupię dwie sztuki to masz 3779 zł za obie?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Wyślij na: tomasz.zielinski@poczta.fm", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Mam na ciebie sposób", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Kliknij tu żeby odebrać paczkę: https://weryfikacja-konta.pl/3703", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Jakie są opcje wysyłki?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Co za bezczelny złodziej, oddaj kasę", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Zgłoszę cię wszędzie i zniszczę ci życie!", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Dzień dobry, mam pytanie o tę ofertę", "label": "benign", "source": "synthetic_v1"}
+{"text": "Rezerwacja: 29 zł zaliczka bezzwrotna", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Zapłacę przez BLIK, wyślij swój kod", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Nr konta: PL6179334101666870021765918033, tytuł: zaliczka — odpowiedz.", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Słuchaj, tiktok: taniojoanna38", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Wkur***sz mnie do reszty", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Kliknij tu żeby odebrać paczkę: https://allegro-platnosc.net/4239", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Paczka zablokowana — odblokuj: https://inpost-odbiorca.pl/6221", "label": "fraud", "source": "synthetic_v1"}
+{"text": "mail do mnie: aleksandra.nowicka@yahoo.com", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Allegro smart weryfikacja wymagana: https://odbiór-paczki.pl/2589 Potwierdź.", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Możesz napisać na: sprzedaje2024@outlook.com", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Witaj, czy możesz opisać dokładniej stan?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Przelew się zdublował, oddaj nadwyżkę to problem banku Potwierdź.", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Czy jest możliwość zwrotu jeśli coś nie pasuje?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Jak długo używane? Czy jest paragon lub gwarancja?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Towar zgodny z opisem, dziękuję", "label": "benign", "source": "synthetic_v1"}
+{"text": "Jak nie oddasz kasy to ci obiecuję problemy!!", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Słuchaj, ty świniu, zwróć mi pieniądze", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Słuchaj, dodaj na snapie: michal771", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Wyślij mi kod blik (403507) potwierdzę transakcję", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Co jest dołączone do zestawu?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Potwierdź dane do odbioru: https://odbiór-paczki.pl/7563", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Zapłać BLIK-iem, podaj mi ten 6-cyfrowy kod", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Czy możliwa jakaś obniżka? Proponuję 936 zł", "label": "benign", "source": "synthetic_v1"}
+{"text": "sc: piotr142", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Allegro smart weryfikacja wymagana: https://allegro-platnosc.net/6052!", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Kontakt: +48 662 880 282", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Dane do przelewu: PL4667854458771753556093204899.", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Kompletnie nie da się z tobą gadać", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Nr konta: PL1120275884252410564814917785, tytuł: zaliczka — odpowiedz.", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Musisz potwierdzić zamówienie: https://potwierdzenie-platnosci.com/1202", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Wyślij mi kod BLIK 876962 to przelew gotowy.", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Weryfikacja konta: https://potwierdzenie-platnosci.com/5896", "label": "fraud", "source": "synthetic_v1"}
+{"text": "TY CWANIAKU, NIE WIERZĘ W ANI JEDNO SŁOWO", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Potrzebuję 16 cyfr karty i datę ważności", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Facebook: lukasz305", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Za 158 zł sprzedasz czy trzymasz cenę?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Hej, jest jeszcze do kupienia?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Kontakt viber: +48607 520 578", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Słuchaj, wy wszyscy jesteście złodziejami", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Konto bankowe: PL1560715969664160529751613696 — przelej zaliczkę", "label": "fraud", "source": "synthetic_v1"}
+{"text": "ZNAM TWOJE DANE, LEPIEJ MI ZAPŁAĆ", "label": "toxic", "source": "synthetic_v1"}
+{"text": "tiktok: barteklukasz25", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Wyślij BLIK to masz pieniądze od razu 610271", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Zniszczyłem lepszych niż ty!!", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Jak szybko możesz wysłać?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Co za palant z ciebie", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Kupuję, jak płacimy?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Jak szybko możesz wysłać?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Mój tel to +48780 373 887.", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Hej, możesz napisać na: tomasz.zielinski@hotmail.com", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Inpost locker kod odbioru: https://olx-weryfikacja.com/2970", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Jeszcze pożałujesz tej transakcji Serio.", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Czy możliwa jakaś obniżka? Proponuję 936 zł", "label": "benign", "source": "synthetic_v1"}
+{"text": "Możemy gadać na watsapie pod +48513 652 873", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Ty chamie, jak można tak rozmawiać", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Jestem na tg jako @szybkopiotr45", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Za 470 zł biorę od ręki", "label": "benign", "source": "synthetic_v1"}
+{"text": "IBAN: PL7074490581477005411998679807", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Zdjęcia są aktualne? Kiedy zrobione?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Dostałem, dziękuję! Polecam sprzedawcę", "label": "benign", "source": "synthetic_v1"}
+{"text": "Orientacyjny czas wysyłki?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Zapłacę przez BLIK, wyślij swój kod", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Czy produkt był naprawiany?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Mieszkam w Sosnowiec, odbiór możliwy?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Co byś powiedział na 49 zł?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Twoja paczka czeka na potwierdzenie: https://odbiór-paczki.pl/6370", "label": "fraud", "source": "synthetic_v1"}
+{"text": "WY WSCHODNI TO WSZYSCY TACY SAMI", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Kontakt mailowy: michal.wozniak@yahoo.com ok?", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Dane do przelewu: PL3069495888794705516940974993.", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Transakcja pewna jak wpłacisz 963 zł z góry", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Potwierdzam zakup, kiedy wysyłka?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Lepiej oddaj kasę bo pożałujesz", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Kupowanie od ciebie to strata czasu, idioto!", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Twój kurier czeka, potwierdź adres: https://odbiór-paczki.pl/3872", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Pod tym numerem jestem na whatsapp 730-303-256 ;)", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Mam kilku chętnych, kto pierwszy wpłaci zaliczkę dostaje", "label": "fraud", "source": "synthetic_v1"}
+{"text": "instagram @piotr.szybko", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Ty śmieciu, nie wracaj tu", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Wyślij mi kod BLIK 157443 to przelew gotowy", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Tracę czas na takich jak ty", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Jak działa, wszystko sprawne?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Przelew na PL4412126788861015819956046618 właściciel Jan Kowalski!", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Na instagramie jestem okazja_ewa możemy tam pogadać daj znać", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Czy możliwa jakaś obniżka? Proponuję 936 zł", "label": "benign", "source": "synthetic_v1"}
+{"text": "Kontaktuj się przez whatsapp: 505849597", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Płacę kartą, podaj numer i CVV", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Ty matole, ta cena to żart", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Nie wkur*** mnie bardziej", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Wkurwiasz mnie tym milczeniem", "label": "toxic", "source": "synthetic_v1"}
+{"text": "Czy mogę sprawdzić przy odbiorze?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Allegro smart weryfikacja wymagana: https://allegro-platnosc.net/6052", "label": "fraud", "source": "synthetic_v1"}
+{"text": "Czy cena obejmuje wysyłkę?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Telegram: @krzysztof_maria", "label": "bypass", "source": "synthetic_v1"}
+{"text": "Czy możesz zabezpieczyć lepiej przy wysyłce?", "label": "benign", "source": "synthetic_v1"}
+{"text": "Na ten numer konta proszę: PL8905072368876767721903404384", "label": "fraud", "source": "synthetic_v1"}
+{"text": "WA 514165446", "label": "bypass", "source": "synthetic_v1"}
+{"text": "BLIK mi wyślij to gotowe 914571 Potwierdź.", "label": "fraud", "source": "synthetic_v1"}

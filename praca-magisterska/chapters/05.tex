@@ -1,0 +1,154 @@
+% !TEX root = ../main.tex
+\chapter{Podsumowanie}
+\label{ch:podsumowanie}
+
+% ============================================================
+\section{Wnioski}
+\label{sec:wnioski}
+
+Celem niniejszej pracy była implementacja i~ewaluacja czterech podejść
+do~automatycznej detekcji nadużyć w~polskojęzycznym czacie platformy C2C
+Stylify. Cel ten został w~pełni zrealizowany. Na~podstawie przeprowadzonych
+badań (rozdział~\ref{ch:badania}) sformułowano następujące wnioski:
+
+\begin{enumerate}
+  \item \textbf{System regułowy stanowi niewystarczający poziom ochrony.}
+    Moduł~A osiągnął makro~$F_1 = 0{,}333$ i~dokładność~$= 0{,}433$.
+    Ponad połowa nadużyć nie była wykrywana (FN~=~50 na~87 przykładów
+    klas nadużyć). Kluczową słabością jest całkowity brak wykrywania
+    toksyczności ($F_1(\text{toxic}) = 0{,}000$) oraz błędna hierarchia reguł
+    powodująca klasyfikowanie fraud jako bypass (18 błędów kategorii).
+    System ten jest użyteczny jedynie jako szybki filtr wstępny danych strukturalnych.
+    System jest bardzo łatwy do obejścia przez napastników, którzy mogą unikać słów kluczowych.
+
+  \item \textbf{Detekcja PII za~pomocą Presidio radykalnie poprawia skuteczność
+    przy zerowych kosztach fałszywych alarmów.}
+    Moduł~B osiągnął makro~$F_1 = 0{,}958$, wzrost o~$+187{,}6\,\%$ względem
+    Modułu~A. Architektura Presidio eliminuje błędy
+    kategorii (zero przypadków błędnej klasy), a~precyzja dla~klas bypass,
+    fraud i~benign wynosi $1{,}000$. Granicą tego podejścia są wiadomości
+    toksyczne wyrażone bez wulgaryzmów ze~słownika, 5 takich przypadków
+    pozostało nieoznaczonych.
+
+  \item \textbf{Dostrajanie polskiego modelu językowego HerBERT wnosi
+    semantyczne rozumienie niedostępne dla reguł.}
+    Moduł~C osiągnął makro~$F_1 = 0{,}983$ i~dokładność $= 0{,}983$
+    (+195{,}2\,\% względem A). Jako jedyne podejście osiągnął
+    $F_1(\text{toxic}) = 1{,}000$, wykrywając agresję semantyczną wyrażoną
+    tonem i~kontekstem, a~nie słowami kluczowymi. Jest to~dowód na~to, że~modele
+    transformerowe dostrojone na~danych domenowych skutecznie rozumieją
+    intencję nadawcy w~krótkich wiadomościach czatowych.
+
+  \item \textbf{Architektura hybrydowa łączy zalety obu podejść
+    i~osiąga najwyższą skuteczność.}
+    Moduł~D osiągnął makro~$F_1 = 0{,}991$ i~dokładność $= 0{,}992$,
+    tylko 1 błąd na~120 wiadomości. Kluczową zaletą jest wydajność:
+    68{,}3\,\% wiadomości obsługiwanych jest przez szybki Moduł~B
+    bez~wywołania modelu neuronowego, co~istotnie zmniejsza opóźnienie
+    w~środowisku produkcyjnym. Jednocześnie Moduł~C obsługuje 31{,}7\,\%
+    przypadków wymagających rozumienia semantycznego, których Presidio
+    nie~potrafi sklasyfikować.
+
+  \item \textbf{Podejście D również wymaga poprawek i ciągłego doszkalania.}
+    Pomimo zadowalających rezultatów uzyskanych przez zaproponowaną architekturę D, przeprowadzone badania wykazały również jej ograniczenia. W szczególności trudności sprawia wykrywanie wiadomości zawierających celowo zmodyfikowane nazwy serwisów zewnętrznych lub komunikatorów, takich jak zastępowanie liter cyframi (np. „1nstagram”, „faceb00k”), stosowanie dodatkowych znaków specjalnych czy rozdzielanie wyrazów spacjami. Tego typu działania stanowią próbę obejścia mechanizmów bezpieczeństwa i mogą nie zostać poprawnie sklasyfikowane przez obecnie zastosowane komponenty systemu. W związku z tym dalsze prace powinny obejmować rozszerzenie etapu wstępnego przetwarzania tekstu o mechanizmy normalizacji i dopasowania przybliżonego, a także wzbogacenie zbioru treningowego o syntetycznie generowane przykłady takich prób obchodzenia zabezpieczeń. Pozwoliłoby to zwiększyć odporność systemu na celowe modyfikacje treści wiadomości oraz poprawić skuteczność wykrywania bardziej zaawansowanych prób oszustwa.
+
+  \item \textbf{Mechanizm tury konwersacyjnej skutecznie adresuje ataki fragmentowane.}
+    Grupowanie kolejnych wiadomości tego samego nadawcy w~jeden kontekst
+    klasyfikacji umożliwia wykrywanie nadużyć rozbitych celowo na~wiele
+    krótkich wiadomości. Bez tego mechanizmu pojedyncze krótkie wiadomości
+    mogłyby nie~osiągać progu detekcji żadnego z~modułów.
+
+  \item \textbf{Syntetyczny zbiór danych z~panelem moderatora jest
+    praktycznym rozwiązaniem problemu RODO.}
+    Wygenerowanie zbioru startowego przy~użyciu szablonów z~losowymi
+    wariantami pozwoliło na~uruchomienie systemu bez~konieczności
+    zbierania i~adnotowania danych produkcyjnych przed~startem platformy.
+    Panel moderatora zapewnia mechanizm sukcesywnego wzbogacania zbioru
+    o~dane rzeczywiste od~momentu uruchomienia Stylify.
+
+
+\end{enumerate}
+
+\noindent Odpowiadając bezpośrednio na~pytanie badawcze z~rozdziału~\ref{sec:pytanie}:
+spośród porównywanych podejść najskuteczniejsze jest \textbf{Moduł~D}
+(potok hybrydowy Presidio~+~HerBERT), a~uczenie maszynowe w~każdym wariancie
+(B, C, D) znacząco przewyższa system regułowy: wzrost makro~$F_1$
+wynosi od~$+187{,}6\,\%$ (Moduł~B) do~$+197{,}5\,\%$ (Moduł~D).
+
+% ============================================================
+\section{Ograniczenia pracy}
+\label{sec:ograniczenia}
+
+Niniejsza praca ma kilka istotnych ograniczeń, które należy uwzględnić
+przy~interpretacji wyników:
+
+\begin{itemize}
+  \item \textbf{Wyłącznie język polski.} System zaprojektowano i~przeprowadzono ewaluację wyłącznie
+    na~wiadomościach w~języku polskim. Skuteczność na~innych językach wymaga
+    osobnej walidacji i~prawdopodobnie zastąpienia HerBERT modelem wielojęzycznym.
+
+  \item \textbf{Syntetyczny zbiór danych.} Ewaluacja przeprowadzona została
+    na~zbiorze wygenerowanym szablonowo, nie~zaś na~danych produkcyjnych.
+    Rozkład klas i~styl językowy wiadomości mogą odbiegać od~rzeczywistego
+    ruchu komunikacyjnego. Wyniki należy interpretować ostrożnie, ponieważ skuteczność systemu na rzeczywistych danych może odbiegać od rezultatów uzyskanych na zbiorze syntetycznym
+
+  \item \textbf{Jeden autor zbioru.} Szablony generowania danych i~kryteria
+    przynależności do~klas zostały opracowane przez jednego autora.
+    Brak wielokrotnej adnotacji i~obliczonego współczynnika zgodności
+    między anotatorami (\english{inter-annotator agreement}) ogranicza pewność
+    co~do jakości etykiet dla~przypadków granicznych.
+
+
+  \item \textbf{Statyczność wzorców Presidio.} Nowe wektory ataku,
+    nowe platformy kontaktowe, nowe frazy obejścia, nowe wzorce wyłudzenia,
+    wymagają ręcznej aktualizacji wzorców i~ponownego wdrożenia serwisu.
+    System nie~adaptuje się automatycznie do~ewoluujących strategii nadużywających.
+\end{itemize}
+
+% ============================================================
+\section{Kierunki dalszych badań}
+\label{sec:kierunki}
+
+Na~podstawie wniosków i~zidentyfikowanych ograniczeń wskazuje się
+następujące kierunki kontynuacji prac:
+
+\begin{itemize}
+  \item \textbf{Ewaluacja na~danych produkcyjnych.}
+    Po~uruchomieniu platformy Stylify, dane adnotowane przez moderatorów
+    za~pośrednictwem panelu będą sukcesywnie zasilać zbiór treningowy.
+    Ewaluacja na~wiadomościach rzeczywistych pozwoli zweryfikować,
+    czy~wyniki uzyskane na~zbiorze syntetycznym utrzymują się w~warunkach
+    produkcyjnych.
+
+  \item \textbf{Uczenie ciągłe (\english{online learning}).}
+    Automatyczne włączanie do~zbioru treningowego wiadomości oznaczonych
+    przez moderatorów jako TP lub FP umożliwiłoby adaptację modelu
+    do~ewolucji języka ataków bez~konieczności ręcznego przetrenowania.
+    Podejście to~jest szczególnie istotne dla~klasy bypass, gdzie napastnicy
+    stale szukają nowych fraz obejścia nieobecnych w~słowniku wzorców.
+
+  \item \textbf{Wielojęzyczność.}
+    Zastąpienie HerBERT modelem \xlmr\ lub jego wariantem wielojęzycznym
+    umożliwiłoby obsługę platform operujących w~wielu językach bez~konieczności
+    odrębnego dostrajania dla~każdego języka~\cite{bib:xlmr}.
+
+  \item \textbf{Skrócenie czasu odpowiedzi.}
+    Kwantyzacja modelu (\english{model quantization}) lub zastosowanie
+    lżejszej architektury (DistilBERT) może skrócić czas odpowiedzi
+    HerBERT przy~zachowaniu akceptowalnej skuteczności, co~jest kluczowe
+    dla~środowiska produkcyjnego o~rygorystycznych wymaganiach czasowych.
+
+  \item \textbf{Analiza wyjaśnialności (\english{explainability}).}
+    Zastosowanie metod interpretowalności, takich jak LIME lub SHAP,
+    pozwoliłoby zrozumieć, które fragmenty tekstu decydują o~klasyfikacji,
+    co~ułatwiłoby debugowanie fałszywych alarmów (jak opisany
+    w~rozdziale~\ref{sec:wyniki-hybrid} przypadek ,,dogadajmy szczegóły
+    wysyłki'') oraz budowę zaufania do~systemu wśród moderatorów.
+
+  \item \textbf{Rozszerzenie taksonomii klas.}
+    Aktualna klasyfikacja czterech klas (bypass, fraud, toxic, benign)
+    może zostać rozbudowana o~podklasy, np.\ rozróżnienie phishingu
+    od~wyłudzeń zaliczkowych w~ramach klasy fraud, lub stopniowanie
+    toksyczności, co~pozwoliłoby na~bardziej granularną reakcję
+    systemu moderacji.
+\end{itemize}

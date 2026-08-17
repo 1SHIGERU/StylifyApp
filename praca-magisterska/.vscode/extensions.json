@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "james-yu.latex-workshop",
+    "valentjn.vscode-ltex",
+    "ms-python.python",
+    "charliermarsh.ruff",
+    "anthropic.claude-code",
+    "tamasfe.even-better-toml",
+    "eamodio.gitlens"
+  ]
+}

@@ -1,0 +1,75 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                             %
+% MOJE PAKIETY, USTAWIENIA ITD                %
+%                                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Tutaj proszę umieszczać swoje pakiety, makra, ustawienia itd.
+
+% Pakiety dodatkowe (booktabs, graphicx, subcaption już są w settings.tex)
+\usepackage{float}            % środowisko [H] - tabele/figury w miejscu
+\usepackage{xcolor}           % kolory w listingach
+\usepackage{tabularx}         % tabele z elastyczną szerokością kolumn
+\usepackage{multirow}         % komórki łączone pionowo
+\usepackage{makecell}         % wieloliniowe komórki tabel
+\usepackage{microtype}        % lepszy kerning, hyphenation
+% Pozwala używać środowiska "comment" do tymczasowego komentowania fragmentów
+\usepackage{comment}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% listingi i fragmenty kodu źródłowego (Python - dla skryptów ML)
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\usepackage{listings}
+
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codegreen}{rgb}{0,0.5,0}
+\definecolor{codebg}{rgb}{0.97,0.97,0.97}
+
+\lstdefinestyle{pythonstyle}{%
+    language=Python,
+    backgroundcolor=\color{codebg},
+    commentstyle=\color{codegreen}\itshape,
+    keywordstyle=\color{blue!70!black}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=8pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=single,
+    rulecolor=\color{black!20}
+}
+
+% Domyślny styl listingów - Python.
+% (Szablon uczelni narzuca C++ jako domyślny - my pracujemy w Pythonie, nadpisujemy)
+\lstset{style=pythonstyle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Własne komendy dla spójnego formatowania
+
+% Skróty dla metryk - wszędzie w pracy formatowane jednakowo
+\newcommand{\fone}{F\textsubscript{1}}
+\newcommand{\precision}{\textit{precision}}
+\newcommand{\recall}{\textit{recall}}
+\newcommand{\accuracy}{\textit{accuracy}}
+
+% Wyróżnienie nazw modeli i bibliotek
+\newcommand{\xlmr}{XLM-RoBERTa}
+\newcommand{\bert}{BERT}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                             %
+% KONIEC MOICH USTAWIEŃ                       %
+%                                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

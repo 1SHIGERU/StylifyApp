@@ -1,0 +1,97 @@
+{
+  "detector": "Podejscie B - Presidio regex (polskie wzorce + toksycznosc)",
+  "n_test": 120,
+  "per_class": {
+    "bypass": {
+      "precision": 1.0,
+      "recall": 0.9615,
+      "f1": 0.9804,
+      "support": 26.0
+    },
+    "fraud": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 33.0
+    },
+    "toxic": {
+      "precision": 1.0,
+      "recall": 0.8571,
+      "f1": 0.9231,
+      "support": 28.0
+    },
+    "benign": {
+      "precision": 0.8684,
+      "recall": 1.0,
+      "f1": 0.9296,
+      "support": 33.0
+    }
+  },
+  "macro_f1": 0.9583,
+  "weighted_f1": 0.9584,
+  "accuracy": 0.9583,
+  "confusion_matrix": [
+    [
+      25,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      33,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      24,
+      4
+    ],
+    [
+      0,
+      0,
+      0,
+      33
+    ]
+  ],
+  "confusion_labels": [
+    "bypass",
+    "fraud",
+    "toxic",
+    "benign"
+  ],
+  "n_errors_fp": 0,
+  "n_errors_fn": 5,
+  "n_errors_wrong": 0,
+  "examples_fp": [],
+  "examples_fn": [
+    {
+      "text": "Tracę czas na takich jak ty!",
+      "true": "toxic",
+      "pred": "benign"
+    },
+    {
+      "text": "Nie odpisujesz?! ODPOWIEDZ NATYCHMIAST!",
+      "true": "toxic",
+      "pred": "benign"
+    },
+    {
+      "text": "Jesteś nikim do robienia interesów!!",
+      "true": "toxic",
+      "pred": "benign"
+    },
+    {
+      "text": "Ostatni raz pytam zanim zgłoszę Serio.",
+      "true": "toxic",
+      "pred": "benign"
+    },
+    {
+      "text": "Piszemy prywatnie, tu za dużo ludzi widzi daj znać",
+      "true": "bypass",
+      "pred": "benign"
+    }
+  ],
+  "examples_wrong": []
+}
